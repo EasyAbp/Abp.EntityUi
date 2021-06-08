@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MvcSample.Users;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.Identity;
 using Volo.Abp.Users.EntityFrameworkCore;
+using MvcSample.Books;
 
 namespace MvcSample.EntityFrameworkCore
 {
@@ -25,6 +26,11 @@ namespace MvcSample.EntityFrameworkCore
         /* Add DbSet properties for your Aggregate Roots / Entities here.
          * Also map them inside MvcSampleDbContextModelCreatingExtensions.ConfigureMvcSample
          */
+        public DbSet<Book> Books { get; set; }
+        
+        public DbSet<BookDetail> BookDetails { get; set; }
+        
+        public DbSet<BookTag> BookTags { get; set; }
 
         public MvcSampleDbContext(DbContextOptions<MvcSampleDbContext> options)
             : base(options)
