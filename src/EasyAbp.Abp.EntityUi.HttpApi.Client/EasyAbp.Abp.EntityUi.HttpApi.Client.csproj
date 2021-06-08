@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Http.Client" Version="4.3.2" />
+    <ProjectReference Include="..\EasyAbp.Abp.EntityUi.Application.Contracts\EasyAbp.Abp.EntityUi.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

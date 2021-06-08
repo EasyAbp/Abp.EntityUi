@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Version>0.1.0</Version>
+    <NoWarn>$(NoWarn);CS1591;CS0436</NoWarn>
+    <AbpProjectType>module</AbpProjectType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>EasyAbp Team</Authors>
+    <Description>An abp module that dynamically generates management UI for entities in runtime.</Description>
+    <PackageIconUrl>https://avatars3.githubusercontent.com/u/58311641?s=128</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/EasyAbp/Abp.EntityUi</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/EasyAbp/Abp.EntityUi</RepositoryUrl>
+    <PackageTags>abp module easyabp entity UI entityui dynamic runtime</PackageTags>
+    <Company>EasyAbp</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="ConfigureAwait.Fody" Version="3.3.1" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="6.5.0">
+      <PrivateAssets>All</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>
