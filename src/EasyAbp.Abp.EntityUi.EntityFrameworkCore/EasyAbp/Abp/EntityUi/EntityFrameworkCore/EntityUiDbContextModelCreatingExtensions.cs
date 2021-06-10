@@ -1,12 +1,16 @@
-﻿using System;
+using EasyAbp.Abp.EntityUi.Modules;
+using EasyAbp.Abp.EntityUi.MenuItems;
+using EasyAbp.Abp.EntityUi.Entities;
+using System;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
 {
     public static class EntityUiDbContextModelCreatingExtensions
     {
-        public static void ConfigureEntityUi(
+        public static void ConfigureAbpEntityUi(
             this ModelBuilder builder,
             Action<EntityUiModelBuilderConfigurationOptions> optionsAction = null)
         {
@@ -38,6 +42,65 @@ namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
                 b.HasIndex(q => q.CreationTime);
             });
             */
+
+            builder.Entity<Entity>(b =>
+            {
+                b.ToTable(options.TablePrefix + "Entities", options.Schema);
+                b.ConfigureByConvention(); 
+                
+                b.HasKey(e => new
+                {
+                    e.ModuleName,
+                    e.Name,
+                });
+
+                /* Configure more properties here */
+                b.Property(x => x.Keys).HasConversion(
+                    v => string.Join(',', v),
+                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+            });
+            
+            builder.Entity<Property>(b =>
+            {
+                b.ToTable(options.TablePrefix + "Properties", options.Schema);
+                b.ConfigureByConvention(); 
+                
+                b.HasKey(e => new
+                {
+                    e.EntityModuleName,
+                    e.EntityName,
+                    e.Name,
+                });
+
+                /* Configure more properties here */
+                b.OwnsOne(x => x.ShowIn);
+            });
+
+            builder.Entity<MenuItem>(b =>
+            {
+                b.ToTable(options.TablePrefix + "MenuItems", options.Schema);
+                b.ConfigureByConvention(); 
+                
+                b.HasKey(e => new
+                {
+                    e.Name,
+                });
+
+                /* Configure more properties here */
+            });
+
+            builder.Entity<Module>(b =>
+            {
+                b.ToTable(options.TablePrefix + "Modules", options.Schema);
+                b.ConfigureByConvention(); 
+                
+                b.HasKey(e => new
+                {
+                    e.Name,
+                });
+
+                /* Configure more properties here */
+            });
         }
     }
 }

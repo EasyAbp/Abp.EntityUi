@@ -1,3 +1,4 @@
+using EasyAbp.Abp.EntityUi.EntityFrameworkCore;
 using MvcSample.Books;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -24,8 +25,9 @@ namespace MvcSample.EntityFrameworkCore
         typeof(AbpBackgroundJobsEntityFrameworkCoreModule),
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
-        typeof(AbpFeatureManagementEntityFrameworkCoreModule)
-        )]
+        typeof(AbpFeatureManagementEntityFrameworkCoreModule),
+        typeof(AbpEntityUiEntityFrameworkCoreModule)
+    )]
     public class MvcSampleEntityFrameworkCoreModule : AbpModule
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)

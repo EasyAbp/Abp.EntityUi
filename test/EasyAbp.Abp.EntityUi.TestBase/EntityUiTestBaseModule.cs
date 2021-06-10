@@ -12,7 +12,7 @@ namespace EasyAbp.Abp.EntityUi
         typeof(AbpAutofacModule),
         typeof(AbpTestBaseModule),
         typeof(AbpAuthorizationModule),
-        typeof(EntityUiDomainModule)
+        typeof(AbpEntityUiDomainModule)
         )]
     public class EntityUiTestBaseModule : AbpModule
     {

@@ -42,6 +42,12 @@ namespace MvcSample.EntityFrameworkCore
                 b.ToTable(MvcSampleConsts.DbTablePrefix + "BookTags", MvcSampleConsts.DbSchema);
                 b.ConfigureByConvention(); 
                 
+                b.HasKey(e => new
+                {
+                    e.BookId,
+                    e.Tag,
+                });
+
                 /* Configure more properties here */
             });
         }

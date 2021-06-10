@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EasyAbp.Abp.EntityUi.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -43,6 +44,7 @@ namespace MvcSample.EntityFrameworkCore
             /* Configure your own tables/entities inside the ConfigureMvcSample method */
 
             builder.ConfigureMvcSample();
+            builder.ConfigureAbpEntityUi();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MvcSample.Localization;
+﻿using EasyAbp.Abp.EntityUi;
+using MvcSample.Localization;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.FeatureManagement;
@@ -23,8 +24,9 @@ namespace MvcSample
         typeof(AbpIdentityServerDomainSharedModule),
         typeof(AbpPermissionManagementDomainSharedModule),
         typeof(AbpSettingManagementDomainSharedModule),
-        typeof(AbpTenantManagementDomainSharedModule)
-        )]
+        typeof(AbpTenantManagementDomainSharedModule),
+        typeof(AbpEntityUiDomainSharedModule)
+    )]
     public class MvcSampleDomainSharedModule : AbpModule
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using EasyAbp.Abp.EntityUi;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MvcSample.MultiTenancy;
 using Volo.Abp.AuditLogging;
@@ -27,7 +28,8 @@ namespace MvcSample
         typeof(AbpPermissionManagementDomainIdentityServerModule),
         typeof(AbpSettingManagementDomainModule),
         typeof(AbpTenantManagementDomainModule),
-        typeof(AbpEmailingModule)
+        typeof(AbpEmailingModule),
+        typeof(AbpEntityUiDomainModule)
     )]
     public class MvcSampleDomainModule : AbpModule
     {

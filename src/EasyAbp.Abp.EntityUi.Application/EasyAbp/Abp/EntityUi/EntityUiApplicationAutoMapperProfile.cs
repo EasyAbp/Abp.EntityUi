@@ -1,4 +1,10 @@
-﻿using AutoMapper;
+using EasyAbp.Abp.EntityUi.Entities;
+using EasyAbp.Abp.EntityUi.Entities.Dtos;
+using EasyAbp.Abp.EntityUi.MenuItems;
+using EasyAbp.Abp.EntityUi.MenuItems.Dtos;
+using EasyAbp.Abp.EntityUi.Modules;
+using EasyAbp.Abp.EntityUi.Modules.Dtos;
+using AutoMapper;
 
 namespace EasyAbp.Abp.EntityUi
 {
@@ -9,6 +15,16 @@ namespace EasyAbp.Abp.EntityUi
             /* You can configure your AutoMapper mapping configuration here.
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
+            CreateMap<Entity, EntityDto>();
+            CreateMap<CreateUpdateEntityDto, Entity>(MemberList.Source);
+            CreateMap<Property, PropertyDto>();
+            CreateMap<CreateUpdatePropertyDto, Property>(MemberList.Source);
+            CreateMap<PropertyShowInDto, PropertyShowInValueObject>();
+            CreateMap<PropertyShowInValueObject, PropertyShowInDto>();
+            CreateMap<MenuItem, MenuItemDto>();
+            CreateMap<CreateUpdateMenuItemDto, MenuItem>(MemberList.Source);
+            CreateMap<Module, ModuleDto>();
+            CreateMap<CreateUpdateModuleDto, Module>(MemberList.Source);
         }
     }
 }

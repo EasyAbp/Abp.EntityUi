@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.EntityFrameworkCore\EasyAbp.Abp.EntityUi.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\MvcSample.Domain\MvcSample.Domain.csproj" />
     <PackageReference Include="Volo.Abp.EntityFrameworkCore.SqlServer" Version="4.3.2" />
     <PackageReference Include="Volo.Abp.PermissionManagement.EntityFrameworkCore" Version="4.3.2" />

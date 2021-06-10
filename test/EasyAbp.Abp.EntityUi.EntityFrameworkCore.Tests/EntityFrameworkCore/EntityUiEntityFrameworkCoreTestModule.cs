@@ -10,7 +10,7 @@ namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
 {
     [DependsOn(
         typeof(EntityUiTestBaseModule),
-        typeof(EntityUiEntityFrameworkCoreModule),
+        typeof(AbpEntityUiEntityFrameworkCoreModule),
         typeof(AbpEntityFrameworkCoreSqliteModule)
         )]
     public class EntityUiEntityFrameworkCoreTestModule : AbpModule

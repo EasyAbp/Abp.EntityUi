@@ -3,7 +3,7 @@
 namespace EasyAbp.Abp.EntityUi
 {
     [DependsOn(
-        typeof(EntityUiApplicationModule),
+        typeof(AbpEntityUiApplicationModule),
         typeof(EntityUiDomainTestModule)
         )]
     public class EntityUiApplicationTestModule : AbpModule

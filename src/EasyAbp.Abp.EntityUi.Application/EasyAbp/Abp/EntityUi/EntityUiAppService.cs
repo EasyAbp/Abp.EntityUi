@@ -3,12 +3,12 @@ using Volo.Abp.Application.Services;
 
 namespace EasyAbp.Abp.EntityUi
 {
-    public abstract class EntityUiAppService : ApplicationService
+    public abstract class EntityUiAppService : EntityUiAppServiceBase
     {
         protected EntityUiAppService()
         {
             LocalizationResource = typeof(EntityUiResource);
-            ObjectMapperContext = typeof(EntityUiApplicationModule);
+            ObjectMapperContext = typeof(AbpEntityUiApplicationModule);
         }
     }
 }

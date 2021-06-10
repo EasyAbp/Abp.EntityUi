@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using JetBrains.Annotations;
 using Volo.Abp.Domain.Entities;
 
@@ -6,6 +7,7 @@ namespace MvcSample.Books
 {
     public class BookDetail : Entity
     {
+        [Key]
         public virtual Guid BookId { get; protected set; }
         
         [CanBeNull]

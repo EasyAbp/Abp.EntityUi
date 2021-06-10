@@ -4,7 +4,7 @@ using Volo.Abp.Modularity;
 namespace EasyAbp.Abp.EntityUi
 {
     [DependsOn(
-        typeof(EntityUiHttpApiClientModule),
+        typeof(AbpEntityUiHttpApiClientModule),
         typeof(AbpHttpClientIdentityModelModule)
         )]
     public class EntityUiConsoleApiClientModule : AbpModule

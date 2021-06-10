@@ -10,7 +10,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages
         protected EntityUiPageModel()
         {
             LocalizationResourceType = typeof(EntityUiResource);
-            ObjectMapperContext = typeof(EntityUiWebModule);
+            ObjectMapperContext = typeof(AbpEntityUiWebModule);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Localization.Resources.AbpUi;
+﻿using EasyAbp.Abp.EntityUi;
+using Localization.Resources.AbpUi;
 using MvcSample.Localization;
 using Volo.Abp.Account;
 using Volo.Abp.FeatureManagement;
@@ -18,8 +19,9 @@ namespace MvcSample
         typeof(AbpPermissionManagementHttpApiModule),
         typeof(AbpTenantManagementHttpApiModule),
         typeof(AbpFeatureManagementHttpApiModule),
-        typeof(AbpSettingManagementHttpApiModule)
-        )]
+        typeof(AbpSettingManagementHttpApiModule),
+        typeof(AbpEntityUiHttpApiModule)
+    )]
     public class MvcSampleHttpApiModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

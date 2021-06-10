@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.Web\EasyAbp.Abp.EntityUi.Web.csproj" />
     <ProjectReference Include="..\MvcSample.Application\MvcSample.Application.csproj" />
     <ProjectReference Include="..\MvcSample.HttpApi\MvcSample.HttpApi.csproj" />
     <ProjectReference Include="..\MvcSample.EntityFrameworkCore.DbMigrations\MvcSample.EntityFrameworkCore.DbMigrations.csproj" />

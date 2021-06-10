@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using EasyAbp.Abp.EntityUi.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -52,8 +53,9 @@ namespace MvcSample.Web
         typeof(AbpAspNetCoreAuthenticationJwtBearerModule),
         typeof(AbpTenantManagementWebModule),
         typeof(AbpAspNetCoreSerilogModule),
-        typeof(AbpSwashbuckleModule)
-        )]
+        typeof(AbpSwashbuckleModule),
+        typeof(AbpEntityUiWebModule)
+    )]
     public class MvcSampleWebModule : AbpModule
     {
         public override void PreConfigureServices(ServiceConfigurationContext context)

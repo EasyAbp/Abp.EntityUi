@@ -7,7 +7,7 @@ namespace EasyAbp.Abp.EntityUi.MongoDB
 {
     [DependsOn(
         typeof(EntityUiTestBaseModule),
-        typeof(EntityUiMongoDbModule)
+        typeof(AbpEntityUiMongoDbModule)
         )]
     public class EntityUiMongoDbTestModule : AbpModule
     {

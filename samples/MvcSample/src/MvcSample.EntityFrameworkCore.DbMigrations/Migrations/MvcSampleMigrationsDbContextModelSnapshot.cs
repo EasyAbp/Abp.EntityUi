@@ -18,8 +18,203 @@ namespace MvcSample.Migrations
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.6")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("EasyAbp.Abp.EntityUi.Entities.Entity", b =>
+                {
+                    b.Property<string>("ModuleName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("BelongsTo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<bool>("CreationEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CreationPermission")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("DeletionEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("DeletionPermission")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("DetailEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("DetailPermission")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EditEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("EditPermission")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("Keys")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ModuleName", "Name");
+
+                    b.ToTable("EasyAbpAbpEntityUiEntities");
+                });
+
+            modelBuilder.Entity("EasyAbp.Abp.EntityUi.Entities.Property", b =>
+                {
+                    b.Property<string>("EntityModuleName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EntityName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsEntityCollection")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TypeOrEntityName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EntityModuleName", "EntityName", "Name");
+
+                    b.ToTable("EasyAbpAbpEntityUiProperties");
+                });
+
+            modelBuilder.Entity("EasyAbp.Abp.EntityUi.MenuItems.MenuItem", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<string>("EntityModuleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EntityName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("ParentName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Permission")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Name");
+
+                    b.HasIndex("ParentName");
+
+                    b.ToTable("EasyAbpAbpEntityUiMenuItems");
+                });
+
+            modelBuilder.Entity("EasyAbp.Abp.EntityUi.Modules.Module", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.HasKey("Name");
+
+                    b.ToTable("EasyAbpAbpEntityUiModules");
+                });
+
+            modelBuilder.Entity("MvcSample.Books.Book", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("Isbn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Length")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppBooks");
+                });
+
+            modelBuilder.Entity("MvcSample.Books.BookDetail", b =>
+                {
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Outline")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BookId");
+
+                    b.ToTable("AppBookDetails");
+                });
+
+            modelBuilder.Entity("MvcSample.Books.BookTag", b =>
+                {
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Tag")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("BookId", "Tag");
+
+                    b.ToTable("AppBookTags");
+                });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
@@ -1937,6 +2132,73 @@ namespace MvcSample.Migrations
                     b.ToTable("AbpTenantConnectionStrings");
                 });
 
+            modelBuilder.Entity("EasyAbp.Abp.EntityUi.Entities.Property", b =>
+                {
+                    b.HasOne("EasyAbp.Abp.EntityUi.Entities.Entity", null)
+                        .WithMany("Properties")
+                        .HasForeignKey("EntityModuleName", "EntityName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("EasyAbp.Abp.EntityUi.Entities.PropertyShowInValueObject", "ShowIn", b1 =>
+                        {
+                            b1.Property<string>("PropertyEntityModuleName")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("PropertyEntityName")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<string>("PropertyName")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<bool>("Creation")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("Detail")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("Edit")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("List")
+                                .HasColumnType("bit");
+
+                            b1.HasKey("PropertyEntityModuleName", "PropertyEntityName", "PropertyName");
+
+                            b1.ToTable("EasyAbpAbpEntityUiProperties");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PropertyEntityModuleName", "PropertyEntityName", "PropertyName");
+                        });
+
+                    b.Navigation("ShowIn");
+                });
+
+            modelBuilder.Entity("EasyAbp.Abp.EntityUi.MenuItems.MenuItem", b =>
+                {
+                    b.HasOne("EasyAbp.Abp.EntityUi.MenuItems.MenuItem", null)
+                        .WithMany("MenuItems")
+                        .HasForeignKey("ParentName");
+                });
+
+            modelBuilder.Entity("MvcSample.Books.BookDetail", b =>
+                {
+                    b.HasOne("MvcSample.Books.Book", null)
+                        .WithOne("Detail")
+                        .HasForeignKey("MvcSample.Books.BookDetail", "BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MvcSample.Books.BookTag", b =>
+                {
+                    b.HasOne("MvcSample.Books.Book", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
                 {
                     b.HasOne("Volo.Abp.AuditLogging.AuditLog", null)
@@ -2212,6 +2474,23 @@ namespace MvcSample.Migrations
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EasyAbp.Abp.EntityUi.Entities.Entity", b =>
+                {
+                    b.Navigation("Properties");
+                });
+
+            modelBuilder.Entity("EasyAbp.Abp.EntityUi.MenuItems.MenuItem", b =>
+                {
+                    b.Navigation("MenuItems");
+                });
+
+            modelBuilder.Entity("MvcSample.Books.Book", b =>
+                {
+                    b.Navigation("Detail");
+
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>

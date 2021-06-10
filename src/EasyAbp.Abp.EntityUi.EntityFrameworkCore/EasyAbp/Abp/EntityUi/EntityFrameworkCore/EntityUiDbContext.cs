@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
+using EasyAbp.Abp.EntityUi.Entities;
+using EasyAbp.Abp.EntityUi.MenuItems;
+using EasyAbp.Abp.EntityUi.Modules;
 
 namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
 {
@@ -10,6 +13,9 @@ namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
         /* Add DbSet for each Aggregate Root here. Example:
          * public DbSet<Question> Questions { get; set; }
          */
+        public DbSet<Entity> Entities { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<Module> Modules { get; set; }
 
         public EntityUiDbContext(DbContextOptions<EntityUiDbContext> options) 
             : base(options)
@@ -21,7 +27,7 @@ namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
         {
             base.OnModelCreating(builder);
 
-            builder.ConfigureEntityUi();
+            builder.ConfigureAbpEntityUi();
         }
     }
 }

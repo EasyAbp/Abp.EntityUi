@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.HttpApi\EasyAbp.Abp.EntityUi.HttpApi.csproj" />
     <ProjectReference Include="..\MvcSample.Application.Contracts\MvcSample.Application.Contracts.csproj" />
   </ItemGroup>
 
