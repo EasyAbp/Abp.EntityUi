@@ -1,4 +1,5 @@
 ﻿using EasyAbp.Abp.EntityUi;
+using EasyAbp.Abp.EntityUi.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using MvcSample.MultiTenancy;
@@ -38,6 +39,11 @@ namespace MvcSample
             Configure<AbpMultiTenancyOptions>(options =>
             {
                 options.IsEnabled = MultiTenancyConsts.IsEnabled;
+            });
+            
+            Configure<AbpEntityUiOptions>(options =>
+            {
+                options.Modules.Add("MvcSample", typeof(MvcSampleDomainModule));
             });
 
 #if DEBUG

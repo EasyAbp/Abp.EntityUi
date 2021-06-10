@@ -45,6 +45,7 @@
     "PropertyName": "PropertyName",
     "PropertyIsEntityCollection": "PropertyIsEntityCollection",
     "PropertyTypeOrEntityName": "PropertyTypeOrEntityName",
+    "PropertyNullable": "PropertyNullable",
     "PropertyShowIn": "PropertyShowIn",
     "PropertyShowInList": "PropertyShowInList",
     "PropertyShowInDetail": "PropertyShowInDetail",

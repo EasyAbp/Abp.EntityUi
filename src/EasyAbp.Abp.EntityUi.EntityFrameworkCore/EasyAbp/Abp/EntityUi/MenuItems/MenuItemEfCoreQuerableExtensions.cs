@@ -13,8 +13,7 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
             }
 
             return queryable
-                // .Include(x => x.xxx) // TODO: AbpHelper generated
-                ;
+                .Include(x => x.MenuItems);
         }
     }
 }

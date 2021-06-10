@@ -14,6 +14,8 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         public bool IsEntityCollection { get; set; }
 
         public string TypeOrEntityName { get; set; }
+        
+        public bool Nullable { get; set; }
 
         public PropertyShowInDto ShowIn { get; set; }
     }

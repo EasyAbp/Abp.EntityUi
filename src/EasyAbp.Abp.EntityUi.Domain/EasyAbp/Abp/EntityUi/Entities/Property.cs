@@ -29,6 +29,8 @@ namespace EasyAbp.Abp.EntityUi.Entities
         [NotNull]
         public virtual string TypeOrEntityName { get; protected set; }
         
+        public virtual bool Nullable { get; protected set; }
+        
         public virtual PropertyShowInValueObject ShowIn { get; protected set; }
 
         internal Property()
@@ -39,12 +41,19 @@ namespace EasyAbp.Abp.EntityUi.Entities
             [NotNull] string entityModuleName,
             [NotNull] string entityName,
             [NotNull] string name,
+            bool isEntityCollection,
+            [NotNull] string typeOrEntityName,
+            bool nullable,
             PropertyShowInValueObject showIn)
         {
             EntityModuleName = entityModuleName;
             EntityName = entityName;
             Name = name;
+            IsEntityCollection = isEntityCollection;
+            TypeOrEntityName = typeOrEntityName;
+            Nullable = nullable;
             ShowIn = showIn;
+            
         }
 
         public override object[] GetKeys()
