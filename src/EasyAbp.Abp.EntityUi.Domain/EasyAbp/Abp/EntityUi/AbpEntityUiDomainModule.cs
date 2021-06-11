@@ -14,7 +14,7 @@ namespace EasyAbp.Abp.EntityUi
         {
             Configure<AbpEntityUiOptions>(options =>
             {
-                options.Modules.Add("EasyAbpAbpEntityUi", typeof(AbpEntityUiDomainModule));
+                options.Modules.Add("EasyAbp.Abp.EntityUi", typeof(AbpEntityUiDomainModule));
             });
         }
     }
