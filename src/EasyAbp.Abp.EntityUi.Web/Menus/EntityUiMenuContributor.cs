@@ -16,7 +16,6 @@ namespace EasyAbp.Abp.EntityUi.Web.Menus
         private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
         {
             //Add main menu items.
-            context.Menu.AddItem(new ApplicationMenuItem(EntityUiMenus.Prefix, displayName: "EntityUi", "~/EntityUi", icon: "fa fa-globe"));
 
             return Task.CompletedTask;
         }

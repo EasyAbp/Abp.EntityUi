@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using EasyAbp.Abp.EntityUi;
 using EasyAbp.Abp.EntityUi.Web;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -141,6 +142,13 @@ namespace MvcSample.Web
                     options.FileSets.ReplaceEmbeddedByPhysical<MvcSampleApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}MvcSample.Application.Contracts"));
                     options.FileSets.ReplaceEmbeddedByPhysical<MvcSampleApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}MvcSample.Application"));
                     options.FileSets.ReplaceEmbeddedByPhysical<MvcSampleWebModule>(hostingEnvironment.ContentRootPath);
+                    
+                    options.FileSets.ReplaceEmbeddedByPhysical<AbpEntityUiDomainSharedModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}EasyAbp.Abp.EntityUi.Domain.Shared"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<AbpEntityUiDomainModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}EasyAbp.Abp.EntityUi.Domain"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<AbpEntityUiApplicationContractsModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}EasyAbp.Abp.EntityUi.Application.Contracts"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<AbpEntityUiApplicationModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}EasyAbp.Abp.EntityUi.Application"));
+                    options.FileSets.ReplaceEmbeddedByPhysical<AbpEntityUiWebModule>(Path.Combine(hostingEnvironment.ContentRootPath, $"..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}EasyAbp.Abp.EntityUi.Web"));
+
                 });
             }
         }

@@ -43,6 +43,6 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         public string DetailPermission { get; set; }
 
         [DisplayName("EntityProperties")]
-        public List<PropertyDto> Properties { get; set; }
+        public List<CreateUpdatePropertyDto> Properties { get; set; }
     }
 }

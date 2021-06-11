@@ -4,10 +4,10 @@ using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.MenuItems.Dtos;
 using EasyAbp.Abp.EntityUi.Modules.Dtos;
 
-namespace EasyAbp.Abp.EntityUi.Dtos
+namespace EasyAbp.Abp.EntityUi.Integration.Dtos
 {
     [Serializable]
-    public class EntityUiConfigurationSet
+    public class EntityUiIntegrationDto
     {
         public List<ModuleDto> Modules { get; set; }
         
