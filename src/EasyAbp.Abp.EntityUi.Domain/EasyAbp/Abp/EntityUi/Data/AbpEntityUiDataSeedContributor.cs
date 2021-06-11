@@ -73,8 +73,8 @@ namespace EasyAbp.Abp.EntityUi.Data
                 return moduleMenuItem;
             }
 
-            return await _menuItemRepository.InsertAsync(new MenuItem(null, moduleMenuItemName, null, null, null,
-                new List<MenuItem>()), true);
+            return await _menuItemRepository.InsertAsync(
+                new MenuItem(null, moduleMenuItemName, moduleName, null, null, new List<MenuItem>()), true);
         }
 
         protected virtual async Task TryCreateEntityMenuItemsAsync(string moduleName, TypeInfo[] entityTypeInfos, MenuItem moduleMenuItem)

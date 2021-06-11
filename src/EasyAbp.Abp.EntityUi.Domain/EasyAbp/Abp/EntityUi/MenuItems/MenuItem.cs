@@ -16,8 +16,8 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
         [NotNull]
         public virtual string Name { get; protected set; }
         
-        [CanBeNull]
-        public virtual string EntityModuleName { get; protected set; }
+        [NotNull]
+        public virtual string ModuleName { get; protected set; }
         
         [CanBeNull]
         public virtual string EntityName { get; protected set; }
@@ -33,12 +33,12 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
             MenuItems = new List<MenuItem>();
         }
 
-        public MenuItem([CanBeNull] string parentName, [NotNull] string name, [CanBeNull] string entityModuleName,
+        public MenuItem([CanBeNull] string parentName, [NotNull] string name, [NotNull] string moduleName,
             [CanBeNull] string entityName, [CanBeNull] string permission, List<MenuItem> menuItems)
         {
             ParentName = parentName;
             Name = name;
-            EntityModuleName = entityModuleName;
+            ModuleName = moduleName;
             EntityName = entityName;
             Permission = permission;
 

@@ -23,5 +23,12 @@ namespace EasyAbp.Abp.EntityUi.Integration
         {
             return _service.GetAsync();
         }
+
+        [HttpGet]
+        [Route("module/{moduleName}")]
+        public virtual Task<EntityUiIntegrationDto> GetModuleAsync(string moduleName)
+        {
+            return _service.GetModuleAsync(moduleName);
+        }
     }
 }

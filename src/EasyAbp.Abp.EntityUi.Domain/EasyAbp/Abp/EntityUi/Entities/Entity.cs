@@ -49,7 +49,6 @@ namespace EasyAbp.Abp.EntityUi.Entities
         [CanBeNull]
         public virtual string DetailPermission { get; protected set; }
         
-        // [ForeignKey($"{nameof(Property.EntityModuleName)}, {nameof(Property.EntityName)}")]
         public virtual List<Property> Properties { get; protected set; }
 
         protected Entity()

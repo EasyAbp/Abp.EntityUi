@@ -14,7 +14,7 @@
     "MenuItem": "MenuItem",
     "MenuItemParentName": "MenuItemParentName",
     "MenuItemName": "MenuItemName",
-    "MenuItemEntityModuleName": "MenuItemEntityModuleName",
+    "MenuItemModuleName": "MenuItemModuleName",
     "MenuItemEntityName": "MenuItemEntityName",
     "MenuItemPermission": "MenuItemPermission",
     "MenuItemMenuItems": "MenuItemMenuItems",

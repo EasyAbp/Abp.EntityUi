@@ -32,6 +32,18 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
                     .ToListAsync(GetCancellationToken(cancellationToken));
         }
 
+        public virtual async Task<List<MenuItem>> GetListInModuleAsync(string moduleName, string parentName,
+            bool includeDetails = false, CancellationToken cancellationToken = new CancellationToken())
+        {
+            return includeDetails
+                ? await (await WithDetailsAsync())
+                    .Where(x => x.ModuleName == moduleName && x.ParentName == parentName)
+                    .ToListAsync(GetCancellationToken(cancellationToken))
+                : await (await GetDbSetAsync())
+                    .Where(x => x.ModuleName == moduleName && x.ParentName == parentName)
+                    .ToListAsync(GetCancellationToken(cancellationToken));
+        }
+
         [Obsolete]
         public override Task<List<MenuItem>> GetListAsync(bool includeDetails = false,
             CancellationToken cancellationToken = new CancellationToken())

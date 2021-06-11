@@ -11,5 +11,8 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
     {
         Task<List<MenuItem>> GetListAsync([CanBeNull] string parentName, bool includeDetails = false,
             CancellationToken cancellationToken = new CancellationToken());
+
+        Task<List<MenuItem>> GetListInModuleAsync(string moduleName, [CanBeNull] string parentName,
+            bool includeDetails = false, CancellationToken cancellationToken = new CancellationToken());
     }
 }

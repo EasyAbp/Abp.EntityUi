@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
@@ -33,6 +34,22 @@ namespace EasyAbp.Abp.EntityUi.Integration
             var entities = await _entityRepository.GetListAsync(true);
 
             var menuItems = await _menuItemRepository.GetListAsync(null, true);
+
+            return new EntityUiIntegrationDto
+            {
+                Modules = ObjectMapper.Map<List<Module>, List<ModuleDto>>(modules),
+                Entities = ObjectMapper.Map<List<Entity>, List<EntityDto>>(entities),
+                MenuItems = ObjectMapper.Map<List<MenuItem>, List<MenuItemDto>>(menuItems)
+            };
+        }
+        
+        public virtual async Task<EntityUiIntegrationDto> GetModuleAsync(string moduleName)
+        {
+            var modules = new List<Module> {await _moduleRepository.GetAsync(x => x.Name == moduleName)};
+
+            var entities = await _entityRepository.GetListInModuleAsync(moduleName, true);
+
+            var menuItems = await _menuItemRepository.GetListInModuleAsync(moduleName, null, true);
 
             return new EntityUiIntegrationDto
             {

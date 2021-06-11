@@ -12,8 +12,8 @@ namespace EasyAbp.Abp.EntityUi.MenuItems.Dtos
         [DisplayName("MenuItemName")]
         public string Name { get; set; }
 
-        [DisplayName("MenuItemEntityModuleName")]
-        public string EntityModuleName { get; set; }
+        [DisplayName("MenuItemModuleName")]
+        public string ModuleName { get; set; }
 
         [DisplayName("MenuItemEntityName")]
         public string EntityName { get; set; }
