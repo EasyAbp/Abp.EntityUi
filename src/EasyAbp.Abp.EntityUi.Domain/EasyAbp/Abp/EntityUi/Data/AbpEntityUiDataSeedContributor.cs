@@ -5,14 +5,18 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities;
+using EasyAbp.Abp.EntityUi.Integration;
 using EasyAbp.Abp.EntityUi.MenuItems;
 using EasyAbp.Abp.EntityUi.Modules;
 using EasyAbp.Abp.EntityUi.Options;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Json;
 using Volo.Abp.Reflection;
+using Volo.Abp.VirtualFileSystem;
 using Entity = EasyAbp.Abp.EntityUi.Entities.Entity;
 using Module = EasyAbp.Abp.EntityUi.Modules.Module;
 
@@ -28,6 +32,8 @@ namespace EasyAbp.Abp.EntityUi.Data
             "CreatorId"
         };
 
+        private readonly IJsonSerializer _jsonSerializer;
+        private readonly IVirtualFileProvider _virtualFileProvider;
         private readonly IMenuItemRepository _menuItemRepository;
         private readonly IEntityRepository _entityRepository;
         private readonly IModuleRepository _moduleRepository;
@@ -35,10 +41,14 @@ namespace EasyAbp.Abp.EntityUi.Data
 
         public AbpEntityUiDataSeedContributor(
             IOptions<AbpEntityUiOptions> options,
+            IJsonSerializer jsonSerializer,
+            IVirtualFileProvider virtualFileProvider,
             IMenuItemRepository menuItemRepository,
             IEntityRepository entityRepository,
             IModuleRepository moduleRepository)
         {
+            _jsonSerializer = jsonSerializer;
+            _virtualFileProvider = virtualFileProvider;
             _menuItemRepository = menuItemRepository;
             _entityRepository = entityRepository;
             _moduleRepository = moduleRepository;
@@ -47,11 +57,65 @@ namespace EasyAbp.Abp.EntityUi.Data
         
         public virtual async Task SeedAsync(DataSeedContext context)
         {
+            await TrySeedByJsonFileAsync();
+            
+            await TrySeedByReflectionAsync();
+        }
+
+        protected virtual async Task TrySeedByJsonFileAsync()
+        {
+            foreach (var pair in _options.Modules.Where(x => !x.Value.SeedJsonFilePath.IsNullOrWhiteSpace()))
+            {
+                var file = _virtualFileProvider.GetFileInfo(pair.Value.SeedJsonFilePath);
+
+                if (!file.Exists)
+                {
+                    return;
+                }
+            
+                var fileContent = await file.ReadAsStringAsync();
+
+                var integrationModel = _jsonSerializer.Deserialize<EntityUiIntegrationModel>(fileContent);
+
+                if (integrationModel == null)
+                {
+                    return;
+                }
+            
+                foreach (var module in integrationModel.Modules ?? new List<Module>())
+                {
+                    if (await _moduleRepository.FindAsync(x => x.Name == module.Name) == null)
+                    {
+                        await _moduleRepository.InsertAsync(module, true);
+                    }
+                }
+
+                foreach (var entity in integrationModel.Entities ?? new List<Entity>())
+                {
+                    if (await _entityRepository.FindAsync(x =>
+                        x.ModuleName == entity.ModuleName && x.Name == entity.Name) == null)
+                    {
+                        await _entityRepository.InsertAsync(entity, true);
+                    }
+                }
+            
+                foreach (var menuItem in integrationModel.MenuItems ?? new List<MenuItem>())
+                {
+                    if (await _menuItemRepository.FindAsync(x => x.Name == menuItem.Name) == null)
+                    {
+                        await _menuItemRepository.InsertAsync(menuItem, true);
+                    }
+                }
+            }
+        }
+
+        protected virtual async Task TrySeedByReflectionAsync()
+        {
             foreach (var pair in _options.Modules)
             {
                 var module = await GetOrCreateModuleAsync(pair.Key);
 
-                var entityTypeInfos = pair.Value.Assembly.DefinedTypes
+                var entityTypeInfos = pair.Value.AbpModuleType.Assembly.DefinedTypes
                     .Where(typeof(Volo.Abp.Domain.Entities.Entity).IsAssignableFrom).Where(x => !x.IsAbstract)
                     .ToArray();
                 

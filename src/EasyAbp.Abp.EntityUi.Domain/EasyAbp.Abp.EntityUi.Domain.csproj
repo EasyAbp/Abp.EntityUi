@@ -12,4 +12,9 @@
     <ProjectReference Include="..\EasyAbp.Abp.EntityUi.Domain.Shared\EasyAbp.Abp.EntityUi.Domain.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="EasyAbp\Abp\EntityUi\EntityUi.json" />
+    <EmbeddedResource Include="EasyAbp\Abp\EntityUi\EntityUiSeed.json" />
+  </ItemGroup>
+
 </Project>

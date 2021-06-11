@@ -33,11 +33,11 @@ namespace EasyAbp.Abp.EntityUi.Entities
         
         public virtual PropertyShowInValueObject ShowIn { get; protected set; }
 
-        internal Property()
+        protected Property()
         {
         }
         
-        internal Property(
+        public Property(
             [NotNull] string entityModuleName,
             [NotNull] string entityName,
             [NotNull] string name,

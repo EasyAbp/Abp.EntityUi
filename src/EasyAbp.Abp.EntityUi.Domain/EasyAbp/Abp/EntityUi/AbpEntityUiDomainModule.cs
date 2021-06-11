@@ -1,6 +1,7 @@
 ﻿using EasyAbp.Abp.EntityUi.Options;
 using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
+using Volo.Abp.VirtualFileSystem;
 
 namespace EasyAbp.Abp.EntityUi
 {
@@ -14,7 +15,12 @@ namespace EasyAbp.Abp.EntityUi
         {
             Configure<AbpEntityUiOptions>(options =>
             {
-                options.Modules.Add("EasyAbp.Abp.EntityUi", typeof(AbpEntityUiDomainModule));
+                options.Modules.Add("EasyAbp.Abp.EntityUi", new AbpEntityUiModuleOptions(typeof(AbpEntityUiDomainModule), ""));
+            });
+            
+            Configure<AbpVirtualFileSystemOptions>(options =>
+            {
+                options.FileSets.AddEmbedded<AbpEntityUiDomainModule>();
             });
         }
     }

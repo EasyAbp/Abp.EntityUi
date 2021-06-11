@@ -1,0 +1,497 @@
+﻿{
+  "modules": [
+    {
+      "name": "EasyAbp.Abp.EntityUi"
+    }
+  ],
+  "menuItems": [
+    {
+      "parentName": null,
+      "name": "EasyAbp.Abp.EntityUi",
+      "moduleName": "EasyAbp.Abp.EntityUi",
+      "entityName": null,
+      "permission": null,
+      "menuItems": [
+        {
+          "parentName": "EasyAbp.Abp.EntityUi",
+          "name": "EasyAbp.Abp.EntityUi.Entity",
+          "moduleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "permission": "EasyAbp.Abp.EntityUi",
+          "menuItems": []
+        },
+        {
+          "parentName": "EasyAbp.Abp.EntityUi",
+          "name": "EasyAbp.Abp.EntityUi.MenuItem",
+          "moduleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "MenuItem",
+          "permission": "EasyAbp.Abp.EntityUi",
+          "menuItems": []
+        },
+        {
+          "parentName": "EasyAbp.Abp.EntityUi",
+          "name": "EasyAbp.Abp.EntityUi.Module",
+          "moduleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Module",
+          "permission": "EasyAbp.Abp.EntityUi",
+          "menuItems": []
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "moduleName": "EasyAbp.Abp.EntityUi",
+      "name": "Entity",
+      "belongsTo": null,
+      "keys": [
+        "ModuleName",
+        "Name"
+      ],
+      "creationEnabled": true,
+      "creationPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "editEnabled": true,
+      "editPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "deletionEnabled": true,
+      "deletionPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "detailEnabled": true,
+      "detailPermission": "EasyAbp.Abp.EntityUi",
+      "properties": [
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "BelongsTo",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "CreationEnabled",
+          "isEntityCollection": false,
+          "typeOrEntityName": "Boolean",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "CreationPermission",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "DeletionEnabled",
+          "isEntityCollection": false,
+          "typeOrEntityName": "Boolean",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "DeletionPermission",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "DetailEnabled",
+          "isEntityCollection": false,
+          "typeOrEntityName": "Boolean",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "DetailPermission",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "EditEnabled",
+          "isEntityCollection": false,
+          "typeOrEntityName": "Boolean",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "EditPermission",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "Keys",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String[]",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "ModuleName",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "Name",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Entity",
+          "name": "Properties",
+          "isEntityCollection": true,
+          "typeOrEntityName": "Property",
+          "nullable": false,
+          "showIn": {
+            "list": false,
+            "detail": false,
+            "creation": false,
+            "edit": false
+          }
+        }
+      ]
+    },
+    {
+      "moduleName": "EasyAbp.Abp.EntityUi",
+      "name": "MenuItem",
+      "belongsTo": null,
+      "keys": [
+        "Name"
+      ],
+      "creationEnabled": true,
+      "creationPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "editEnabled": true,
+      "editPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "deletionEnabled": true,
+      "deletionPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "detailEnabled": true,
+      "detailPermission": "EasyAbp.Abp.EntityUi",
+      "properties": [
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "MenuItem",
+          "name": "EntityName",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "MenuItem",
+          "name": "MenuItems",
+          "isEntityCollection": true,
+          "typeOrEntityName": "MenuItem",
+          "nullable": false,
+          "showIn": {
+            "list": false,
+            "detail": false,
+            "creation": false,
+            "edit": false
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "MenuItem",
+          "name": "ModuleName",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "MenuItem",
+          "name": "Name",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "MenuItem",
+          "name": "ParentName",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "MenuItem",
+          "name": "Permission",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        }
+      ]
+    },
+    {
+      "moduleName": "EasyAbp.Abp.EntityUi",
+      "name": "Module",
+      "belongsTo": null,
+      "keys": [
+        "Name"
+      ],
+      "creationEnabled": true,
+      "creationPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "editEnabled": true,
+      "editPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "deletionEnabled": true,
+      "deletionPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "detailEnabled": true,
+      "detailPermission": "EasyAbp.Abp.EntityUi",
+      "properties": [
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Module",
+          "name": "Name",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        }
+      ]
+    },
+    {
+      "moduleName": "EasyAbp.Abp.EntityUi",
+      "name": "Property",
+      "belongsTo": "Entity",
+      "keys": [
+        "EntityModuleName",
+        "EntityName",
+        "Name"
+      ],
+      "creationEnabled": true,
+      "creationPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "editEnabled": true,
+      "editPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "deletionEnabled": true,
+      "deletionPermission": "EasyAbp.Abp.EntityUi.Manage",
+      "detailEnabled": true,
+      "detailPermission": "EasyAbp.Abp.EntityUi",
+      "properties": [
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Property",
+          "name": "EntityModuleName",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Property",
+          "name": "EntityName",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Property",
+          "name": "IsEntityCollection",
+          "isEntityCollection": false,
+          "typeOrEntityName": "Boolean",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Property",
+          "name": "Name",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Property",
+          "name": "Nullable",
+          "isEntityCollection": false,
+          "typeOrEntityName": "Boolean",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Property",
+          "name": "ShowIn",
+          "isEntityCollection": false,
+          "typeOrEntityName": "PropertyShowInValueObject",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        },
+        {
+          "entityModuleName": "EasyAbp.Abp.EntityUi",
+          "entityName": "Property",
+          "name": "TypeOrEntityName",
+          "isEntityCollection": false,
+          "typeOrEntityName": "String",
+          "nullable": false,
+          "showIn": {
+            "list": true,
+            "detail": true,
+            "creation": true,
+            "edit": true
+          }
+        }
+      ]
+    }
+  ]
+}

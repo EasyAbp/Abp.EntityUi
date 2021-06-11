@@ -43,7 +43,9 @@ namespace MvcSample
             
             Configure<AbpEntityUiOptions>(options =>
             {
-                options.Modules.Add("MvcSample", typeof(MvcSampleDomainModule));
+                options.Modules.Add("MvcSample",
+                    new AbpEntityUiModuleOptions(typeof(MvcSampleDomainModule),
+                        "/EasyAbp/Abp/EntityUi/EntityUiSeed.json"));
             });
 
 #if DEBUG
