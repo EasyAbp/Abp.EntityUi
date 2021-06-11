@@ -15,8 +15,10 @@ namespace EasyAbp.Abp.EntityUi
             /* You can configure your AutoMapper mapping configuration here.
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
-            CreateMap<Entity, EntityDto>();
-            CreateMap<CreateUpdateEntityDto, Entity>(MemberList.Source);
+            CreateMap<Entity, EntityDto>()
+                .ForMember(x => x.Keys, opts => opts.MapFrom(x => x.Keys));
+            CreateMap<CreateUpdateEntityDto, Entity>(MemberList.Source)
+                .ForMember(x => x.Keys, opts => opts.MapFrom(x => x.Keys));;
             CreateMap<Property, PropertyDto>();
             CreateMap<CreateUpdatePropertyDto, Property>(MemberList.Source);
             CreateMap<PropertyShowInDto, PropertyShowInValueObject>();
