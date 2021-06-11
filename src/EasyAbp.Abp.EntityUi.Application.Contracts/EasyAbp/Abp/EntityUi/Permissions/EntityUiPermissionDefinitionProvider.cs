@@ -9,6 +9,9 @@ namespace EasyAbp.Abp.EntityUi.Permissions
         public override void Define(IPermissionDefinitionContext context)
         {
             var myGroup = context.AddGroup(EntityUiPermissions.GroupName, L("Permission:EntityUi"));
+
+            var permission = myGroup.AddPermission(EntityUiPermissions.GroupName, L("Permission:EntityUi"));
+            permission.AddChild(EntityUiPermissions.Manage, L("Permission:Manage"));
         }
 
         private static LocalizableString L(string name)

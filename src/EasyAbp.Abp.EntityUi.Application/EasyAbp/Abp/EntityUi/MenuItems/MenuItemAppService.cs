@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.MenuItems.Dtos;
+using EasyAbp.Abp.EntityUi.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -10,6 +11,11 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
     public class MenuItemAppService : AbstractKeyCrudAppService<MenuItem, MenuItemDto, MenuItemKey, PagedAndSortedResultRequestDto, CreateUpdateMenuItemDto, CreateUpdateMenuItemDto>,
         IMenuItemAppService
     {
+        protected override string GetPolicyName { get; set; } = EntityUiPermissions.GroupName;
+        protected override string GetListPolicyName { get; set; } = EntityUiPermissions.GroupName;
+        protected override string CreatePolicyName { get; set; } = EntityUiPermissions.Manage;
+        protected override string UpdatePolicyName { get; set; } = EntityUiPermissions.Manage;
+        protected override string DeletePolicyName { get; set; } = EntityUiPermissions.Manage;
 
         private readonly IMenuItemRepository _repository;
         
