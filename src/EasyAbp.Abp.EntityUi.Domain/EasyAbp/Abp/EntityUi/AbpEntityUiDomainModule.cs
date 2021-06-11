@@ -15,7 +15,9 @@ namespace EasyAbp.Abp.EntityUi
         {
             Configure<AbpEntityUiOptions>(options =>
             {
-                options.Modules.Add("EasyAbp.Abp.EntityUi", new AbpEntityUiModuleOptions(typeof(AbpEntityUiDomainModule), ""));
+                options.Modules.Add("EasyAbp.Abp.EntityUi",
+                    new AbpEntityUiModuleOptions(typeof(AbpEntityUiDomainModule),
+                        "/EasyAbp/Abp/EntityUi/EntityUiSeed.json"));
             });
             
             Configure<AbpVirtualFileSystemOptions>(options =>
