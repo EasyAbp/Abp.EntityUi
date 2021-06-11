@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using JetBrains.Annotations;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace EasyAbp.Abp.EntityUi.Modules
 {
-    public class Module : AuditedEntity
+    public class Module : AggregateRoot
     {
         [Key]
         [NotNull]

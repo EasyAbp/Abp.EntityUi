@@ -1,4 +1,5 @@
-﻿using Volo.Abp.Domain;
+﻿using EasyAbp.Abp.EntityUi.Options;
+using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
 namespace EasyAbp.Abp.EntityUi
@@ -9,6 +10,12 @@ namespace EasyAbp.Abp.EntityUi
     )]
     public class AbpEntityUiDomainModule : AbpModule
     {
-
+        public override void PreConfigureServices(ServiceConfigurationContext context)
+        {
+            Configure<AbpEntityUiOptions>(options =>
+            {
+                options.Modules.Add("EasyAbpAbpEntityUi", typeof(AbpEntityUiDomainModule));
+            });
+        }
     }
 }

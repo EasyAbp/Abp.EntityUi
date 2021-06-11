@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -129,14 +130,15 @@ namespace EasyAbp.Abp.EntityUi.Data
             {
                 foreach (var propertyInfo in entityTypeInfo.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(x => !TypeHelper.IsPrimitiveExtended(x.PropertyType, true, true)))
                 {
-                    var baseTypeName = typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType)
-                        ? propertyInfo.PropertyType.GetGenericArguments().FirstOrDefault()?.Name
-                        : propertyInfo.PropertyType.Name;
-                    
-                    if (entityNames.Contains(baseTypeName))
+                    if (!TypeHelper.IsEnumerable(propertyInfo.PropertyType, out var baseType, false))
+                    {
+                        baseType = propertyInfo.PropertyType;
+                    }
+
+                    if (baseType.Name != entityTypeInfo.Name && entityNames.Contains(baseType.Name))
                     {
                         entityBelongsToEntityMapping.AddIfNotContains(
-                            new KeyValuePair<string, string>(baseTypeName, entityTypeInfo.Name));
+                            new KeyValuePair<string, string>(baseType.Name, entityTypeInfo.Name));
                     }
                 }
             }
@@ -199,15 +201,15 @@ namespace EasyAbp.Abp.EntityUi.Data
                 
                 var isAuditProperty = AuditPropertyNames.Contains(propertyName);
 
-                var isPrimitive = TypeHelper.IsPrimitiveExtended(propertyInfo.PropertyType, includeEnums: true);
-
                 var isNullable = TypeHelper.IsNullable(propertyInfo.PropertyType);
-                
-                var isEntityCollection = !isPrimitive && typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType);
 
-                var baseType = isEntityCollection
-                    ? propertyInfo.PropertyType.GetGenericArguments()[0]
-                    : isNullable ? propertyInfo.PropertyType.GetGenericArguments()[0] : propertyInfo.PropertyType;
+                var isEntityCollection = TypeHelper.IsEnumerable(propertyInfo.PropertyType, out var baseType, false) &&
+                                         !TypeHelper.IsPrimitiveExtended(baseType, includeEnums: true);
+
+                if (!isEntityCollection)
+                {
+                    baseType = propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable();
+                }
 
                 var isEntity = entityNames.Contains(baseType.Name);
 
