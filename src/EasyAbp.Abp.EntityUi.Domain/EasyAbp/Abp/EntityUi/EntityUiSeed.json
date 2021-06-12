@@ -1,7 +1,9 @@
 ﻿{
   "modules": [
     {
-      "name": "EasyAbp.Abp.EntityUi"
+      "name": "EasyAbp.Abp.EntityUi",
+      "lResourceTypeName": "EasyAbp.Abp.EntityUi.Localization.EntityUiResource",
+      "lResourceTypeAssemblyName": "EasyAbp.Abp.EntityUi.Domain.Shared"
     }
   ],
   "menuItems": [
