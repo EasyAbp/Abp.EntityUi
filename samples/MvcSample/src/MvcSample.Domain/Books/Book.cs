@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using JetBrains.Annotations;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.MultiTenancy;
@@ -18,6 +19,7 @@ namespace MvcSample.Books
         
         public virtual int Length { get; protected set; }
         
+        [ForeignKey(nameof(Id))]
         public virtual BookDetail Detail { get; protected set; }
         
         public virtual List<BookTag> Tags { get; protected set; }

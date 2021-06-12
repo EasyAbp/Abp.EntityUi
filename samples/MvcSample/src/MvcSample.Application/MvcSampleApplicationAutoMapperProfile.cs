@@ -13,6 +13,10 @@ namespace MvcSample
              * into multiple profile classes for a better organization. */
             CreateMap<Book, BookDto>();
             CreateMap<CreateUpdateBookDto, Book>(MemberList.Source);
+            CreateMap<BookDetail, BookDetailDto>();
+            CreateMap<CreateUpdateBookDetailDto, BookDetail>(MemberList.Source);
+            CreateMap<BookTag, BookTagDto>();
+            CreateMap<CreateUpdateBookTagDto, BookTag>(MemberList.Source);
         }
     }
 }
