@@ -1,0 +1,56 @@
+﻿@page "EntityUi/{moduleName}/{entityName}"
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@model EasyAbp.Abp.EntityUi.Web.Pages.EntityUi.IndexModel
+@inject IPageLayout _pageLayout
+@{
+    _pageLayout.Content.Title = await Model.GetPageTitleAsync();
+    _pageLayout.Content.BreadCrumb.Add(await Model.GetBreadCrumbTextAsync());
+    _pageLayout.Content.MenuItemName = await Model.GetMenuItemNameAsync();
+}
+
+<script type="text/javascript">
+    var moduleName = `@Model.ModuleName`;
+    var serviceCode = `@await Model.GetJsServiceAsync()`;
+    var createModalSubPath = `@await Model.GetJsCreateModalSubPathAsync()`;
+    var editModalSubPath = `@await Model.GetJsEditModalSubPathAsync()`;
+    var tableId = '@await Model.GetTableIdAsync()';
+    var editRowActionItemText = '@await Model.GetJsEditRowActionItemTextAsync()';
+    var editEnable = @Model.Entity.EditEnabled.ToString().ToLower();
+    var editPermission = `@Model.Entity.EditPermission`;
+    var editKeysCode = `{ @await Model.GetJsDataTableDataRecordKeysCodeAsync() }`;
+    var deletionEnable = @Model.Entity.DeletionEnabled.ToString().ToLower();
+    var deletionPermission = `@Model.Entity.DeletionPermission`;
+    var deletionConfirmMessageReturnCode = `l('@await Model.GetJsDeletionConfirmMessageTextAsync()', @await Model.GetJsDataTableDataRecordKeysCodeAsync(false))`;
+    var deletionRowActionItemText = `@await Model.GetJsDeletionRowActionItemTextAsync()`;
+    var deletionActionInputCode = `@await Model.GetJsDataTableDeletionActionInputAsync()`;
+    var successfullyDeletedNotificationText = `@await Model.GetJsSuccessfullyDeletedNotificationTextAsync()`;
+    var newButtonId = `@await Model.GetNewButtonIdAsync()`;
+    var propertyNameTitleMapping = { @Model.Entity.Properties.Select(async x => $"{x.Name.ToCamelCase()}: `{await Model.GetPropertyTitleTextAsync(x)}`").Select(x => x.Result).JoinAsString(", ") };
+</script>
+
+@section scripts
+{
+    <abp-script src="/Pages/EntityUi/index.js" />
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@Model.Entity.Name</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+			    @if (Model.Entity.CreationEnabled && await Model.IsCreationPermissionGrantedAsync())
+                {
+                <abp-button id="@await Model.GetNewButtonIdAsync()"
+                            text="@await Model.GetNewButtonTextAsync()"
+                            icon="plus"
+                            button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="@await Model.GetTableIdAsync()" class="nowrap"/>
+    </abp-card-body>
+</abp-card>

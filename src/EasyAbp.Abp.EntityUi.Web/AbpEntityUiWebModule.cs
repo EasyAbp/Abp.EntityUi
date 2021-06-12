@@ -52,6 +52,8 @@ namespace EasyAbp.Abp.EntityUi.Web
 
             Configure<RazorPagesOptions>(options =>
             {
+                options.Conventions.AddPageRoute("/EntityUi/Index", "/EntityUi/{moduleName}/{entityName}");
+                
                 //Configure authorization.
             });
         }
