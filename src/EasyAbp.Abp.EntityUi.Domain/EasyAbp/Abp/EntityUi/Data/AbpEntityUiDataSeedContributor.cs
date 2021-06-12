@@ -228,6 +228,7 @@ namespace EasyAbp.Abp.EntityUi.Data
                     entity = new Entity(
                         moduleName: moduleName,
                         name: entityName,
+                        @namespace: entityTypeInfo.Namespace,
                         belongsTo: belongsTo,
                         keys: keys,
                         creationEnabled: true,

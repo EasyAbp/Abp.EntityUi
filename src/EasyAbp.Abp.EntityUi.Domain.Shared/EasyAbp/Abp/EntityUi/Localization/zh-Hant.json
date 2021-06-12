@@ -24,6 +24,7 @@
     "Entity": "Entity",
     "EntityModuleName": "EntityModuleName",
     "EntityName": "EntityName",
+    "EntityNamespace": "EntityNamespace",
     "EntityBelongsTo": "EntityBelongsTo",
     "EntityKeys": "EntityKeys",
     "EntityCreationEnabled": "EntityCreationEnabled",

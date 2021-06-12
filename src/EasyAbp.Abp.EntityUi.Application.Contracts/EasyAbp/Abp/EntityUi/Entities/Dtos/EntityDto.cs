@@ -10,6 +10,8 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         public string ModuleName { get; set; }
 
         public string Name { get; set; }
+        
+        public string Namespace { get; set; }
 
         public string BelongsTo { get; set; }
 

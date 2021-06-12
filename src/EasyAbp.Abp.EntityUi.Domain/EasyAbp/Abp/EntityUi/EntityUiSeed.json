@@ -43,6 +43,7 @@
     {
       "moduleName": "EasyAbp.Abp.EntityUi",
       "name": "Entity",
+      "namespace": "EasyAbp.Abp.EntityUi.Entities",
       "belongsTo": null,
       "keys": [
         "ModuleName",
@@ -244,6 +245,7 @@
     {
       "moduleName": "EasyAbp.Abp.EntityUi",
       "name": "MenuItem",
+      "namespace": "EasyAbp.Abp.EntityUi.MenuItems",
       "belongsTo": null,
       "keys": [
         "Name"
@@ -346,6 +348,7 @@
     {
       "moduleName": "EasyAbp.Abp.EntityUi",
       "name": "Module",
+      "namespace": "EasyAbp.Abp.EntityUi.Modules",
       "belongsTo": null,
       "keys": [
         "Name"
@@ -378,6 +381,7 @@
     {
       "moduleName": "EasyAbp.Abp.EntityUi",
       "name": "Property",
+      "namespace": "EasyAbp.Abp.EntityUi.Entities",
       "belongsTo": "Entity",
       "keys": [
         "EntityModuleName",
