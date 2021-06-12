@@ -6,6 +6,8 @@
     "Menu:Module": "MenuModule",
     "Module": "Module",
     "ModuleName": "ModuleName",
+    "ModuleLResourceTypeName": "ModuleLResourceTypeName",
+    "ModuleLResourceTypeAssemblyName": "ModuleLResourceTypeAssemblyName",
     "CreateModule": "CreateModule",
     "EditModule": "EditModule",
     "ModuleDeletionConfirmationMessage": "Are you sure to delete the module {0}?",
