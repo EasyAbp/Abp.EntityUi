@@ -15,6 +15,7 @@ using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Json;
+using Volo.Abp.Localization;
 using Volo.Abp.Reflection;
 using Volo.Abp.VirtualFileSystem;
 using Entity = EasyAbp.Abp.EntityUi.Entities.Entity;
@@ -180,7 +181,26 @@ namespace EasyAbp.Abp.EntityUi.Data
         {
             var module = await _moduleRepository.FindAsync(x => x.Name == moduleName);
 
-            return module ?? await _moduleRepository.InsertAsync(new Module(moduleName), true);
+            return module ?? await CreateModuleAsync(moduleName);
+        }
+
+        protected virtual async Task<Module> CreateModuleAsync(string moduleName)
+        {
+            var assembly = AppDomain.CurrentDomain.GetAssemblies()
+                .SingleOrDefault(x => x.GetName().Name == $"{moduleName}.Domain.Shared");
+            
+            var resourceType = assembly?.DefinedTypes
+                .FirstOrDefault(x => Attribute.IsDefined(x, typeof(LocalizationResourceNameAttribute)));
+
+            if (resourceType == null)
+            {
+                return await _moduleRepository.InsertAsync(new Module(moduleName, null, null), true);
+            }
+
+            var resourceTypeName = resourceType.FullName;
+            var assemblyName = resourceType.Assembly.GetName().Name;
+
+            return await _moduleRepository.InsertAsync(new Module(moduleName, resourceTypeName, assemblyName), true);
         }
 
         protected virtual async Task<List<Entity>> GetOrCreateEntitiesAsync(string moduleName, TypeInfo[] entityTypeInfos)
