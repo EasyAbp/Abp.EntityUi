@@ -1,0 +1,12 @@
+@page "EntityUi/{moduleName}/{entityName}/EditModal"
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@model EasyAbp.Abp.EntityUi.Web.Pages.EntityUi.EditModalModel
+@{
+    Layout = null;
+}
+<abp-modal>
+    <abp-modal-header title="@await Model.GetModalTitleAsync()"></abp-modal-header>
+    <abp-modal-body>
+    </abp-modal-body>
+    <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+</abp-modal>

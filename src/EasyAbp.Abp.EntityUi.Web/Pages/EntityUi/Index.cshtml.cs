@@ -4,20 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.Integration;
-using EasyAbp.Abp.EntityUi.Modules.Dtos;
+using EasyAbp.Abp.EntityUi.Web.Localization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
     public class IndexModel : PageModel
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly IAuthorizationService _authorizationService;
         private readonly IIntegrationAppService _integrationAppService;
+        private readonly IEntityUiStringLocalizerProvider _stringLocalizerProvider;
         private IStringLocalizer StringLocalizer { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -26,32 +25,27 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         [BindProperty(SupportsGet = true)]
         public string EntityName { get; set; }
         
-        public ModuleDto Module { get; set; }
-        
         public EntityDto Entity { get; set; }
 
         public IndexModel(
-            IServiceProvider serviceProvider,
             IAuthorizationService authorizationService,
-            IIntegrationAppService integrationAppService)
+            IIntegrationAppService integrationAppService,
+            IEntityUiStringLocalizerProvider stringLocalizerProvider)
         {
-            _serviceProvider = serviceProvider;
             _authorizationService = authorizationService;
             _integrationAppService = integrationAppService;
+            _stringLocalizerProvider = stringLocalizerProvider;
         }
         
         public virtual async Task OnGetAsync()
         {
             var integration = await _integrationAppService.GetModuleAsync(ModuleName);
 
-            Module = integration.Modules.Single(x => x.Name == ModuleName);
             Entity = integration.Entities.Single(x => x.Name == EntityName);
             
-            var resourceType = Type.GetType($"{Module.LResourceTypeName}, {Module.LResourceTypeAssemblyName}");
-            var stringLocalizerType = resourceType != null
-                ? typeof(IStringLocalizer<>).MakeGenericType(resourceType)
-                : typeof(IStringLocalizer);
-            StringLocalizer = (IStringLocalizer) _serviceProvider.GetRequiredService(stringLocalizerType);
+            var module = integration.Modules.Single(x => x.Name == ModuleName);
+
+            StringLocalizer = await _stringLocalizerProvider.GetAsync(module);
         }
         
         public virtual async Task<bool> IsCreationPermissionGrantedAsync()

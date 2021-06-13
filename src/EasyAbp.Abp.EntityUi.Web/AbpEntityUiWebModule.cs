@@ -53,6 +53,8 @@ namespace EasyAbp.Abp.EntityUi.Web
             Configure<RazorPagesOptions>(options =>
             {
                 options.Conventions.AddPageRoute("/EntityUi/Index", "/EntityUi/{moduleName}/{entityName}");
+                options.Conventions.AddPageRoute("/EntityUi/CreateModal", "/EntityUi/{moduleName}/{entityName}/CreateModal");
+                options.Conventions.AddPageRoute("/EntityUi/EditModal", "/EntityUi/{moduleName}/{entityName}/EditModal");
                 
                 //Configure authorization.
             });
