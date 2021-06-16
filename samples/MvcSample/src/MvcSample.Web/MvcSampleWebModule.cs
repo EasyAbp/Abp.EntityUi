@@ -39,6 +39,9 @@ using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
+using Microsoft.AspNetCore.Cors;
+using System.Linq;
+using System.Net.Http;
 
 namespace MvcSample.Web
 {
@@ -84,6 +87,7 @@ namespace MvcSample.Web
             ConfigureAuthentication(context, configuration);
             ConfigureAutoMapper();
             ConfigureVirtualFileSystem(hostingEnvironment);
+            ConfigureCors(context, configuration);
             ConfigureLocalizationServices();
             ConfigureNavigationServices();
             ConfigureAutoApiControllers();
@@ -200,6 +204,22 @@ namespace MvcSample.Web
                 }
             );
         }
+        private const string DefaultCorsPolicyName = "Default";
+        private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
+        {
+            context.Services.AddCors(options =>
+            {
+                options.AddPolicy(DefaultCorsPolicyName, builder =>
+                {
+                    builder
+                        .AllowAnyOrigin()
+                        .WithAbpExposedHeaders()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+        }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
@@ -217,6 +237,7 @@ namespace MvcSample.Web
             {
                 app.UseErrorPage();
             }
+            app.UseCors(DefaultCorsPolicyName);
 
             app.UseCorrelationId();
             app.UseStaticFiles();
@@ -240,6 +261,7 @@ namespace MvcSample.Web
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
+            
         }
     }
 }
