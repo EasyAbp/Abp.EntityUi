@@ -5,9 +5,10 @@
       "@easy-abp.Abp/entity-ui": [
         "projects/entity-ui/src/public-api.ts"
       ],
-      "@easy-abp.Abp/entity-ui/config": [
-        "projects/entity-ui/config/src/public-api.ts"
+      "@easy-abp.Abp/entity-ui/*": [
+        "projects/entity-ui/*/src/index.ts"
       ],
+
       "@proxy": ["projects/entity-ui/src/lib/proxy/index.ts"],
       "@proxy/*": ["projects/entity-ui/src/lib/proxy/*"]
     }
