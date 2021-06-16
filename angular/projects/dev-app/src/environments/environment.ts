@@ -5,25 +5,25 @@ const baseUrl = 'http://localhost:4200';
 export const environment = {
   production: false,
   application: {
-    baseUrl: 'http://localhost:4200/',
-    name: 'EntityUi',
+    baseUrl: 'http://localhost:4200',
+    name: 'MvcSample',
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44374',
+    issuer: 'https://localhost:44315',
     redirectUri: baseUrl,
-    clientId: 'EntityUi_App',
+    clientId: 'MvcSample_App',
     responseType: 'code',
-    scope: 'offline_access EntityUi role email openid profile',
+    scope: 'offline_access MvcSample role email openid profile',
   },
   apis: {
     default: {
-      url: 'https://localhost:44374',
-      rootNamespace: 'EasyAbp.Abp.EntityUi',
+      url: 'https://localhost:44315',
+      rootNamespace: '',
     },
     EntityUi: {
-      url: 'https://localhost:44369',
-      rootNamespace: 'EasyAbp.Abp.EntityUi',
+      url: 'https://localhost:44315',
+      rootNamespace: '',
     },
   },
 } as Environment;
