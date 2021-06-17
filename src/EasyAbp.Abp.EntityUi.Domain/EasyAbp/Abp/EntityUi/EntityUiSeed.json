@@ -477,7 +477,7 @@
           "typeOrEntityName": "PropertyShowInValueObject",
           "nullable": false,
           "showIn": {
-            "list": true,
+            "list": false,
             "detail": true,
             "creation": true,
             "edit": true

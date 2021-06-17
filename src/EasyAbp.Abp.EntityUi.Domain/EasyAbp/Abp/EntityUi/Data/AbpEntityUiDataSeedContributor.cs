@@ -297,11 +297,13 @@ namespace EasyAbp.Abp.EntityUi.Data
 
                 var isAuditProperty = AuditPropertyNames.Contains(propertyName);
 
+                var isPrimitiveType = TypeHelper.IsPrimitiveExtended(propertyInfo.PropertyType, includeEnums: true);
+
                 var isNullable = TypeHelper.IsNullable(propertyInfo.PropertyType);
 
                 var isEntityCollection = TypeHelper.IsEnumerable(propertyInfo.PropertyType, out var baseType, false) &&
                                          !TypeHelper.IsPrimitiveExtended(baseType, includeEnums: true);
-
+                
                 if (!isEntityCollection)
                 {
                     baseType = propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable();
@@ -312,7 +314,7 @@ namespace EasyAbp.Abp.EntityUi.Data
                 var property = new Property(moduleName, entityName, propertyName, isEntityCollection,
                     baseType.Name, isNullable,
                     new PropertyShowInValueObject(
-                        !isEntity && !isAuditProperty && !isForeignKey,
+                        !isEntity && !isAuditProperty && !isForeignKey && isPrimitiveType,
                         !isEntity,
                         !isEntity && !isAuditProperty && !isForeignKey,
                         !isEntity && !isAuditProperty && !isForeignKey));
