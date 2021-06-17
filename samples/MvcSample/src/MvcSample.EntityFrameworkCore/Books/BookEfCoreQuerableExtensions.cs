@@ -12,9 +12,7 @@ namespace MvcSample.Books
                 return queryable;
             }
 
-            return queryable
-                // .Include(x => x.xxx) // TODO: AbpHelper generated
-                ;
+            return queryable.Include(x => x.Tags);
         }
     }
 }

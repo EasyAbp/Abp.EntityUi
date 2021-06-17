@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
@@ -21,7 +22,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         public string EntityName { get; set; }
         
         public EntityDto Entity { get; set; }
+        
+        public EntityDto ParentEntity { get; set; }
 
+        public bool IsSubEntity => !Entity.BelongsTo.IsNullOrEmpty();
+        
         public EditModalModel(
             IIntegrationAppService integrationAppService,
             IEntityUiStringLocalizerProvider stringLocalizerProvider)
@@ -35,6 +40,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var integration = await _integrationAppService.GetModuleAsync(ModuleName);
 
             Entity = integration.Entities.Single(x => x.Name == EntityName);
+
+            if (IsSubEntity)
+            {
+                ParentEntity = integration.Entities.Single(x => x.Name == Entity.BelongsTo);
+            }
             
             var module = integration.Modules.Single(x => x.Name == ModuleName);
 
