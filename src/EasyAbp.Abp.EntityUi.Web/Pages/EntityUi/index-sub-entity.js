@@ -1,6 +1,6 @@
 $(function () {
 
-    var l = abp.localization.getResource(moduleName);
+    var l = abp.localization.getResource(localizationResourceName);
 
     var propertyColumns = [];
     for (var propertyName in propertyNameTitleMapping) {
@@ -24,12 +24,9 @@ $(function () {
         order: [[0, "asc"]],
         ajax: function (requestData, callback, settings) {
             if (callback) {
-                console.log(parentEntityKeysCode)
-
                 eval(`service.get(` + parentEntityKeysCode + `)`).then(function (result) {
                     var listCode = "result." + subEntityListPropertyName;
                     var list = eval(listCode);
-                    console.log(list)
                     callback({
                         recordsTotal:list.length,
                         recordsFiltered: list.length,

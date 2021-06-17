@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.Integration;
+using EasyAbp.Abp.EntityUi.Modules.Dtos;
 using EasyAbp.Abp.EntityUi.Web.Localization;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,8 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         
         [BindProperty(SupportsGet = true)]
         public string EntityName { get; set; }
+        
+        public ModuleDto Module { get; set; }
         
         public EntityDto Entity { get; set; }
         
@@ -53,9 +56,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 ParentEntity = integration.Entities.Single(x => x.Name == Entity.BelongsTo);
             }
             
-            var module = integration.Modules.Single(x => x.Name == ModuleName);
+            Module = integration.Modules.Single(x => x.Name == ModuleName);
 
-            StringLocalizer = await _stringLocalizerProvider.GetAsync(module);
+            StringLocalizer = await _stringLocalizerProvider.GetAsync(Module);
         }
         
         public virtual async Task<bool> IsCreationPermissionGrantedAsync()
@@ -197,7 +200,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             
             if (subEntities.IsNullOrEmpty())
             {
-                return Task.FromResult("[]");
+                return Task.FromResult("var subEntitiesRowActionItems = []");
             }
 
             var keys = Entity.Keys.Select(x => x.ToCamelCase()).Select(key => $"'{key}=' + data.record.{key}").JoinAsString(" + '&' + ");
@@ -218,6 +221,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return Task.FromResult(properties.Where(x => x.ShowIn.List)
                 .Select(async x => $"{x.Name.ToCamelCase()}: `{await GetPropertyTitleTextAsync(x)}`")
                 .Select(x => x.Result).JoinAsString(", "));
+        }
+
+        public async Task<string> GetJsLocalizationResourceNameAsync()
+        {
+            return await _stringLocalizerProvider.GetResourceNameAsync(Module);
         }
     }
 }

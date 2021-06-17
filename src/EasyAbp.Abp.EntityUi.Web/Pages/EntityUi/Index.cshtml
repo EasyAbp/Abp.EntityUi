@@ -10,6 +10,7 @@
 
 <script type="text/javascript">
     var moduleName = `@Model.ModuleName`;
+    var localizationResourceName = `@await Model.GetJsLocalizationResourceNameAsync()`;
     var parentEntityKeysCode = `@Html.Raw(await Model.GetJsParentEntityKeysCodeAsync())`;
     var subEntityListPropertyName = `@await Model.GetJsSubEntityCollectionPropertyNameAsync()`;
     var findSubEntityIndexCode = `@Html.Raw(await Model.GetJsFindSubEntityIndexCodeAsync("list", "data"))`;

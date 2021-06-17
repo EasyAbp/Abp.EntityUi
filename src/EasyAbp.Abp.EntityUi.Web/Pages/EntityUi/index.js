@@ -1,6 +1,6 @@
 $(function () {
 
-    var l = abp.localization.getResource(moduleName);
+    var l = abp.localization.getResource(localizationResourceName);
 
     var propertyColumns = [];
     for (var propertyName in propertyNameTitleMapping) {
