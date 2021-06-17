@@ -18,6 +18,7 @@
     "MenuItemModuleName": "MenuItemModuleName",
     "MenuItemEntityName": "MenuItemEntityName",
     "MenuItemPermission": "MenuItemPermission",
+    "MenuItemLocalizationItemName": "MenuItemLocalizationItemName",
     "MenuItemMenuItems": "MenuItemMenuItems",
     "CreateMenuItem": "CreateMenuItem",
     "EditMenuItem": "EditMenuItem",

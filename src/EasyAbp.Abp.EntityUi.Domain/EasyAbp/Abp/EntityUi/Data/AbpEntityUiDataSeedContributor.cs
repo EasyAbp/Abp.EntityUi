@@ -26,6 +26,8 @@ namespace EasyAbp.Abp.EntityUi.Data
 {
     public class AbpEntityUiDataSeedContributor : IDataSeedContributor, ITransientDependency
     {
+        private static readonly string[] IgnoreEntityNames = {"AppUser"};
+        
         private static readonly string[] IgnorePropertyNames = {"TenantId", "ConcurrencyStamp", "ExtraProperties"};
 
         private static readonly string[] AuditPropertyNames =
@@ -119,6 +121,7 @@ namespace EasyAbp.Abp.EntityUi.Data
 
                 var entityTypeInfos = pair.Value.AbpModuleType.Assembly.DefinedTypes
                     .Where(typeof(Volo.Abp.Domain.Entities.Entity).IsAssignableFrom).Where(x => !x.IsAbstract)
+                    .Where(x => !IgnoreEntityNames.Contains(x.Name))
                     .ToArray();
                 
                 await GetOrCreateEntitiesAsync(module.Name, entityTypeInfos);
@@ -139,8 +142,11 @@ namespace EasyAbp.Abp.EntityUi.Data
                 return moduleMenuItem;
             }
 
+            var localizationItemName = $"Menu:{moduleName.Split('.').Last()}";
+
             return await _menuItemRepository.InsertAsync(
-                new MenuItem(null, moduleMenuItemName, moduleName, null, null, new List<MenuItem>()), true);
+                new MenuItem(null, moduleMenuItemName, moduleName, null, null, localizationItemName,
+                    new List<MenuItem>()), true);
         }
 
         protected virtual async Task TryCreateEntityMenuItemsAsync(string moduleName, TypeInfo[] entityTypeInfos, MenuItem moduleMenuItem)
@@ -157,8 +163,11 @@ namespace EasyAbp.Abp.EntityUi.Data
 
                 if (menuItem == null)
                 {
+                    var localizationItemName = $"Menu:{menuItemName.Split('.').Last()}";
+
                     menuItem = new MenuItem(moduleMenuItem.Name, menuItemName, moduleName, aggregateRoot.Name,
-                        GetDefaultMenuItemPermission(moduleName, entityName), new List<MenuItem>());
+                        GetDefaultMenuItemPermission(moduleName, entityName), localizationItemName,
+                        new List<MenuItem>());
                     
                     moduleMenuItem.MenuItems.Add(menuItem);
                 }

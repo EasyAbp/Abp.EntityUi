@@ -13,6 +13,7 @@
       "moduleName": "EasyAbp.Abp.EntityUi",
       "entityName": null,
       "permission": null,
+      "localizationItemName": "Menu:EntityUi",
       "menuItems": [
         {
           "parentName": "EasyAbp.Abp.EntityUi",
@@ -20,6 +21,7 @@
           "moduleName": "EasyAbp.Abp.EntityUi",
           "entityName": "Entity",
           "permission": "EasyAbp.Abp.EntityUi",
+          "localizationItemName": "Menu:Entity",
           "menuItems": []
         },
         {
@@ -28,6 +30,7 @@
           "moduleName": "EasyAbp.Abp.EntityUi",
           "entityName": "MenuItem",
           "permission": "EasyAbp.Abp.EntityUi",
+          "localizationItemName": "Menu:MenuItem",
           "menuItems": []
         },
         {
@@ -36,6 +39,7 @@
           "moduleName": "EasyAbp.Abp.EntityUi",
           "entityName": "Module",
           "permission": "EasyAbp.Abp.EntityUi",
+          "localizationItemName": "Menu:Module",
           "menuItems": []
         }
       ]

@@ -25,6 +25,9 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
         [CanBeNull]
         public virtual string Permission { get; protected set; }
         
+        [NotNull]
+        public virtual string LocalizationItemName { get; protected set; }
+        
         [ForeignKey(nameof(ParentName))]
         public virtual List<MenuItem> MenuItems { get; protected set; }
 
@@ -34,13 +37,15 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
         }
 
         public MenuItem([CanBeNull] string parentName, [NotNull] string name, [NotNull] string moduleName,
-            [CanBeNull] string entityName, [CanBeNull] string permission, List<MenuItem> menuItems)
+            [CanBeNull] string entityName, [CanBeNull] string permission, [NotNull] string localizationItemName,
+            List<MenuItem> menuItems)
         {
             ParentName = parentName;
             Name = name;
             ModuleName = moduleName;
             EntityName = entityName;
             Permission = permission;
+            LocalizationItemName = localizationItemName;
 
             MenuItems = menuItems ?? new List<MenuItem>();
         }

@@ -9,7 +9,7 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
         ICrudAppService< 
             MenuItemDto, 
             MenuItemKey, 
-            PagedAndSortedResultRequestDto,
+            GetMenuItemListInput,
             CreateUpdateMenuItemDto,
             CreateUpdateMenuItemDto>
     {

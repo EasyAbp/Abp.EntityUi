@@ -20,6 +20,9 @@ namespace EasyAbp.Abp.EntityUi.MenuItems.Dtos
 
         [DisplayName("MenuItemPermission")]
         public string Permission { get; set; }
+        
+        [DisplayName("MenuItemLocalizationItemName")]
+        public string LocalizationItemName { get; set; }
 
         [DisplayName("MenuItemMenuItems")]
         public List<CreateUpdateMenuItemDto> MenuItems { get; set; }
