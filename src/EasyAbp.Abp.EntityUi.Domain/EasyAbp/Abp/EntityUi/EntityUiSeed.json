@@ -325,10 +325,10 @@
           "typeOrEntityName": "String",
           "nullable": false,
           "showIn": {
-            "list": true,
+            "list": false,
             "detail": true,
-            "creation": true,
-            "edit": true
+            "creation": false,
+            "edit": false
           }
         },
         {
@@ -407,10 +407,10 @@
           "typeOrEntityName": "String",
           "nullable": false,
           "showIn": {
-            "list": true,
+            "list": false,
             "detail": true,
-            "creation": true,
-            "edit": true
+            "creation": false,
+            "edit": false
           }
         },
         {
@@ -421,10 +421,10 @@
           "typeOrEntityName": "String",
           "nullable": false,
           "showIn": {
-            "list": true,
+            "list": false,
             "detail": true,
-            "creation": true,
-            "edit": true
+            "creation": false,
+            "edit": false
           }
         },
         {
