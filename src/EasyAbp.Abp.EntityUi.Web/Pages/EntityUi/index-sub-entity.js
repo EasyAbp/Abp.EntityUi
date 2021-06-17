@@ -9,7 +9,7 @@ $(function () {
             data: propertyName
         })
     }
-    
+
     var service = eval(serviceCode);
     var createModal = new abp.ModalManager(abp.appPath + createModalSubPath);
     var editModal = new abp.ModalManager(abp.appPath + editModalSubPath);
@@ -24,9 +24,12 @@ $(function () {
         order: [[0, "asc"]],
         ajax: function (requestData, callback, settings) {
             if (callback) {
+                console.log(parentEntityKeysCode)
+
                 eval(`service.get(` + parentEntityKeysCode + `)`).then(function (result) {
                     var listCode = "result." + subEntityListPropertyName;
                     var list = eval(listCode);
+                    console.log(list)
                     callback({
                         recordsTotal:list.length,
                         recordsFiltered: list.length,

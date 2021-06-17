@@ -12,7 +12,7 @@ namespace MvcSample.Books
                 return queryable;
             }
 
-            return queryable.Include(x => x.Tags);
+            return queryable.Include(x => x.Tags).Include(x => x.Detail);
         }
     }
 }

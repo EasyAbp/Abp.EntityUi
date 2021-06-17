@@ -18,7 +18,7 @@ namespace EasyAbp.Abp.EntityUi.Entities
 
         public override async Task<IQueryable<Entity>> WithDetailsAsync()
         {
-            return (await GetQueryableAsync()).IncludeDetails();
+            return (await base.WithDetailsAsync()).IncludeDetails();
         }
 
         public virtual async Task<List<Entity>> GetListInModuleAsync(string moduleName, bool includeDetails = false,

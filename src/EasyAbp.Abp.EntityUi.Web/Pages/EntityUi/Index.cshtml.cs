@@ -169,9 +169,14 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 return Task.FromResult(string.Empty);
             }
 
-            var values = ParentEntity.Keys.Select(key => HttpContext.Request.Query[key.ToCamelCase()]).Select(x => $"'{x}'");
+            if (ParentEntity.Keys.Length == 1)
+            {
+                return Task.FromResult($"\"{HttpContext.Request.Query[ParentEntity.Keys.First().ToCamelCase()]}\"");
+            }
 
-            return Task.FromResult(values.JoinAsString(", "));
+            var values = ParentEntity.Keys.Select(x => x.ToCamelCase()).Select(key => $"{key}: \"{HttpContext.Request.Query[key]}\"");
+
+            return Task.FromResult($"{{ {values.JoinAsString(", ")} }}");
         }
 
         public virtual Task<string> GetJsFindSubEntityIndexCodeAsync([NotNull] string listPropertyName,
@@ -206,7 +211,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual Task<string> GetJsDataTablePropertyNameTitleMappingAsync()
         {
-            return Task.FromResult(Entity.Properties.Where(x => x.ShowIn.List)
+            var properties = Entity.Properties;
+
+            properties.Reverse();
+            
+            return Task.FromResult(properties.Where(x => x.ShowIn.List)
                 .Select(async x => $"{x.Name.ToCamelCase()}: `{await GetPropertyTitleTextAsync(x)}`")
                 .Select(x => x.Result).JoinAsString(", "));
         }
