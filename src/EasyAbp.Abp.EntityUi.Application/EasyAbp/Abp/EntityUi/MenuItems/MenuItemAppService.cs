@@ -34,12 +34,9 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
 
         protected override async Task<MenuItem> GetEntityByIdAsync(MenuItemKey id)
         {
-            // TODO: AbpHelper generated
-            return await AsyncExecuter.FirstOrDefaultAsync(
-                _repository.Where(e =>
+            return await _repository.GetAsync(e =>
                     e.Name == id.Name
-                )
-            ); 
+                ); 
         }
 
         protected override IQueryable<MenuItem> ApplyDefaultSorting(IQueryable<MenuItem> query)

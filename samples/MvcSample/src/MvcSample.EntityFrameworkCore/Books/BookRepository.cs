@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MvcSample.EntityFrameworkCore;
@@ -17,6 +18,11 @@ namespace MvcSample.Books
         public override async Task<IQueryable<Book>> WithDetailsAsync()
         {
             return (await base.WithDetailsAsync()).IncludeDetails();
+        }
+
+        public override async Task<IQueryable<Book>> WithDetailsAsync(params Expression<Func<Book, object>>[] propertySelectors)
+        {
+            return (await base.WithDetailsAsync(propertySelectors)).IncludeDetails();
         }
     }
 }

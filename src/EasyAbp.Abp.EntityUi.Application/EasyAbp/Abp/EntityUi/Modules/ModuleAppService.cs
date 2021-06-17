@@ -35,11 +35,9 @@ namespace EasyAbp.Abp.EntityUi.Modules
         protected override async Task<Module> GetEntityByIdAsync(ModuleKey id)
         {
             // TODO: AbpHelper generated
-            return await AsyncExecuter.FirstOrDefaultAsync(
-                _repository.Where(e =>
+            return await _repository.GetAsync(e =>
                     e.Name == id.Name
-                )
-            ); 
+                ); 
         }
 
         protected override IQueryable<Module> ApplyDefaultSorting(IQueryable<Module> query)

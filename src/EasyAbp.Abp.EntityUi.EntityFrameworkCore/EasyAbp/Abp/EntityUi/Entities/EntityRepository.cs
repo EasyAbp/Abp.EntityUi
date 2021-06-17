@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.EntityFrameworkCore;
@@ -19,6 +20,11 @@ namespace EasyAbp.Abp.EntityUi.Entities
         public override async Task<IQueryable<Entity>> WithDetailsAsync()
         {
             return (await base.WithDetailsAsync()).IncludeDetails();
+        }
+
+        public override async Task<IQueryable<Entity>> WithDetailsAsync(params Expression<Func<Entity, object>>[] propertySelectors)
+        {
+            return (await base.WithDetailsAsync(propertySelectors)).IncludeDetails();
         }
 
         public virtual async Task<List<Entity>> GetListInModuleAsync(string moduleName, bool includeDetails = false,
