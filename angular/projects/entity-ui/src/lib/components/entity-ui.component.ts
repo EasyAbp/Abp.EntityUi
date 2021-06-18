@@ -1,19 +1,29 @@
 import { ListService, PagedResultDto } from '@abp/ng.core';
-import { EXTENSIONS_IDENTIFIER, FormPropData, generateFormFromProps } from '@abp/ng.theme.shared/extensions';
-import { Component, Injector, OnInit } from '@angular/core';
+import {
+  EXTENSIONS_IDENTIFIER,
+  FormPropData,
+  generateFormFromProps,
+} from '@abp/ng.theme.shared/extensions';
+import { Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EntityUiService } from '../services/entity-ui.service';
-import { EasyAbp, MvcSample } from '@easy-abp.Abp/entity-ui/proxy';
-import { setDefaults } from '../utils/defaults.util';
-import { filter, switchAll, switchMap, take, tap } from 'rxjs/operators';
+import { EntityService, EntityUiService } from '../services/entity-ui.service';
+import { filter, mergeMap, switchMap, take, tap } from 'rxjs/operators';
 import { FormGroup } from '@angular/forms';
-import { ConfirmationService,Confirmation } from '@abp/ng.theme.shared';
+import { ConfirmationService, Confirmation } from '@abp/ng.theme.shared';
+import { ActionEvent } from '../providers/action-event.hub';
+export type EntityUiProfile = {
+  entityService: EntityService<any>;
+  entityKey: string;
+};
+export function getValue(service: EntityUiService) {
+  return service.getEntityUiKey();
+}
 
 @Component({
   selector: 'lib-entity-ui',
   template: `
     <ng-container *ngIf="data$ | async as data">
-      <abp-page title="Books" [toolbar]="data"> </abp-page>
+      <abp-page [title]="entityUiProfile.entityKey" [toolbar]="data"> </abp-page>
       <abp-extensible-table
         [data]="data.items"
         [recordsTotal]="data.totalCount"
@@ -64,102 +74,105 @@ import { ConfirmationService,Confirmation } from '@abp/ng.theme.shared';
     ListService,
     {
       provide: EXTENSIONS_IDENTIFIER,
-      useValue: 'MvcSample::Book',
+      useFactory: getValue,
+      deps: [EntityUiService],
     },
   ],
 })
-export class EntityUiComponent implements OnInit {
+export class EntityUiComponent<R> implements OnInit, OnChanges {
   createModalVisible = false;
   createForm: FormGroup;
   editModalVisible = false;
   editForm: FormGroup;
   selectedRecord = {};
-  bookService:MvcSample.Books.BookService=null;
+
+  @Input() entityUiProfile: EntityUiProfile;
+
   constructor(
     private injector: Injector,
-    private service: EntityUiService,
+    private entityUiService: EntityUiService,
     public readonly list: ListService,
     private confirmationService: ConfirmationService
-  ) {
-    this.bookService = this.injector.get(MvcSample.Books.BookService);
+  ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['entityUiProfile']) return;
+    this.entityUiService
+      .setDefaults(this.entityUiProfile.entityKey)
+      .pipe(
+        tap(x => this.hookToQuery()),
+        mergeMap(x => x),
+        tap(x => this.action(x))
+      )
+      .subscribe();    
   }
 
-  data$: Observable<PagedResultDto<MvcSample.Books.Dtos.BookDto>>;
-  ngOnInit(): void {
-    this.service.sample().subscribe(x => {
-      let entity = this.service.getEntity('MvcSample', 'Book');
-      setDefaults(this.injector, 'MvcSample::Book', {
-        entityProps: entity.EntityProps,
-        toolbarActions: entity.ToolbarActions,
-        entityAction: entity.EntityActions,
-        createFormProps: entity.CreateFormProps,
-        editFormProps:entity.EditFormProps
-      }).subscribe(x => {
-        console.log(x);
-        switch (x.method) {
-          case 'Create':
-            this.selectedRecord=null;
-            const data = new FormPropData(
-              this.injector,
-              {} as MvcSample.Books.Dtos.BookDto
-            );
-            this.createForm = generateFormFromProps(data);
-            this.createModalVisible = true;            
-            break;
-            case 'Edit':
-              this.bookService
-              .get(x.data.record.id)
-              .pipe(take(1))
-              .pipe(
-                tap((selected) => {
-                  this.selectedRecord = selected;
-                  const data = new FormPropData(this.injector, selected);
-                  this.editForm = generateFormFromProps(data);
-                })
-              )
-              .subscribe((x) => {
-                this.editModalVisible = true;
-              });              
-              break;
-              case 'Delete':
-                this.confirmationService
-                .warn('Forms::FormDeletionConfirmationMessage', 'CmsKit::AreYouSure')
-                .pipe(
-                  filter((status) => status === Confirmation.Status.confirm),
-                  switchMap((_) => this.bookService.delete(x.data.record.id)),
-                  take(1)
-                )
-                .subscribe((_) => {
-                  this.list.get();
-                });
-                break;
-        }
-      });
+  data$: Observable<PagedResultDto<R>>;
 
-      
-      let streamCreator = q => this.bookService.getList({} as any);
-      this.data$ = this.list.hookToQuery(streamCreator);
-    });
+  ngOnInit(): void {
+
+  }
+
+  action(action: ActionEvent<R>) {
+    switch (action.method) {
+      case 'Create':
+        this.selectedRecord = null;
+        const data = new FormPropData(this.injector, {} as R);
+        this.createForm = generateFormFromProps(data);
+        this.createModalVisible = true;
+        break;
+      case 'Edit':
+        this.entityUiProfile.entityService
+          .get(action.data.record)
+          .pipe(take(1))
+          .pipe(
+            tap(selected => {
+              this.selectedRecord = selected;
+              const data = new FormPropData(this.injector, selected);
+              this.editForm = generateFormFromProps(data);
+            })
+          )
+          .subscribe(x => {
+            this.editModalVisible = true;
+          });
+        break;
+      case 'Delete':
+        this.confirmationService
+          .warn('Forms::FormDeletionConfirmationMessage', 'CmsKit::AreYouSure')
+          .pipe(
+            filter(status => status === Confirmation.Status.confirm),
+            switchMap(_ => this.entityUiProfile.entityService.delete(action.data.record)),
+            take(1)
+          )
+          .subscribe(_ => {
+            this.list.get();
+          });
+        break;
+    }
+  }
+  hookToQuery() {
+    let streamCreator = q => this.entityUiProfile.entityService.getList({} as any);
+    this.data$ = this.list.hookToQuery(streamCreator) as any;
   }
 
   create() {
-    this.bookService
+    this.entityUiProfile.entityService
       .create(this.createForm.value)
       .pipe(take(1))
-      .subscribe((_) => {
+      .subscribe(_ => {
         this.createModalVisible = false;
         this.list.get();
       });
   }
   edit() {
-    const request: MvcSample.Books.Dtos.CreateUpdateBookDto = {
+    const request: any = {
       ...this.editForm.value,
     };
 
-    this.bookService
+    this.entityUiProfile.entityService
       .update(this.editForm.value.id, request)
       .pipe(take(1))
-      .subscribe((_) => {
+      .subscribe(_ => {
         this.editModalVisible = false;
         this.list.get();
       });

@@ -139,5 +139,9 @@ export function GetPropType(type: string) {
       return ePropType.Number;
     case 'String':
       return ePropType.String;
+    case 'Boolean':
+      return ePropType.Boolean;
+    case 'String[]':
+      return ePropType.Text;
   }
 }

@@ -6,16 +6,17 @@ import { EntityUiRoutingModule } from './entity-ui-routing.module';
 import { UiExtensionsModule } from '@abp/ng.theme.shared/extensions';
 import { PageModule } from '@abp/ng.components/page';
 import { NgxValidateCoreModule } from '@ngx-validate/core';
+import { DynamicComponent } from './components/dynamic.component';
 
 @NgModule({
-  declarations: [EntityUiComponent],
+  declarations: [EntityUiComponent, DynamicComponent],
   imports: [
     CoreModule,
     ThemeSharedModule,
     EntityUiRoutingModule,
     UiExtensionsModule,
     PageModule,
-    NgxValidateCoreModule
+    NgxValidateCoreModule,
   ],
   exports: [EntityUiComponent],
 })
