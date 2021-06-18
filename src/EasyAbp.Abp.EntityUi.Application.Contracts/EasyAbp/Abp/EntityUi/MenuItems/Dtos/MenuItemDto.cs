@@ -16,6 +16,8 @@ namespace EasyAbp.Abp.EntityUi.MenuItems.Dtos
         public string EntityName { get; set; }
 
         public string Permission { get; set; }
+        
+        public string LocalizationItemName { get; set; }
 
         public List<MenuItemDto> MenuItems { get; set; }
     }

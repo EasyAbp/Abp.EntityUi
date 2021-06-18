@@ -9,12 +9,10 @@ $(function () {
             data: propertyName
         })
     }
-    
+
     var service = eval(serviceCode);
     var createModal = new abp.ModalManager(abp.appPath + createModalSubPath);
     var editModal = new abp.ModalManager(abp.appPath + editModalSubPath);
-    
-    eval(buildSubEntitiesRowActionItemsCode);
 
     var dataTable = $('#' + tableId).DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -24,13 +22,24 @@ $(function () {
         autoWidth: false,
         scrollCollapse: true,
         order: [[0, "asc"]],
-        ajax: abp.libs.datatables.createAjax(service.getList),
+        ajax: function (requestData, callback, settings) {
+            if (callback) {
+                eval(`service.get(` + parentEntityKeysCode + `)`).then(function (result) {
+                    var listCode = "result." + subEntityListPropertyName;
+                    var list = eval(listCode);
+                    callback({
+                        recordsTotal:list.length,
+                        recordsFiltered: list.length,
+                        data: list
+                    });
+                });
+            }
+        },
         columnDefs: [
             {
                 rowAction: {
                     items:
                         [
-                            ... subEntitiesRowActionItems,
                             {
                                 text: l(editRowActionItemText),
                                 visible: editEnable && abp.auth.isGranted(editPermission),
@@ -45,12 +54,17 @@ $(function () {
                                     return eval(deletionConfirmMessageReturnCode);
                                 },
                                 action: function (data) {
-                                    service.delete(eval(deletionActionInputCode))
+                                    var parentData = eval(`service.get(` + parentEntityKeysCode + `)`);
+                                    var list = eval(`parentData.` + subEntityListPropertyName);
+                                    var index = eval(findSubEntityIndexCode);
+                                    list.splice(index, 1);
+                                    eval(`service.update(` + parentEntityKeysCode + `, ` + parentData + `)
                                         .then(function () {
                                                 abp.notify.info(l(successfullyDeletedNotificationText));
                                                 dataTable.ajax.reload();
                                             }
-                                        )
+                                        )`
+                                    )
                                 }
                             }
                         ]

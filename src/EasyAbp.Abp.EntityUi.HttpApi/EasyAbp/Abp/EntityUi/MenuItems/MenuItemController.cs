@@ -49,7 +49,7 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
 
         [HttpGet]
         [Route("")]
-        public virtual Task<PagedResultDto<MenuItemDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        public virtual Task<PagedResultDto<MenuItemDto>> GetListAsync(GetMenuItemListInput input)
         {
             return _service.GetListAsync(input);
         }

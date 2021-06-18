@@ -19,7 +19,12 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
 
         public override async Task<IQueryable<MenuItem>> WithDetailsAsync()
         {
-            return (await GetQueryableAsync()).IncludeDetails();
+            return (await base.WithDetailsAsync()).IncludeDetails();
+        }
+
+        public override async Task<IQueryable<MenuItem>> WithDetailsAsync(params Expression<Func<MenuItem, object>>[] propertySelectors)
+        {
+            return (await base.WithDetailsAsync(propertySelectors)).IncludeDetails();
         }
 
         public virtual async Task<List<MenuItem>> GetListAsync(string parentName, bool includeDetails = false,

@@ -10,6 +10,10 @@
 
 <script type="text/javascript">
     var moduleName = `@Model.ModuleName`;
+    var localizationResourceName = `@await Model.GetJsLocalizationResourceNameAsync()`;
+    var parentEntityKeysCode = `@Html.Raw(await Model.GetJsParentEntityKeysCodeAsync())`;
+    var subEntityListPropertyName = `@await Model.GetJsSubEntityCollectionPropertyNameAsync()`;
+    var findSubEntityIndexCode = `@Html.Raw(await Model.GetJsFindSubEntityIndexCodeAsync("list", "data"))`;
     var serviceCode = `@await Model.GetJsServiceAsync()`;
     var createModalSubPath = `@await Model.GetJsCreateModalSubPathAsync()`;
     var editModalSubPath = `@await Model.GetJsEditModalSubPathAsync()`;
@@ -25,12 +29,20 @@
     var deletionActionInputCode = `@await Model.GetJsDataTableDeletionActionInputAsync()`;
     var successfullyDeletedNotificationText = `@await Model.GetJsSuccessfullyDeletedNotificationTextAsync()`;
     var newButtonId = `@await Model.GetNewButtonIdAsync()`;
-    var propertyNameTitleMapping = { @Model.Entity.Properties.Select(async x => $"{x.Name.ToCamelCase()}: `{await Model.GetPropertyTitleTextAsync(x)}`").Select(x => x.Result).JoinAsString(", ") };
+    var propertyNameTitleMapping = { @Html.Raw(await Model.GetJsDataTablePropertyNameTitleMappingAsync()) };
+    var buildSubEntitiesRowActionItemsCode = `@Html.Raw(await Model.GetJsBuildSubEntitiesRowActionItemsAsync())`;
 </script>
 
 @section scripts
 {
-    <abp-script src="/Pages/EntityUi/index.js" />
+    @if (Model.IsSubEntity)
+    {
+        <abp-script src="/Pages/EntityUi/index-sub-entity.js" />
+    }
+    else
+    {
+        <abp-script src="/Pages/EntityUi/index.js" />
+    }
 }
 
 <abp-card>

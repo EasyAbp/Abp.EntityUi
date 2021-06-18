@@ -1,30 +1,40 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Modules.Dtos;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Localization;
 
 namespace EasyAbp.Abp.EntityUi.Web.Localization
 {
     public class EntityUiStringLocalizerProvider : IEntityUiStringLocalizerProvider, ITransientDependency
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IStringLocalizerFactory _stringLocalizerFactory;
 
-        public EntityUiStringLocalizerProvider(IServiceProvider serviceProvider)
+        public EntityUiStringLocalizerProvider(
+            IStringLocalizerFactory stringLocalizerFactory)
         {
-            _serviceProvider = serviceProvider;
+            _stringLocalizerFactory = stringLocalizerFactory;
         }
         
-        public virtual Task<IStringLocalizer> GetAsync(ModuleDto module)
+        public virtual async Task<IStringLocalizer> GetAsync(ModuleDto module)
         {
-            var resourceType = Type.GetType($"{module.LResourceTypeName}, {module.LResourceTypeAssemblyName}");
-            
-            var stringLocalizerType = resourceType != null
-                ? typeof(IStringLocalizer<>).MakeGenericType(resourceType)
-                : typeof(IStringLocalizer);
-            
-            return Task.FromResult((IStringLocalizer) _serviceProvider.GetRequiredService(stringLocalizerType));
+            var resourceType = await GetResourceTypeAsync(module);
+
+            return _stringLocalizerFactory.Create(resourceType);
+        }
+
+        public virtual async Task<string> GetResourceNameAsync(ModuleDto module)
+        {
+            var resourceType = await GetResourceTypeAsync(module);
+
+            return resourceType.GetCustomAttribute<LocalizationResourceNameAttribute>()!.Name;
+        }
+
+        protected virtual Task<Type> GetResourceTypeAsync(ModuleDto module)
+        {
+            return Task.FromResult(Type.GetType($"{module.LResourceTypeName}, {module.LResourceTypeAssemblyName}"));
         }
     }
 }

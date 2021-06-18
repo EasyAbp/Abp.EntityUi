@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.Integration;
+using EasyAbp.Abp.EntityUi.Modules.Dtos;
 using EasyAbp.Abp.EntityUi.Web.Localization;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -25,7 +27,13 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         [BindProperty(SupportsGet = true)]
         public string EntityName { get; set; }
         
+        public ModuleDto Module { get; set; }
+        
         public EntityDto Entity { get; set; }
+        
+        public EntityDto ParentEntity { get; set; }
+
+        public bool IsSubEntity => !Entity.BelongsTo.IsNullOrEmpty();
 
         public IndexModel(
             IAuthorizationService authorizationService,
@@ -42,10 +50,15 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var integration = await _integrationAppService.GetModuleAsync(ModuleName);
 
             Entity = integration.Entities.Single(x => x.Name == EntityName);
-            
-            var module = integration.Modules.Single(x => x.Name == ModuleName);
 
-            StringLocalizer = await _stringLocalizerProvider.GetAsync(module);
+            if (IsSubEntity)
+            {
+                ParentEntity = integration.Entities.Single(x => x.Name == Entity.BelongsTo);
+            }
+            
+            Module = integration.Modules.Single(x => x.Name == ModuleName);
+
+            StringLocalizer = await _stringLocalizerProvider.GetAsync(Module);
         }
         
         public virtual async Task<bool> IsCreationPermissionGrantedAsync()
@@ -70,17 +83,26 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual Task<string> GetBreadCrumbTextAsync()
         {
-            return Task.FromResult(StringLocalizer[$"Menu:{Entity.Name}"].Value);
+            var localizationItemName = IsSubEntity ? $"Menu:{Entity.BelongsTo}" : $"Menu:{Entity.Name}";
+            
+            return Task.FromResult(StringLocalizer[localizationItemName].Value);
         }
 
         public virtual Task<string> GetMenuItemNameAsync()
         {
-            return Task.FromResult($"{Entity.ModuleName}.{Entity.Name}");
+            var menuItemName = IsSubEntity
+                ? $"{Entity.ModuleName}.{Entity.BelongsTo}"
+                : $"{Entity.ModuleName}.{Entity.Name}";
+
+            return Task.FromResult(menuItemName);
         }
 
         public virtual Task<string> GetJsServiceAsync()
         {
-            return Task.FromResult(Entity.Namespace.Split('.').Select(x => x.ToCamelCase()).JoinAsString(".") + '.' + EntityName.ToCamelCase());
+            var entityNamePart = IsSubEntity ? Entity.BelongsTo.ToCamelCase() : Entity.Name.ToCamelCase();
+
+            return Task.FromResult(
+                Entity.Namespace.Split('.').Select(x => x.ToCamelCase()).JoinAsString(".") + '.' + entityNamePart);
         }
 
         public virtual Task<string> GetJsCreateModalSubPathAsync()
@@ -103,10 +125,10 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return Task.FromResult(StringLocalizer["SuccessfullyDeleted"].Value);
         }
 
-        public virtual Task<string> GetJsDataTableDataRecordKeysCodeAsync(bool withKey = true)
+        public virtual Task<string> GetJsDataTableDataRecordKeysCodeAsync(bool withKeys = true)
         {
             return Task.FromResult(Entity.Keys.Select(key => key.ToCamelCase())
-                .Select(key => withKey ? $"{key}: data.record.{key}" : $"data.record.{key}").JoinAsString(", "));
+                .Select(key => withKeys ? $"{key}: data.record.{key}" : $"data.record.{key}").JoinAsString(", "));
         }
 
         public virtual Task<string> GetJsEditRowActionItemTextAsync()
@@ -134,6 +156,76 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return Entity.Keys.Length > 1
                 ? $"{{ {await GetJsDataTableDataRecordKeysCodeAsync()} }}"
                 : await GetJsDataTableDataRecordKeysCodeAsync(false);
+        }
+
+        public virtual Task<string> GetJsSubEntityCollectionPropertyNameAsync()
+        {
+            return Task.FromResult(IsSubEntity
+                ? ParentEntity.Properties.First(x => x.IsEntityCollection && x.TypeOrEntityName == Entity.Name).Name.ToCamelCase()
+                : null);
+        }
+
+        public virtual Task<string> GetJsParentEntityKeysCodeAsync()
+        {
+            if (!IsSubEntity)
+            {
+                return Task.FromResult(string.Empty);
+            }
+
+            if (ParentEntity.Keys.Length == 1)
+            {
+                return Task.FromResult($"\"{HttpContext.Request.Query[ParentEntity.Keys.First().ToCamelCase()]}\"");
+            }
+
+            var values = ParentEntity.Keys.Select(x => x.ToCamelCase()).Select(key => $"{key}: \"{HttpContext.Request.Query[key]}\"");
+
+            return Task.FromResult($"{{ {values.JoinAsString(", ")} }}");
+        }
+
+        public virtual Task<string> GetJsFindSubEntityIndexCodeAsync([NotNull] string listPropertyName,
+            [NotNull] string subEntityPropertyName)
+        {
+            if (!IsSubEntity)
+            {
+                return Task.FromResult(string.Empty);
+            }
+
+            return Task.FromResult(
+                $"{listPropertyName}.findIndex(x => {Entity.Keys.Select(x => x.ToCamelCase()).Select(x => $"x.{x} === {subEntityPropertyName}.{x}").JoinAsString(" && ")})");
+        }
+
+        public virtual Task<string> GetJsBuildSubEntitiesRowActionItemsAsync()
+        {
+            var subEntities = Entity.Properties.Where(x => x.IsEntityCollection).ToList();
+            
+            if (subEntities.IsNullOrEmpty())
+            {
+                return Task.FromResult("var subEntitiesRowActionItems = []");
+            }
+
+            var keys = Entity.Keys.Select(x => x.ToCamelCase()).Select(key => $"'{key}=' + data.record.{key}").JoinAsString(" + '&' + ");
+
+            var obj = subEntities.Select(x =>
+                    $"{{ text: l('{x.TypeOrEntityName}'), action: function (data) {{ document.location.href = document.location.origin + '/EntityUi/{ModuleName}/{x.TypeOrEntityName}?' + {keys}; }} }}")
+                .JoinAsString(", ");
+            
+            return Task.FromResult($"var subEntitiesRowActionItems = [ {obj} ]");
+        }
+
+        public virtual Task<string> GetJsDataTablePropertyNameTitleMappingAsync()
+        {
+            var properties = Entity.Properties;
+
+            properties.Reverse();
+            
+            return Task.FromResult(properties.Where(x => x.ShowIn.List)
+                .Select(async x => $"{x.Name.ToCamelCase()}: `{await GetPropertyTitleTextAsync(x)}`")
+                .Select(x => x.Result).JoinAsString(", "));
+        }
+
+        public async Task<string> GetJsLocalizationResourceNameAsync()
+        {
+            return await _stringLocalizerProvider.GetResourceNameAsync(Module);
         }
     }
 }

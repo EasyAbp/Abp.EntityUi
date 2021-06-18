@@ -8,7 +8,7 @@ using Volo.Abp.Application.Services;
 
 namespace EasyAbp.Abp.EntityUi.MenuItems
 {
-    public class MenuItemAppService : AbstractKeyCrudAppService<MenuItem, MenuItemDto, MenuItemKey, PagedAndSortedResultRequestDto, CreateUpdateMenuItemDto, CreateUpdateMenuItemDto>,
+    public class MenuItemAppService : AbstractKeyCrudAppService<MenuItem, MenuItemDto, MenuItemKey, GetMenuItemListInput, CreateUpdateMenuItemDto, CreateUpdateMenuItemDto>,
         IMenuItemAppService
     {
         protected override string GetPolicyName { get; set; } = EntityUiPermissions.GroupName;
@@ -23,7 +23,12 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
         {
             _repository = repository;
         }
-        
+
+        protected override async Task<IQueryable<MenuItem>> CreateFilteredQueryAsync(GetMenuItemListInput input)
+        {
+            return (await base.CreateFilteredQueryAsync(input)).Where(x => x.ParentName == input.ParentName);
+        }
+
         protected override Task DeleteByIdAsync(MenuItemKey id)
         {
             // TODO: AbpHelper generated
@@ -34,12 +39,9 @@ namespace EasyAbp.Abp.EntityUi.MenuItems
 
         protected override async Task<MenuItem> GetEntityByIdAsync(MenuItemKey id)
         {
-            // TODO: AbpHelper generated
-            return await AsyncExecuter.FirstOrDefaultAsync(
-                _repository.Where(e =>
+            return await _repository.GetAsync(e =>
                     e.Name == id.Name
-                )
-            ); 
+                ); 
         }
 
         protected override IQueryable<MenuItem> ApplyDefaultSorting(IQueryable<MenuItem> query)

@@ -7,5 +7,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Localization
     public interface IEntityUiStringLocalizerProvider
     {
         Task<IStringLocalizer> GetAsync(ModuleDto module);
+        
+        Task<string> GetResourceNameAsync(ModuleDto module);
     }
 }

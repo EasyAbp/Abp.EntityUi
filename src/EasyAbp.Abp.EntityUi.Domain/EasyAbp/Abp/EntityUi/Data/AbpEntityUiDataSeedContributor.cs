@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -25,6 +26,8 @@ namespace EasyAbp.Abp.EntityUi.Data
 {
     public class AbpEntityUiDataSeedContributor : IDataSeedContributor, ITransientDependency
     {
+        private static readonly string[] IgnoreEntityNames = {"AppUser"};
+        
         private static readonly string[] IgnorePropertyNames = {"TenantId", "ConcurrencyStamp", "ExtraProperties"};
 
         private static readonly string[] AuditPropertyNames =
@@ -118,6 +121,7 @@ namespace EasyAbp.Abp.EntityUi.Data
 
                 var entityTypeInfos = pair.Value.AbpModuleType.Assembly.DefinedTypes
                     .Where(typeof(Volo.Abp.Domain.Entities.Entity).IsAssignableFrom).Where(x => !x.IsAbstract)
+                    .Where(x => !IgnoreEntityNames.Contains(x.Name))
                     .ToArray();
                 
                 await GetOrCreateEntitiesAsync(module.Name, entityTypeInfos);
@@ -138,8 +142,11 @@ namespace EasyAbp.Abp.EntityUi.Data
                 return moduleMenuItem;
             }
 
+            var localizationItemName = $"Menu:{moduleName.Split('.').Last()}";
+
             return await _menuItemRepository.InsertAsync(
-                new MenuItem(null, moduleMenuItemName, moduleName, null, null, new List<MenuItem>()), true);
+                new MenuItem(null, moduleMenuItemName, moduleName, null, null, localizationItemName,
+                    new List<MenuItem>()), true);
         }
 
         protected virtual async Task TryCreateEntityMenuItemsAsync(string moduleName, TypeInfo[] entityTypeInfos, MenuItem moduleMenuItem)
@@ -156,8 +163,11 @@ namespace EasyAbp.Abp.EntityUi.Data
 
                 if (menuItem == null)
                 {
+                    var localizationItemName = $"Menu:{menuItemName.Split('.').Last()}";
+
                     menuItem = new MenuItem(moduleMenuItem.Name, menuItemName, moduleName, aggregateRoot.Name,
-                        GetDefaultMenuItemPermission(moduleName, entityName), new List<MenuItem>());
+                        GetDefaultMenuItemPermission(moduleName, entityName), localizationItemName,
+                        new List<MenuItem>());
                     
                     moduleMenuItem.MenuItems.Add(menuItem);
                 }
@@ -206,7 +216,7 @@ namespace EasyAbp.Abp.EntityUi.Data
         protected virtual async Task<List<Entity>> GetOrCreateEntitiesAsync(string moduleName, TypeInfo[] entityTypeInfos)
         {
             var entities = new List<Entity>();
-            var entityBelongsToEntityMapping = new Dictionary<string, string>();
+            var entityNameToParentEntityNameMapping = new Dictionary<string, string>();
 
             var entityNames = entityTypeInfos.Select(x => x.Name).ToArray();
             
@@ -219,9 +229,9 @@ namespace EasyAbp.Abp.EntityUi.Data
                         baseType = propertyInfo.PropertyType;
                     }
 
-                    if (baseType.Name != entityTypeInfo.Name && entityNames.Contains(baseType.Name))
+                    if (entityNames.Contains(baseType.Name))
                     {
-                        entityBelongsToEntityMapping.AddIfNotContains(
+                        entityNameToParentEntityNameMapping.AddIfNotContains(
                             new KeyValuePair<string, string>(baseType.Name, entityTypeInfo.Name));
                     }
                 }
@@ -235,13 +245,19 @@ namespace EasyAbp.Abp.EntityUi.Data
 
                 if (entity == null)
                 {
-                    var belongsTo = entityBelongsToEntityMapping.GetOrDefault(entityName);
+                    var parentEntityName = entityNameToParentEntityNameMapping.GetOrDefault(entityName);
+
+                    var belongsTo = parentEntityName != entityName ? parentEntityName : null;
 
                     var keys = typeof(Entity<>).IsAssignableFrom(entityTypeInfo)
                         ? new[] {"Id"}
                         : GetEntityKeys(entityTypeInfo);
 
-                    var properties = CreateEntityProperties(moduleName, entityName, entityTypeInfo, entityNames);
+                    var parentEntity = parentEntityName != null
+                        ? entityTypeInfos.Single(x => x.Name == parentEntityName)
+                        : null;
+
+                    var properties = CreateEntityProperties(moduleName, entityName, parentEntity, entityTypeInfo, entityNames);
 
                     var entityNameForPermission = belongsTo ?? entityName;
 
@@ -271,10 +287,12 @@ namespace EasyAbp.Abp.EntityUi.Data
         }
 
         protected virtual List<Property> CreateEntityProperties(string moduleName, string entityName,
-            TypeInfo entityTypeInfo, string[] entityNames)
+            TypeInfo parentEntityTypeInfo, TypeInfo entityTypeInfo, string[] entityNames)
         {
             var properties = new List<Property>();
-            
+
+            var foreignKeys = GetForeignKeys(entityTypeInfo, parentEntityTypeInfo);
+
             foreach (var propertyInfo in entityTypeInfo.GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
                 var propertyName = propertyInfo.Name;
@@ -284,13 +302,17 @@ namespace EasyAbp.Abp.EntityUi.Data
                     continue;
                 }
                 
+                var isForeignKey = IsForeignKeyProperty(propertyName, parentEntityTypeInfo, foreignKeys);
+
                 var isAuditProperty = AuditPropertyNames.Contains(propertyName);
+
+                var isPrimitiveType = TypeHelper.IsPrimitiveExtended(propertyInfo.PropertyType, includeEnums: true);
 
                 var isNullable = TypeHelper.IsNullable(propertyInfo.PropertyType);
 
                 var isEntityCollection = TypeHelper.IsEnumerable(propertyInfo.PropertyType, out var baseType, false) &&
                                          !TypeHelper.IsPrimitiveExtended(baseType, includeEnums: true);
-
+                
                 if (!isEntityCollection)
                 {
                     baseType = propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable();
@@ -301,15 +323,64 @@ namespace EasyAbp.Abp.EntityUi.Data
                 var property = new Property(moduleName, entityName, propertyName, isEntityCollection,
                     baseType.Name, isNullable,
                     new PropertyShowInValueObject(
-                        !isEntity && !isAuditProperty,
+                        !isEntity && !isAuditProperty && !isForeignKey && isPrimitiveType,
                         !isEntity,
-                        !isEntity && !isAuditProperty,
-                        !isEntity && !isAuditProperty));
-                
+                        !isEntity && !isAuditProperty && !isForeignKey,
+                        !isEntity && !isAuditProperty && !isForeignKey));
+
                 properties.Add(property);
             }
 
             return properties;
+        }
+
+        protected virtual bool IsForeignKeyProperty(string propertyName, TypeInfo parentEntityTypeInfo, IEnumerable<string> foreignKeys)
+        {
+            if (parentEntityTypeInfo == null)
+            {
+                return false;
+            }
+
+            return propertyName == $"{parentEntityTypeInfo.Name}Id" || foreignKeys.Contains(propertyName);
+        }
+
+        protected virtual List<string> GetForeignKeys(TypeInfo entityTypeInfo, TypeInfo parentEntityTypeInfo)
+        {
+            return GetForeignKeysFromEntityTypeInfo(entityTypeInfo)
+                .Union(GetForeignKeysFromParentEntityTypeInfo(entityTypeInfo, parentEntityTypeInfo)).ToList();
+        }
+
+        protected virtual List<string> GetForeignKeysFromEntityTypeInfo(TypeInfo entityTypeInfo)
+        {
+            return entityTypeInfo.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => Attribute.IsDefined(x, typeof(ForeignKeyAttribute))).Select(x => x.Name).ToList();
+        }
+        
+        protected virtual List<string> GetForeignKeysFromParentEntityTypeInfo(TypeInfo entityTypeInfo, TypeInfo parentEntityTypeInfo)
+        {
+            if (parentEntityTypeInfo == null)
+            {
+                return new List<string>();
+            }
+            
+            return parentEntityTypeInfo.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(x => IsRelationshipProperty(x, entityTypeInfo.Name))
+                .Where(x => Attribute.IsDefined(x, typeof(ForeignKeyAttribute))).SelectMany(x =>
+                    x.GetCustomAttribute<ForeignKeyAttribute>().Name
+                        .Split(new[] {",", " "}, StringSplitOptions.RemoveEmptyEntries)).ToList();
+        }
+
+        protected virtual bool IsRelationshipProperty(PropertyInfo propertyInfo, string entityName)
+        {
+            var isEntityCollection = TypeHelper.IsEnumerable(propertyInfo.PropertyType, out var baseType, false) &&
+                                     !TypeHelper.IsPrimitiveExtended(baseType, includeEnums: true);
+
+            if (!isEntityCollection)
+            {
+                baseType = propertyInfo.PropertyType.GetFirstGenericArgumentIfNullable();
+            }
+
+            return entityName == baseType.Name;
         }
 
         protected virtual string GetDefaultCreationPermission(string moduleName, string entityName)
