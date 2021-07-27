@@ -26,14 +26,81 @@ namespace EasyAbp.Abp.EntityUi.Data
 {
     public class AbpEntityUiDataSeedContributor : IDataSeedContributor, ITransientDependency
     {
-        private static readonly string[] IgnoreEntityNames = {"AppUser"};
-        
-        private static readonly string[] IgnorePropertyNames = {"TenantId", "ConcurrencyStamp", "ExtraProperties"};
+        private static readonly List<string> IgnoreEntityNames = new()
+        {
+            "AppUser"
+        };
 
-        private static readonly string[] AuditPropertyNames =
+        private static readonly List<string> IgnorePropertyNames = new()
+        {
+            "TenantId", "ConcurrencyStamp", "ExtraProperties"
+        };
+
+        private static readonly List<string> AuditPropertyNames = new()
         {
             "IsDeleted", "DeleterId", "DeletionTime", "LastModificationTime", "LastModifierId", "CreationTime",
             "CreatorId"
+        };
+
+        private static readonly List<string> ListItemDtoNames = new()
+        {
+            "{0}Dto", "{0}Model"
+        };
+
+        private static readonly List<string> DetailDtoNames = new()
+        {
+            "{0}Dto", "{0}Model"
+        };
+
+        private static readonly List<string> CreateDtoNames = new()
+        {
+            "CreateUpdate{0}Dto", "Create{0}Dto", "CreateUpdate{0}Input", "Create{0}Input"
+        };
+
+        private static readonly List<string> EditDtoNames = new()
+        {
+            "CreateUpdate{0}Dto", "Update{0}Dto", "CreateUpdate{0}Input", "Update{0}Input",
+            "CreateEdit{0}Dto", "Edit{0}Dto", "CreateEdit{0}Input", "Edit{0}Input"
+        };
+
+        private static readonly List<string> GetListInputDtoNames = new()
+        {
+            "Get{0}ListInput", "Get{0}ListDto"
+        };
+
+        private static readonly List<string> KeyClassNames = new()
+        {
+            "{0}Key", "{0}Keys"
+        };
+        
+        private static readonly List<string> AppServiceInterfaceNames = new()
+        {
+            "I{0}AppService", "I{0}ApplicationService"
+        };
+        
+        private static readonly List<string> AppServiceGetListMethodNames = new()
+        {
+            "GetListAsync", "GetList"
+        };
+        
+        private static readonly List<string> AppServiceGetMethodNames = new()
+        {
+            "GetAsync", "Get"
+        };
+        
+        private static readonly List<string> AppServiceCreateMethodNames = new()
+        {
+            "CreateAsync", "Create"
+        };
+        
+        private static readonly List<string> AppServiceUpdateMethodNames = new()
+        {
+            "UpdateAsync", "Update", "EditAsync", "Edit"
+        };
+        
+        private static readonly List<string> AppServiceDeleteMethodNames = new()
+        {
+            "DeleteAsync", "Delete"
         };
 
         private readonly IJsonSerializer _jsonSerializer;
@@ -124,7 +191,7 @@ namespace EasyAbp.Abp.EntityUi.Data
                     .Where(x => !IgnoreEntityNames.Contains(x.Name))
                     .ToArray();
                 
-                await GetOrCreateEntitiesAsync(module.Name, entityTypeInfos);
+                await GetOrCreateEntitiesAsync(module, entityTypeInfos);
 
                 var moduleMenuItem = await GetOrCreateModuleMenuItemAsync(module.Name);
                 await TryCreateEntityMenuItemsAsync(module.Name, entityTypeInfos, moduleMenuItem);
@@ -213,7 +280,7 @@ namespace EasyAbp.Abp.EntityUi.Data
             return await _moduleRepository.InsertAsync(new Module(moduleName, resourceTypeName, assemblyName), true);
         }
 
-        protected virtual async Task<List<Entity>> GetOrCreateEntitiesAsync(string moduleName, TypeInfo[] entityTypeInfos)
+        protected virtual async Task<List<Entity>> GetOrCreateEntitiesAsync(Module module, TypeInfo[] entityTypeInfos)
         {
             var entities = new List<Entity>();
             var entityNameToParentEntityNameMapping = new Dictionary<string, string>();
@@ -241,7 +308,7 @@ namespace EasyAbp.Abp.EntityUi.Data
             {
                 var entityName = entityTypeInfo.Name;
 
-                var entity = await _entityRepository.FindAsync(x => x.ModuleName == moduleName && x.Name == entityName);
+                var entity = await _entityRepository.FindAsync(x => x.ModuleName == module.Name && x.Name == entityName);
 
                 if (entity == null)
                 {
@@ -257,24 +324,79 @@ namespace EasyAbp.Abp.EntityUi.Data
                         ? entityTypeInfos.Single(x => x.Name == parentEntityName)
                         : null;
 
-                    var properties = CreateEntityProperties(moduleName, entityName, parentEntity, entityTypeInfo, entityNames);
+                    var properties = CreateEntityProperties(module.Name, entityName, parentEntity, entityTypeInfo, entityNames);
 
                     var entityNameForPermission = belongsTo ?? entityName;
+                    
+                    var contractsAssembly = AppDomain.CurrentDomain.GetAssemblies()
+                        .SingleOrDefault(x => x.GetName().Name == $"{module.Name}.Application.Contracts");
 
+                    var listItemDtoType = contractsAssembly?.DefinedTypes.FirstOrDefault(x =>
+                        ListItemDtoNames.Select(y => string.Format(y, entityName)).Contains(x.Name));
+
+                    var detailDtoType = contractsAssembly?.DefinedTypes.FirstOrDefault(x =>
+                        DetailDtoNames.Select(y => string.Format(y, entityName)).Contains(x.Name));
+
+                    var creationDtoType = contractsAssembly?.DefinedTypes.FirstOrDefault(x =>
+                        CreateDtoNames.Select(y => string.Format(y, entityName)).Contains(x.Name));
+
+                    var editDtoType = contractsAssembly?.DefinedTypes.FirstOrDefault(x =>
+                        EditDtoNames.Select(y => string.Format(y, entityName)).Contains(x.Name));
+                    
+                    var getListInputDtoType = contractsAssembly?.DefinedTypes.FirstOrDefault(x =>
+                        GetListInputDtoNames.Select(y => string.Format(y, entityName)).Contains(x.Name));
+
+                    var keyClassType = contractsAssembly?.DefinedTypes.FirstOrDefault(x =>
+                        KeyClassNames.Select(y => string.Format(y, entityName)).Contains(x.Name));
+                    
+                    var appServiceInterfaceType = contractsAssembly?.DefinedTypes.FirstOrDefault(x =>
+                        AppServiceInterfaceNames.Select(y => string.Format(y, entityName)).Contains(x.Name));
+
+                    var appServiceMethods = appServiceInterfaceType?.ImplementedInterfaces
+                        .SelectMany(x => x.GetMethods()).ToList();
+                    
+                    var appServiceGetListMethod = appServiceMethods?.FirstOrDefault(x =>
+                        AppServiceGetListMethodNames.Contains(x.Name) && IsGetListMethod(x, getListInputDtoType));
+                    
+                    var appServiceGetMethod = appServiceMethods?.FirstOrDefault(x =>
+                        AppServiceGetMethodNames.Contains(x.Name) && IsGetMethod(x, keyClassType, keys));
+                    
+                    var appServiceCreateMethod = appServiceMethods?.FirstOrDefault(x =>
+                        AppServiceCreateMethodNames.Contains(x.Name) && IsCreateMethod(x, creationDtoType));
+                    
+                    var appServiceUpdateMethod = appServiceMethods?.FirstOrDefault(x =>
+                        AppServiceUpdateMethodNames.Contains(x.Name) && IsUpdateMethod(x, keyClassType, keys, editDtoType));
+                    
+                    var appServiceDeleteMethod = appServiceMethods?.FirstOrDefault(x =>
+                        AppServiceDeleteMethodNames.Contains(x.Name) && IsDeleteMethod(x, keyClassType, keys));
+                    
                     entity = new Entity(
-                        moduleName: moduleName,
+                        moduleName: module.Name,
                         name: entityName,
                         @namespace: entityTypeInfo.Namespace,
                         belongsTo: belongsTo,
                         keys: keys,
-                        creationEnabled: true,
-                        creationPermission: GetDefaultCreationPermission(moduleName, entityNameForPermission),
-                        editEnabled: true,
-                        editPermission: GetDefaultEditPermission(moduleName, entityNameForPermission),
+                        creationEnabled: creationDtoType != null,
+                        creationPermission: GetDefaultCreationPermission(module.Name, entityNameForPermission),
+                        editEnabled: editDtoType != null,
+                        editPermission: GetDefaultEditPermission(module.Name, entityNameForPermission),
                         deletionEnabled: true,
-                        deletionPermission: GetDefaultDeletionPermission(moduleName, entityNameForPermission),
-                        detailEnabled: true,
-                        detailPermission: GetDefaultDetailPermission(moduleName, entityNameForPermission),
+                        deletionPermission: GetDefaultDeletionPermission(module.Name, entityNameForPermission),
+                        detailEnabled: detailDtoType != null,
+                        detailPermission: GetDefaultDetailPermission(module.Name, entityNameForPermission),
+                        contractsAssemblyName: contractsAssembly?.GetName().Name,
+                        listItemDtoTypeName: listItemDtoType?.FullName,
+                        detailDtoTypeName: detailDtoType?.FullName,
+                        creationDtoTypeName: creationDtoType?.FullName,
+                        editDtoTypeName: editDtoType?.FullName,
+                        getListInputDtoTypeName: getListInputDtoType?.FullName,
+                        keyClassTypeName: keyClassType?.FullName,
+                        appServiceInterfaceName: appServiceInterfaceType?.FullName,
+                        appServiceGetListMethodName: appServiceGetListMethod?.Name,
+                        appServiceGetMethodName: appServiceGetMethod?.Name,
+                        appServiceCreateMethodName: appServiceCreateMethod?.Name,
+                        appServiceUpdateMethodName: appServiceUpdateMethod?.Name,
+                        appServiceDeleteMethodName: appServiceDeleteMethod?.Name,
                         properties: properties);
                     
                     await _entityRepository.InsertAsync(entity, true);
@@ -284,6 +406,87 @@ namespace EasyAbp.Abp.EntityUi.Data
             }
 
             return entities;
+        }
+
+        protected virtual bool IsDeleteMethod(MethodInfo methodInfo, TypeInfo keyClassType, string[] keys)
+        {
+            var @params = methodInfo.GetParameters();
+            
+            if (@params.Length != 1)
+            {
+                return false;
+            }
+
+            return IsKeyParam(@params[0], keyClassType, keys);
+        }
+
+        protected virtual bool IsUpdateMethod(MethodInfo methodInfo, TypeInfo keyClassType, string[] keys,
+            TypeInfo editDtoType)
+        {
+            var @params = methodInfo.GetParameters();
+
+            if (@params.Length != 2 || editDtoType == null)
+            {
+                return false;
+            }
+
+            return IsKeyParam(@params[0], keyClassType, keys) && @params[1].ParameterType == editDtoType;
+        }
+
+        protected virtual bool IsCreateMethod(MethodInfo methodInfo, TypeInfo creationDtoType)
+        {
+            var @params = methodInfo.GetParameters();
+            
+            if (@params.Length != 1 || creationDtoType == null)
+            {
+                return false;
+            }
+
+            return @params[0].ParameterType == creationDtoType;
+        }
+
+        protected virtual bool IsGetMethod(MethodInfo methodInfo, TypeInfo keyClassType, string[] keys)
+        {
+            var @params = methodInfo.GetParameters();
+            
+            if (@params.Length != 1)
+            {
+                return false;
+            }
+
+            return IsKeyParam(@params[0], keyClassType, keys);
+        }
+
+        protected virtual bool IsKeyParam(ParameterInfo parameterInfo, TypeInfo keyClassType, string[] keys)
+        {
+            if (keyClassType == null)
+            {
+                if (keys.Length != 1)
+                {
+                    return false;
+                }
+                
+                return parameterInfo.Name.Equals(keys.First(), StringComparison.OrdinalIgnoreCase);
+            }
+
+            return parameterInfo.ParameterType == keyClassType;
+        }
+
+        protected virtual bool IsGetListMethod(MethodInfo methodInfo, TypeInfo getListInputDtoType)
+        {
+            var @params = methodInfo.GetParameters();
+            
+            if (@params.Length != 1)
+            {
+                return false;
+            }
+
+            if (getListInputDtoType == null)
+            {
+                return @params[0].ParameterType.FullName == "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto";
+            }
+
+            return @params[0].ParameterType == getListInputDtoType;
         }
 
         protected virtual List<Property> CreateEntityProperties(string moduleName, string entityName,

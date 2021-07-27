@@ -19,7 +19,7 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         public string BelongsTo { get; set; }
 
         [DisplayName("EntityKeys")]
-        public string[] Keys { get; set; }
+        public string Keys { get; set; }
 
         [DisplayName("EntityCreationEnabled")]
         public bool CreationEnabled { get; set; }
@@ -44,6 +44,45 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
 
         [DisplayName("EntityDetailPermission")]
         public string DetailPermission { get; set; }
+        
+        [DisplayName("EntityContractsAssemblyName")]
+        public string ContractsAssemblyName { get; set; }
+        
+        [DisplayName("EntityListItemDtoTypeName")]
+        public string ListItemDtoTypeName { get; set; }
+        
+        [DisplayName("EntityDetailDtoTypeName")]
+        public string DetailDtoTypeName { get; set; }
+        
+        [DisplayName("EntityCreationDtoTypeName")]
+        public string CreationDtoTypeName { get; set; }
+        
+        [DisplayName("EntityEditDtoTypeName")]
+        public string EditDtoTypeName { get; set; }
+        
+        [DisplayName("EntityGetListInputDtoTypeName")]
+        public string GetListInputDtoTypeName { get; set; }
+        
+        [DisplayName("EntityKeyClassTypeName")]
+        public string KeyClassTypeName { get; set; }
+                
+        [DisplayName("EntityAppServiceInterfaceName")]
+        public string AppServiceInterfaceName { get; set; }
+                
+        [DisplayName("EntityAppServiceGetListMethodName")]
+        public string AppServiceGetListMethodName { get; set; }
+                
+        [DisplayName("EntityAppServiceGetMethodName")]
+        public string AppServiceGetMethodName { get; set; }
+                
+        [DisplayName("EntityAppServiceCreateMethodName")]
+        public string AppServiceCreateMethodName { get; set; }
+                
+        [DisplayName("EntityAppServiceUpdateMethodName")]
+        public string AppServiceUpdateMethodName { get; set; }
+                
+        [DisplayName("EntityAppServiceDeleteMethodName")]
+        public string AppServiceDeleteMethodName { get; set; }
 
         [DisplayName("EntityProperties")]
         public List<CreateUpdatePropertyDto> Properties { get; set; }

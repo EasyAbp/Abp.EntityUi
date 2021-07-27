@@ -51,6 +51,45 @@ namespace EasyAbp.Abp.EntityUi.Entities
         
         [CanBeNull]
         public virtual string DetailPermission { get; protected set; }
+                
+        [CanBeNull]
+        public virtual string ContractsAssemblyName { get; protected set; }
+        
+        [CanBeNull]
+        public virtual string ListItemDtoTypeName { get; protected set; }
+        
+        [CanBeNull]
+        public virtual string DetailDtoTypeName { get; protected set; }
+        
+        [CanBeNull]
+        public virtual string CreationDtoTypeName { get; protected set; }
+        
+        [CanBeNull]
+        public virtual string EditDtoTypeName { get; protected set; }
+        
+        [CanBeNull]
+        public virtual string GetListInputDtoTypeName { get; protected set; }
+        
+        [CanBeNull]
+        public virtual string KeyClassTypeName { get; protected set; }
+                
+        [CanBeNull]
+        public virtual string AppServiceInterfaceName { get; protected set; }
+                
+        [CanBeNull]
+        public virtual string AppServiceGetListMethodName { get; protected set; }
+                
+        [CanBeNull]
+        public virtual string AppServiceGetMethodName { get; protected set; }
+                
+        [CanBeNull]
+        public virtual string AppServiceCreateMethodName { get; protected set; }
+                
+        [CanBeNull]
+        public virtual string AppServiceUpdateMethodName { get; protected set; }
+                
+        [CanBeNull]
+        public virtual string AppServiceDeleteMethodName { get; protected set; }
         
         [ForeignKey("EntityModuleName, EntityName")]
         public virtual List<Property> Properties { get; protected set; }
@@ -64,7 +103,14 @@ namespace EasyAbp.Abp.EntityUi.Entities
             [CanBeNull] string belongsTo, [NotNull] string[] keys, bool creationEnabled,
             [CanBeNull] string creationPermission, bool editEnabled, [CanBeNull] string editPermission,
             bool deletionEnabled, [CanBeNull] string deletionPermission, bool detailEnabled,
-            [CanBeNull] string detailPermission, List<Property> properties)
+            [CanBeNull] string detailPermission, [CanBeNull] string contractsAssemblyName,
+            [CanBeNull] string listItemDtoTypeName, [CanBeNull] string detailDtoTypeName,
+            [CanBeNull] string creationDtoTypeName, [CanBeNull] string editDtoTypeName,
+            [CanBeNull] string getListInputDtoTypeName, [CanBeNull] string keyClassTypeName,
+            [CanBeNull] string appServiceInterfaceName, [CanBeNull] string appServiceGetListMethodName,
+            [CanBeNull] string appServiceGetMethodName, [CanBeNull] string appServiceCreateMethodName,
+            [CanBeNull] string appServiceUpdateMethodName, [CanBeNull] string appServiceDeleteMethodName,
+            List<Property> properties)
         {
             ModuleName = moduleName;
             Name = name;
@@ -79,6 +125,19 @@ namespace EasyAbp.Abp.EntityUi.Entities
             DeletionPermission = deletionPermission;
             DetailEnabled = detailEnabled;
             DetailPermission = detailPermission;
+            ContractsAssemblyName = contractsAssemblyName;
+            ListItemDtoTypeName = listItemDtoTypeName;
+            DetailDtoTypeName = detailDtoTypeName;
+            CreationDtoTypeName = creationDtoTypeName;
+            EditDtoTypeName = editDtoTypeName;
+            GetListInputDtoTypeName = getListInputDtoTypeName;
+            KeyClassTypeName = keyClassTypeName;
+            AppServiceInterfaceName = appServiceInterfaceName;
+            AppServiceGetListMethodName = appServiceGetListMethodName;
+            AppServiceGetMethodName = appServiceGetMethodName;
+            AppServiceCreateMethodName = appServiceCreateMethodName;
+            AppServiceUpdateMethodName = appServiceUpdateMethodName;
+            AppServiceDeleteMethodName = appServiceDeleteMethodName;
 
             Properties = properties ?? new List<Property>();
         }

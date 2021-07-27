@@ -15,7 +15,7 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
 
         public string BelongsTo { get; set; }
 
-        public string[] Keys { get; set; }
+        public string Keys { get; set; }
 
         public bool CreationEnabled { get; set; }
 
@@ -32,6 +32,32 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         public bool DetailEnabled { get; set; }
 
         public string DetailPermission { get; set; }
+        
+        public string ContractsAssemblyName { get; set; }
+        
+        public string ListItemDtoTypeName { get; set; }
+        
+        public string DetailDtoTypeName { get; set; }
+        
+        public string CreationDtoTypeName { get; set; }
+        
+        public string EditDtoTypeName { get; set; }
+        
+        public string GetListInputDtoTypeName { get; set; }
+        
+        public string KeyClassTypeName { get; set; }
+                
+        public string AppServiceInterfaceName { get; set; }
+                
+        public string AppServiceGetListMethodName { get; set; }
+                
+        public string AppServiceGetMethodName { get; set; }
+                
+        public string AppServiceCreateMethodName { get; set; }
+                
+        public string AppServiceUpdateMethodName { get; set; }
+                
+        public string AppServiceDeleteMethodName { get; set; }
 
         public List<PropertyDto> Properties { get; set; }
     }

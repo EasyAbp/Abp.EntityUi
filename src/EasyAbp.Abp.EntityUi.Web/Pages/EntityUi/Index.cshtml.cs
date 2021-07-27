@@ -32,6 +32,10 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         public EntityDto Entity { get; set; }
         
         public EntityDto ParentEntity { get; set; }
+        
+        public string[] EntityKeys { get; set; }
+        
+        public string[] ParentEntityKeys { get; set; }
 
         public bool IsSubEntity => !Entity.BelongsTo.IsNullOrEmpty();
 
@@ -50,10 +54,12 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var integration = await _integrationAppService.GetModuleAsync(ModuleName);
 
             Entity = integration.Entities.Single(x => x.Name == EntityName);
+            EntityKeys = Entity.Keys.Split(',');
 
             if (IsSubEntity)
             {
                 ParentEntity = integration.Entities.Single(x => x.Name == Entity.BelongsTo);
+                ParentEntityKeys = ParentEntity.Keys.Split(',');
             }
             
             Module = integration.Modules.Single(x => x.Name == ModuleName);
@@ -127,7 +133,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual Task<string> GetJsDataTableDataRecordKeysCodeAsync(bool withKeys = true)
         {
-            return Task.FromResult(Entity.Keys.Select(key => key.ToCamelCase())
+            return Task.FromResult(EntityKeys.Select(key => key.ToCamelCase())
                 .Select(key => withKeys ? $"{key}: data.record.{key}" : $"data.record.{key}").JoinAsString(", "));
         }
 
@@ -174,10 +180,10 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             if (ParentEntity.Keys.Length == 1)
             {
-                return Task.FromResult($"\"{HttpContext.Request.Query[ParentEntity.Keys.First().ToCamelCase()]}\"");
+                return Task.FromResult($"\"{HttpContext.Request.Query[ParentEntityKeys.First().ToCamelCase()]}\"");
             }
 
-            var values = ParentEntity.Keys.Select(x => x.ToCamelCase()).Select(key => $"{key}: \"{HttpContext.Request.Query[key]}\"");
+            var values = ParentEntityKeys.Select(x => x.ToCamelCase()).Select(key => $"{key}: \"{HttpContext.Request.Query[key]}\"");
 
             return Task.FromResult($"{{ {values.JoinAsString(", ")} }}");
         }
@@ -191,7 +197,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             }
 
             return Task.FromResult(
-                $"{listPropertyName}.findIndex(x => {Entity.Keys.Select(x => x.ToCamelCase()).Select(x => $"x.{x} === {subEntityPropertyName}.{x}").JoinAsString(" && ")})");
+                $"{listPropertyName}.findIndex(x => {EntityKeys.Select(x => x.ToCamelCase()).Select(x => $"x.{x} === {subEntityPropertyName}.{x}").JoinAsString(" && ")})");
         }
 
         public virtual Task<string> GetJsBuildSubEntitiesRowActionItemsAsync()
@@ -203,7 +209,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 return Task.FromResult("var subEntitiesRowActionItems = []");
             }
 
-            var keys = Entity.Keys.Select(x => x.ToCamelCase()).Select(key => $"'{key}=' + data.record.{key}").JoinAsString(" + '&' + ");
+            var keys = EntityKeys.Select(x => x.ToCamelCase()).Select(key => $"'{key}=' + data.record.{key}").JoinAsString(" + '&' + ");
 
             var obj = subEntities.Select(x =>
                     $"{{ text: l('{x.TypeOrEntityName}'), action: function (data) {{ document.location.href = document.location.origin + '/EntityUi/{ModuleName}/{x.TypeOrEntityName}?' + {keys}; }} }}")

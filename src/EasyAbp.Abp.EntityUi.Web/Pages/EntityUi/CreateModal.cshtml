@@ -1,12 +1,17 @@
 @page "EntityUi/{moduleName}/{entityName}/CreateModal"
-@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
 @model EasyAbp.Abp.EntityUi.Web.Pages.EntityUi.CreateModalModel
 @{
     Layout = null;
 }
-<abp-modal>
-    <abp-modal-header title="@await Model.GetModalTitleAsync()"></abp-modal-header>
-    <abp-modal-body>
-    </abp-modal-body>
-    <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
-</abp-modal>
+
+<abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="CreateModal">
+    <abp-modal>
+        <abp-modal-header title="@await Model.GetModalTitleAsync()"></abp-modal-header>
+        <abp-modal-body>
+            <abp-form-content />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</abp-dynamic-form>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcSample.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -10,9 +11,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace MvcSample.Migrations
 {
     [DbContext(typeof(MvcSampleMigrationsDbContext))]
-    partial class MvcSampleMigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210726075612_AddedEntityDtoTypeNames")]
+    partial class AddedEntityDtoTypeNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,24 +31,6 @@ namespace MvcSample.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AppServiceCreateMethodName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppServiceDeleteMethodName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppServiceGetListMethodName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppServiceGetMethodName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppServiceInterfaceName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AppServiceUpdateMethodName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("BelongsTo")
                         .HasColumnType("nvarchar(max)");
 
@@ -55,9 +39,6 @@ namespace MvcSample.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)")
                         .HasColumnName("ConcurrencyStamp");
-
-                    b.Property<string>("ContractsAssemblyName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreationDtoTypeName")
                         .HasColumnType("nvarchar(max)");
@@ -83,6 +64,9 @@ namespace MvcSample.Migrations
                     b.Property<string>("DetailPermission")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DtoTypesAssemblyName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EditDtoTypeName")
                         .HasColumnType("nvarchar(max)");
 
@@ -95,12 +79,6 @@ namespace MvcSample.Migrations
                     b.Property<string>("ExtraProperties")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("ExtraProperties");
-
-                    b.Property<string>("GetListInputDtoTypeName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KeyClassTypeName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Keys")
                         .HasColumnType("nvarchar(max)");

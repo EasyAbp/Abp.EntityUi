@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EasyAbp.Abp.EntityUi.Entities;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.MenuItems;
@@ -16,9 +17,9 @@ namespace EasyAbp.Abp.EntityUi
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
             CreateMap<Entity, EntityDto>()
-                .ForMember(x => x.Keys, opts => opts.MapFrom(x => x.Keys));
+                .ForMember(x => x.Keys, opts => opts.MapFrom(x => x.Keys.JoinAsString(",")));
             CreateMap<CreateUpdateEntityDto, Entity>(MemberList.Source)
-                .ForMember(x => x.Keys, opts => opts.MapFrom(x => x.Keys));;
+                .ForMember(x => x.Keys, opts => opts.MapFrom(x => x.Keys.Split(',')));;
             CreateMap<Property, PropertyDto>();
             CreateMap<CreateUpdatePropertyDto, Property>(MemberList.Source);
             CreateMap<PropertyShowInDto, PropertyShowInValueObject>();
