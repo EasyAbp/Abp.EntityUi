@@ -1,7 +1,7 @@
 {
   "culture": "zh-Hant",
   "texts": {
-    "ManageYourProfile": "管理個人資料",
+    "Menu:EntityUi": "實體 UI",
     "Menu:Module": "MenuModule",
     "Module": "Module",
     "ModuleName": "ModuleName",

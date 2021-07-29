@@ -35,7 +35,7 @@ $(function () {
                                 text: l(editRowActionItemText),
                                 visible: editEnable && abp.auth.isGranted(editPermission),
                                 action: function (data) {
-                                    editModal.open(eval(editKeysCode));
+                                    eval('editModal.open(' + editKeysCode + ')');
                                 }
                             },
                             {
@@ -45,12 +45,12 @@ $(function () {
                                     return eval(deletionConfirmMessageReturnCode);
                                 },
                                 action: function (data) {
-                                    service.delete(eval(deletionActionInputCode))
-                                        .then(function () {
+                                    eval('editModal.delete(' + deletionActionInputCode + ')' +
+                                        `.then(function () {
                                                 abp.notify.info(l(successfullyDeletedNotificationText));
                                                 dataTable.ajax.reload();
                                             }
-                                        )
+                                        )`);
                                 }
                             }
                         ]

@@ -9,26 +9,26 @@
 }
 
 <script type="text/javascript">
-    var moduleName = `@Model.ModuleName`;
-    var localizationResourceName = `@await Model.GetJsLocalizationResourceNameAsync()`;
+    var moduleName = `@Html.Raw(Model.ModuleName)`;
+    var localizationResourceName = `@Html.Raw(await Model.GetJsLocalizationResourceNameAsync())`;
     var parentEntityKeysCode = `@Html.Raw(await Model.GetJsParentEntityKeysCodeAsync())`;
-    var subEntityListPropertyName = `@await Model.GetJsSubEntityCollectionPropertyNameAsync()`;
+    var subEntityListPropertyName = `@Html.Raw(await Model.GetJsSubEntityCollectionPropertyNameAsync())`;
     var findSubEntityIndexCode = `@Html.Raw(await Model.GetJsFindSubEntityIndexCodeAsync("list", "data"))`;
-    var serviceCode = `@await Model.GetJsServiceAsync()`;
-    var createModalSubPath = `@await Model.GetJsCreateModalSubPathAsync()`;
-    var editModalSubPath = `@await Model.GetJsEditModalSubPathAsync()`;
-    var tableId = '@await Model.GetTableIdAsync()';
-    var editRowActionItemText = '@await Model.GetJsEditRowActionItemTextAsync()';
-    var editEnable = @Model.Entity.EditEnabled.ToString().ToLower();
-    var editPermission = `@Model.Entity.EditPermission`;
-    var editKeysCode = `{ @await Model.GetJsDataTableDataRecordKeysCodeAsync() }`;
-    var deletionEnable = @Model.Entity.DeletionEnabled.ToString().ToLower();
-    var deletionPermission = `@Model.Entity.DeletionPermission`;
-    var deletionConfirmMessageReturnCode = `l('@await Model.GetJsDeletionConfirmMessageTextAsync()', @await Model.GetJsDataTableDataRecordKeysCodeAsync(false))`;
-    var deletionRowActionItemText = `@await Model.GetJsDeletionRowActionItemTextAsync()`;
-    var deletionActionInputCode = `@await Model.GetJsDataTableDeletionActionInputAsync()`;
-    var successfullyDeletedNotificationText = `@await Model.GetJsSuccessfullyDeletedNotificationTextAsync()`;
-    var newButtonId = `@await Model.GetNewButtonIdAsync()`;
+    var serviceCode = `@Html.Raw(await Model.GetJsServiceAsync())`;
+    var createModalSubPath = `@Html.Raw(await Model.GetJsCreateModalSubPathAsync())`;
+    var editModalSubPath = `@Html.Raw(await Model.GetJsEditModalSubPathAsync())`;
+    var tableId = '@Html.Raw(await Model.GetTableIdAsync())';
+    var editRowActionItemText = '@Html.Raw(await Model.GetJsEditRowActionItemTextAsync())';
+    var editEnable = @Html.Raw(Model.Entity.EditEnabled.ToString().ToLower());
+    var editPermission = `@Html.Raw(@Model.Entity.EditPermission)`;
+    var editKeysCode = `{ @Html.Raw(await Model.GetJsDataTableDataRecordKeysCodeAsync()) }`;
+    var deletionEnable = @Html.Raw(Model.Entity.DeletionEnabled.ToString().ToLower());
+    var deletionPermission = `@Html.Raw(@Model.Entity.DeletionPermission)`;
+    var deletionConfirmMessageReturnCode = `l('@Html.Raw(await Model.GetJsDeletionConfirmMessageTextAsync())', @Html.Raw(await Model.GetJsDataTableDataRecordKeysCodeAsync(false)))`;
+    var deletionRowActionItemText = `@Html.Raw(await Model.GetJsDeletionRowActionItemTextAsync())`;
+    var deletionActionInputCode = `@Html.Raw(await Model.GetJsDataTableDeletionActionInputAsync())`;
+    var successfullyDeletedNotificationText = `@Html.Raw(await Model.GetJsSuccessfullyDeletedNotificationTextAsync())`;
+    var newButtonId = `@Html.Raw(await Model.GetNewButtonIdAsync())`;
     var propertyNameTitleMapping = { @Html.Raw(await Model.GetJsDataTablePropertyNameTitleMappingAsync()) };
     var buildSubEntitiesRowActionItemsCode = `@Html.Raw(await Model.GetJsBuildSubEntitiesRowActionItemsAsync())`;
 </script>
@@ -49,7 +49,7 @@
     <abp-card-header>
         <abp-row>
             <abp-column size-md="_6">
-                <abp-card-title>@Model.Entity.Name</abp-card-title>
+                <abp-card-title>@await Model.GetPageTitleAsync()</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-right">
 			    @if (Model.Entity.CreationEnabled && await Model.IsCreationPermissionGrantedAsync())

@@ -1,4 +1,4 @@
-$(function () {
+// $(function () {
 
     var l = abp.localization.getResource(localizationResourceName);
 
@@ -16,8 +16,8 @@ $(function () {
 
     var dataTable = $('#' + tableId).DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
-        serverSide: true,
-        paging: true,
+        serverSide: false,
+        paging: false,
         searching: false,
         autoWidth: false,
         scrollCollapse: true,
@@ -44,7 +44,7 @@ $(function () {
                                 text: l(editRowActionItemText),
                                 visible: editEnable && abp.auth.isGranted(editPermission),
                                 action: function (data) {
-                                    editModal.open(eval(editKeysCode));
+                                    eval('editModal.open(' + editKeysCode + ')');
                                 }
                             },
                             {
@@ -54,17 +54,11 @@ $(function () {
                                     return eval(deletionConfirmMessageReturnCode);
                                 },
                                 action: function (data) {
-                                    var parentData = eval(`service.get(` + parentEntityKeysCode + `)`);
-                                    var list = eval(`parentData.` + subEntityListPropertyName);
-                                    var index = eval(findSubEntityIndexCode);
-                                    list.splice(index, 1);
-                                    eval(`service.update(` + parentEntityKeysCode + `, ` + parentData + `)
-                                        .then(function () {
-                                                abp.notify.info(l(successfullyDeletedNotificationText));
-                                                dataTable.ajax.reload();
-                                            }
-                                        )`
-                                    )
+                                    eval(`service.get(` + parentEntityKeysCode + `)
+                                        .then(function (parentData) {
+                                            deleteSubEntity(data.record, parentData);
+                                        })
+                                    `)
                                 }
                             }
                         ]
@@ -73,6 +67,27 @@ $(function () {
             ... propertyColumns
         ]
     }));
+    
+    function deleteSubEntity(data, parentData) {
+        console.log(data)
+        console.log(parentData)
+        var list = eval('parentData.' + subEntityListPropertyName);
+        var index = eval(findSubEntityIndexCode);
+        list.splice(index, 1);
+        console.log(findSubEntityIndexCode)
+        console.log(index)
+        console.log(list)
+        console.log(parentEntityKeysCode)
+        console.log(parentData)
+        eval(`service.update(` + parentEntityKeysCode + `, parentData)
+            .then(function () {
+                    console.log('123');
+                    abp.notify.info(l(successfullyDeletedNotificationText));
+                    dataTable.ajax.reload();
+                }
+            )`
+        )
+    }
 
     createModal.onResult(function () {
         dataTable.ajax.reload();
@@ -84,7 +99,8 @@ $(function () {
 
     $('#' + newButtonId).click(function (e) {
         e.preventDefault();
-        createModal.open();
+        abp.notify.warn("Coming soon...");
+        // createModal.open();
     });
 
-});
+// });

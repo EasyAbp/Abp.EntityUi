@@ -524,12 +524,12 @@ namespace EasyAbp.Abp.EntityUi.Data
                 var isEntity = entityNames.Contains(baseType.Name);
 
                 var property = new Property(moduleName, entityName, propertyName, isEntityCollection,
-                    baseType.Name, isNullable,
+                    baseType.FullName, isNullable,
                     new PropertyShowInValueObject(
                         !isEntity && !isAuditProperty && !isForeignKey && isPrimitiveType,
                         !isEntity,
-                        !isEntity && !isAuditProperty && !isForeignKey,
-                        !isEntity && !isAuditProperty && !isForeignKey));
+                        !isAuditProperty && !isForeignKey,
+                        !isAuditProperty && !isForeignKey));
 
                 properties.Add(property);
             }

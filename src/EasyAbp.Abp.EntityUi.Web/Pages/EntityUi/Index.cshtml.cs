@@ -113,12 +113,16 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual Task<string> GetJsCreateModalSubPathAsync()
         {
-            return Task.FromResult($"EntityUi/{ModuleName}/{EntityName}/CreateModal");
+            return IsSubEntity
+                ? Task.FromResult($"EntityUi/{ModuleName}/{EntityName}/CreateSubEntityModal")
+                : Task.FromResult($"EntityUi/{ModuleName}/{EntityName}/CreateModal");
         }
         
         public virtual Task<string> GetJsEditModalSubPathAsync()
         {
-            return Task.FromResult($"EntityUi/{ModuleName}/{EntityName}/EditModal");
+            return IsSubEntity
+                ? Task.FromResult($"EntityUi/{ModuleName}/{EntityName}/EditSubEntityModal")
+                : Task.FromResult($"EntityUi/{ModuleName}/{EntityName}/EditModal");
         }
 
         public virtual Task<string> GetJsDeletionConfirmMessageTextAsync()
@@ -133,8 +137,13 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual Task<string> GetJsDataTableDataRecordKeysCodeAsync(bool withKeys = true)
         {
-            return Task.FromResult(EntityKeys.Select(key => key.ToCamelCase())
-                .Select(key => withKeys ? $"{key}: data.record.{key}" : $"data.record.{key}").JoinAsString(", "));
+            var entityKeys = EntityKeys.Select(key => key.ToCamelCase())
+                .Select(key => withKeys ? $"EntityKey_{key}: data.record.{key}" : $"data.record.{key}");
+
+            var parentEntityKeys = ParentEntityKeys.Select(key => key.ToCamelCase())
+                .Select(key => withKeys ? $"ParentEntityKey_{key}: '{HttpContext.Request.Query[key]}'" : $"'{HttpContext.Request.Query[key]}'");
+            
+            return Task.FromResult(entityKeys.Concat(parentEntityKeys).JoinAsString(", "));
         }
 
         public virtual Task<string> GetJsEditRowActionItemTextAsync()
@@ -159,7 +168,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual async Task<string> GetJsDataTableDeletionActionInputAsync()
         {
-            return Entity.Keys.Length > 1
+            return EntityKeys.Length > 1
                 ? $"{{ {await GetJsDataTableDataRecordKeysCodeAsync()} }}"
                 : await GetJsDataTableDataRecordKeysCodeAsync(false);
         }
@@ -167,7 +176,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         public virtual Task<string> GetJsSubEntityCollectionPropertyNameAsync()
         {
             return Task.FromResult(IsSubEntity
-                ? ParentEntity.Properties.First(x => x.IsEntityCollection && x.TypeOrEntityName == Entity.Name).Name.ToCamelCase()
+                ? ParentEntity.Properties
+                    .First(x => x.IsEntityCollection && x.TypeOrEntityName == Entity.GetFullEntityName()).Name
+                    .ToCamelCase()
                 : null);
         }
 
@@ -178,7 +189,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 return Task.FromResult(string.Empty);
             }
 
-            if (ParentEntity.Keys.Length == 1)
+            if (ParentEntityKeys.Length == 1)
             {
                 return Task.FromResult($"\"{HttpContext.Request.Query[ParentEntityKeys.First().ToCamelCase()]}\"");
             }
@@ -212,7 +223,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var keys = EntityKeys.Select(x => x.ToCamelCase()).Select(key => $"'{key}=' + data.record.{key}").JoinAsString(" + '&' + ");
 
             var obj = subEntities.Select(x =>
-                    $"{{ text: l('{x.TypeOrEntityName}'), action: function (data) {{ document.location.href = document.location.origin + '/EntityUi/{ModuleName}/{x.TypeOrEntityName}?' + {keys}; }} }}")
+                    $"{{ text: l('{Entity.Name}{x.Name}'), action: function (data) {{ document.location.href = document.location.origin + '/EntityUi/{ModuleName}/{x.GetTypeOrEntityNameWithoutNamespace()}?' + {keys}; }} }}")
                 .JoinAsString(", ");
             
             return Task.FromResult($"var subEntitiesRowActionItems = [ {obj} ]");

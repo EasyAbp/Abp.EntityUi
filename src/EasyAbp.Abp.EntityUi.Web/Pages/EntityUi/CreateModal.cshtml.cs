@@ -1,70 +1,39 @@
 using System;
-using System.Dynamic;
-using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.Integration;
 using EasyAbp.Abp.EntityUi.Web.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Extensions;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
+using Volo.Abp.Json;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public class CreateModalModel : EntityUiPageModel
+    public class CreateModalModel : EntityUiModalBase
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly ICurrentEntity _currentEntity;
-        private readonly IIntegrationAppService _integrationAppService;
+        private readonly IJsonSerializer _jsonSerializer;
         private readonly IEntityUiStringLocalizerProvider _stringLocalizerProvider;
         private IStringLocalizer StringLocalizer { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public string ModuleName { get; set; }
-        
-        [BindProperty(SupportsGet = true)]
-        public string EntityName { get; set; }
-        
-        public EntityDto Entity { get; set; }
-        
-        public EntityDto ParentEntity { get; set; }
-
-        public bool IsSubEntity => !Entity.BelongsTo.IsNullOrEmpty();
-
-        public object ViewModel { get; set; }
-        
         public CreateModalModel(
-            IServiceProvider serviceProvider,
             ICurrentEntity currentEntity,
+            IJsonSerializer jsonSerializer,
+            IServiceProvider serviceProvider,
             IIntegrationAppService integrationAppService,
             IEntityUiStringLocalizerProvider stringLocalizerProvider)
+            : base(currentEntity, jsonSerializer, serviceProvider, integrationAppService)
         {
-            _serviceProvider = serviceProvider;
             _currentEntity = currentEntity;
-            _integrationAppService = integrationAppService;
+            _jsonSerializer = jsonSerializer;
             _stringLocalizerProvider = stringLocalizerProvider;
         }
 
         public virtual async Task OnGetAsync()
         {
-            var integration = await _integrationAppService.GetModuleAsync(ModuleName);
+            await SetCurrentEntityAsync();
 
-            var module = integration.Modules.Single(x => x.Name == ModuleName);
-
-            Entity = integration.Entities.Single(x => x.Name == EntityName);
-            
-            _currentEntity.Set(module, Entity);
-
-            if (IsSubEntity)
-            {
-                ParentEntity = integration.Entities.Single(x => x.Name == Entity.BelongsTo);
-            }
-            
-            StringLocalizer = await _stringLocalizerProvider.GetAsync(module);
+            StringLocalizer = await _stringLocalizerProvider.GetAsync(_currentEntity.GetModule());
 
             ViewModel = Activator.CreateInstance(
                 Type.GetType($"{Entity.CreationDtoTypeName}, {Entity.ContractsAssemblyName}")!);
@@ -72,24 +41,29 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual async Task<IActionResult> OnPostAsync()
         {
-            // Todo: call app service.
+            await SetCurrentEntityAsync();
+
+            var entity = _currentEntity.GetEntity();
+
+            var appService = GetAppService();
+
+            var json = MapFormToDtoJsonString();
+            
+            dynamic task =
+                GetAppServiceType().GetInheritedMethod(entity.AppServiceCreateMethodName)!.Invoke(appService,
+                    new[] {_jsonSerializer.Deserialize(entity.GetAppServiceCreationDtoType(), json)});
+
+            if (task != null)
+            {
+                await task;
+            }
+
             return NoContent();
         }
 
         public virtual Task<string> GetModalTitleAsync()
         {
             return Task.FromResult<string>(StringLocalizer[$"Create{Entity.Name}"]);
-        }
-        
-        protected virtual async Task ProcessInputGroupAsync(TagHelperContext context, ModelExpression model)
-        {
-            var abpInputTagHelper = _serviceProvider.GetRequiredService<AbpInputTagHelper>();
-            
-            abpInputTagHelper.AspFor = model;
-            // abpInputTagHelper.DisplayRequiredSymbol = TagHelper.RequiredSymbols ?? true;
-
-            
-            var output = await abpInputTagHelper.ProcessAndGetOutputAsync(new TagHelperAttributeList(), context, "div", TagMode.StartTagAndEndTag);
         }
     }
 }

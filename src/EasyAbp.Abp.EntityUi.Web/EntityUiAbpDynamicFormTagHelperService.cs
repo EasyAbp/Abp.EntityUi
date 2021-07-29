@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using EasyAbp.Abp.EntityUi.Web.Pages.EntityUi;
 using Localization.Resources.AbpUi;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
-using Volo.Abp.Application.Dtos;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 using Volo.Abp.DependencyInjection;
 

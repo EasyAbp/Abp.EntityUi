@@ -1,14 +1,15 @@
-@page "EntityUi/{moduleName}/{entityName}/EditModal"
+@page "EntityUi/{moduleName}/{entityName}/EditSubEntityModal"
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
-@model EasyAbp.Abp.EntityUi.Web.Pages.EntityUi.EditModalModel
+@model EasyAbp.Abp.EntityUi.Web.Pages.EntityUi.EditSubEntityModalModel
 @{
     Layout = null;
 }
 
-<abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="EditModal">
+<abp-dynamic-form abp-model="ViewModel" data-ajaxForm="true" asp-page="EditSubEntityModal">
     <abp-modal>
         <abp-modal-header title="@await Model.GetModalTitleAsync()"></abp-modal-header>
         <abp-modal-body>
+            <abp-input asp-for="ParentEntityId" />
             <abp-input asp-for="Id" />
             <abp-form-content/>
         </abp-modal-body>

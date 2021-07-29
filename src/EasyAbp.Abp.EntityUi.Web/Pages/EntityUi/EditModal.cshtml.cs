@@ -1,67 +1,49 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.Integration;
 using EasyAbp.Abp.EntityUi.Web.Localization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
+using Newtonsoft.Json.Linq;
+using Volo.Abp.Json;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public class EditModalModel : EntityUiPageModel
+    public class EditModalModel : EditModalBase
     {
-        private readonly IIntegrationAppService _integrationAppService;
-        private readonly IEntityUiStringLocalizerProvider _stringLocalizerProvider;
-        private IStringLocalizer StringLocalizer { get; set; }
-        
-        [BindProperty(SupportsGet = true)]
-        public string ModuleName { get; set; }
-        
-        [BindProperty(SupportsGet = true)]
-        public string EntityName { get; set; }
-        
-        public EntityDto Entity { get; set; }
-        
-        public EntityDto ParentEntity { get; set; }
+        protected override EntityDto EntityForAppService => CurrentEntity.GetEntity();
 
-        public bool IsSubEntity => !Entity.BelongsTo.IsNullOrEmpty();
-        
+        protected override string IdForAppServiceUpdateMethod => Id;
+
+        protected override string QueryPrefix => QueryPrefixEntityKey;
+
         public EditModalModel(
+            ICurrentEntity currentEntity,
+            IJsonSerializer jsonSerializer,
+            IServiceProvider serviceProvider,
             IIntegrationAppService integrationAppService,
             IEntityUiStringLocalizerProvider stringLocalizerProvider)
+            : base(currentEntity, jsonSerializer, serviceProvider, integrationAppService, stringLocalizerProvider)
         {
-            _integrationAppService = integrationAppService;
-            _stringLocalizerProvider = stringLocalizerProvider;
         }
 
-        public virtual async Task OnGetAsync()
+        protected override void SetBindPropertiesOnGet(object objId)
         {
-            var integration = await _integrationAppService.GetModuleAsync(ModuleName);
+            Id = JsonSerializer.Serialize(objId);
+        }
 
-            Entity = integration.Entities.Single(x => x.Name == EntityName);
+        protected override void SetGetResultDtoToViewModel(object resultDto)
+        {
+            var json = JsonSerializer.Serialize(resultDto);
+            
+            ViewModel = JsonSerializer.Deserialize(CurrentEntity.GetEntity().GetAppServiceEditDtoType(), json);
+        }
 
-            if (IsSubEntity)
+        protected override void MergeFormDataJObjIntoUpdateDtoJObj(JObject formDataJObj, JObject updateDtoJObj)
+        {
+            updateDtoJObj.Merge(formDataJObj, new JsonMergeSettings
             {
-                ParentEntity = integration.Entities.Single(x => x.Name == Entity.BelongsTo);
-            }
-            
-            var module = integration.Modules.Single(x => x.Name == ModuleName);
-
-            StringLocalizer = await _stringLocalizerProvider.GetAsync(module);
-            
-            // Todo: call app service.
-        }
-
-        public virtual async Task<IActionResult> OnPostAsync()
-        {
-            // Todo: call app service.
-            return NoContent();
-        }
-
-        public virtual Task<string> GetModalTitleAsync()
-        {
-            return Task.FromResult<string>(StringLocalizer[$"Edit{Entity.Name}"]);
+                MergeArrayHandling = MergeArrayHandling.Union
+            });
         }
     }
 }

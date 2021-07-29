@@ -1,4 +1,6 @@
-﻿using EasyAbp.Abp.EntityUi.Entities.Dtos;
+﻿using System.Diagnostics.CodeAnalysis;
+using EasyAbp.Abp.EntityUi.Entities.Dtos;
+using EasyAbp.Abp.EntityUi.Integration.Dtos;
 using EasyAbp.Abp.EntityUi.Modules.Dtos;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
@@ -9,6 +11,8 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         
         EntityDto GetEntity();
         
-        void Set(ModuleDto module, EntityDto entity);
+        EntityDto GetParentEntityOrNull();
+        
+        void Set(EntityUiIntegrationDto integration, [NotNull] string moduleName, [NotNull] string entityName);
     }
 }

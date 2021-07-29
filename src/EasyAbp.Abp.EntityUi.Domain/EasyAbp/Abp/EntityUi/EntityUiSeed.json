@@ -82,7 +82,7 @@
           "entityName": "Entity",
           "name": "BelongsTo",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -96,7 +96,7 @@
           "entityName": "Entity",
           "name": "CreationEnabled",
           "isEntityCollection": false,
-          "typeOrEntityName": "Boolean",
+          "typeOrEntityName": "System.Boolean",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -110,7 +110,7 @@
           "entityName": "Entity",
           "name": "CreationPermission",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -124,7 +124,7 @@
           "entityName": "Entity",
           "name": "DeletionEnabled",
           "isEntityCollection": false,
-          "typeOrEntityName": "Boolean",
+          "typeOrEntityName": "System.Boolean",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -138,7 +138,7 @@
           "entityName": "Entity",
           "name": "DeletionPermission",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -152,7 +152,7 @@
           "entityName": "Entity",
           "name": "DetailEnabled",
           "isEntityCollection": false,
-          "typeOrEntityName": "Boolean",
+          "typeOrEntityName": "System.Boolean",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -166,7 +166,7 @@
           "entityName": "Entity",
           "name": "DetailPermission",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -180,7 +180,7 @@
           "entityName": "Entity",
           "name": "EditEnabled",
           "isEntityCollection": false,
-          "typeOrEntityName": "Boolean",
+          "typeOrEntityName": "System.Boolean",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -194,7 +194,7 @@
           "entityName": "Entity",
           "name": "EditPermission",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -208,7 +208,7 @@
           "entityName": "Entity",
           "name": "Keys",
           "isEntityCollection": false,
-          "typeOrEntityName": "String[]",
+          "typeOrEntityName": "System.String[]",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -222,7 +222,7 @@
           "entityName": "Entity",
           "name": "ModuleName",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -236,7 +236,7 @@
           "entityName": "Entity",
           "name": "Name",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -250,7 +250,7 @@
           "entityName": "Entity",
           "name": "Properties",
           "isEntityCollection": true,
-          "typeOrEntityName": "Property",
+          "typeOrEntityName": "EasyAbp.Abp.EntityUi.Entities.Property",
           "nullable": false,
           "showIn": {
             "list": false,
@@ -296,7 +296,7 @@
           "entityName": "MenuItem",
           "name": "EntityName",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -310,7 +310,7 @@
           "entityName": "MenuItem",
           "name": "MenuItems",
           "isEntityCollection": true,
-          "typeOrEntityName": "MenuItem",
+          "typeOrEntityName": "EasyAbp.Abp.EntityUi.MenuItems.MenuItem",
           "nullable": false,
           "showIn": {
             "list": false,
@@ -324,7 +324,7 @@
           "entityName": "MenuItem",
           "name": "ModuleName",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -338,7 +338,7 @@
           "entityName": "MenuItem",
           "name": "Name",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -352,7 +352,7 @@
           "entityName": "MenuItem",
           "name": "ParentName",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": false,
@@ -366,7 +366,7 @@
           "entityName": "MenuItem",
           "name": "Permission",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -412,7 +412,7 @@
           "entityName": "Module",
           "name": "Name",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -460,7 +460,7 @@
           "entityName": "Property",
           "name": "EntityModuleName",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": false,
@@ -474,7 +474,7 @@
           "entityName": "Property",
           "name": "EntityName",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": false,
@@ -488,7 +488,7 @@
           "entityName": "Property",
           "name": "IsEntityCollection",
           "isEntityCollection": false,
-          "typeOrEntityName": "Boolean",
+          "typeOrEntityName": "System.Boolean",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -502,7 +502,7 @@
           "entityName": "Property",
           "name": "Name",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -516,7 +516,7 @@
           "entityName": "Property",
           "name": "Nullable",
           "isEntityCollection": false,
-          "typeOrEntityName": "Boolean",
+          "typeOrEntityName": "System.Boolean",
           "nullable": false,
           "showIn": {
             "list": true,
@@ -530,7 +530,7 @@
           "entityName": "Property",
           "name": "ShowIn",
           "isEntityCollection": false,
-          "typeOrEntityName": "PropertyShowInValueObject",
+          "typeOrEntityName": "EasyAbp.Abp.EntityUi.Entities.PropertyShowInValueObject",
           "nullable": false,
           "showIn": {
             "list": false,
@@ -544,7 +544,7 @@
           "entityName": "Property",
           "name": "TypeOrEntityName",
           "isEntityCollection": false,
-          "typeOrEntityName": "String",
+          "typeOrEntityName": "System.String",
           "nullable": false,
           "showIn": {
             "list": true,

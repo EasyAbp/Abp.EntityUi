@@ -1,4 +1,7 @@
-﻿using EasyAbp.Abp.EntityUi.Entities.Dtos;
+﻿using System;
+using System.Linq;
+using EasyAbp.Abp.EntityUi.Entities.Dtos;
+using EasyAbp.Abp.EntityUi.Integration.Dtos;
 using EasyAbp.Abp.EntityUi.Modules.Dtos;
 using Volo.Abp.DependencyInjection;
 
@@ -6,9 +9,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
     public class CurrentEntity : ICurrentEntity, IScopedDependency
     {
-        public ModuleDto Module { get; set; }
+        private ModuleDto Module { get; set; }
         
-        public EntityDto Entity { get; set; }
+        private EntityDto Entity { get; set; }
+        
+        private EntityDto ParentEntity { get; set; }
 
         public virtual ModuleDto GetModule()
         {
@@ -20,10 +25,18 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return Entity;
         }
 
-        public virtual void Set(ModuleDto module, EntityDto entity)
+        public virtual EntityDto GetParentEntityOrNull()
         {
-            Module = module;
-            Entity = entity;
+            return ParentEntity;
+        }
+
+        public virtual void Set(EntityUiIntegrationDto integration, string moduleName, string entityName)
+        {
+            Module = integration.Modules.First(x => x.Name == moduleName);
+            Entity = integration.Entities.First(x => x.Name == entityName);
+            ParentEntity = Entity.BelongsTo.IsNullOrEmpty()
+                ? null
+                : integration.Entities.First(x => x.Name == Entity.BelongsTo);
         }
     }
 }

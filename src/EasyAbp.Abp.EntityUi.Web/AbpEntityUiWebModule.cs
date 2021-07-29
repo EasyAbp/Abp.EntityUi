@@ -54,7 +54,9 @@ namespace EasyAbp.Abp.EntityUi.Web
             {
                 options.Conventions.AddPageRoute("/EntityUi/Index", "/EntityUi/{moduleName}/{entityName}");
                 options.Conventions.AddPageRoute("/EntityUi/CreateModal", "/EntityUi/{moduleName}/{entityName}/CreateModal");
+                options.Conventions.AddPageRoute("/EntityUi/CreateSubEntityModal", "/EntityUi/{moduleName}/{entityName}/CreateSubEntityModal");
                 options.Conventions.AddPageRoute("/EntityUi/EditModal", "/EntityUi/{moduleName}/{entityName}/EditModal");
+                options.Conventions.AddPageRoute("/EntityUi/EditSubEntityModal", "/EntityUi/{moduleName}/{entityName}/EditSubEntityModal");
                 
                 //Configure authorization.
             });
