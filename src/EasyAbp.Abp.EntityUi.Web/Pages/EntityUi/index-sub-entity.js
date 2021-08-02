@@ -1,4 +1,4 @@
-// $(function () {
+$(function () {
 
     var l = abp.localization.getResource(localizationResourceName);
 
@@ -91,8 +91,7 @@
 
     $('#' + newButtonId).click(function (e) {
         e.preventDefault();
-        abp.notify.warn("Coming soon...");
-        // createModal.open();
+        eval('createModal.open(' + parentEntityKeysCodeForCreateSubEntityModal + ')');
     });
 
-// });
+});

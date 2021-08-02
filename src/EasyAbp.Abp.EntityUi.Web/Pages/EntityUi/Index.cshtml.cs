@@ -140,8 +140,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var entityKeys = EntityKeys.Select(key => key.ToCamelCase())
                 .Select(key => withKeys ? $"EntityKey_{key}: data.record.{key}" : $"data.record.{key}");
 
-            var parentEntityKeys = ParentEntityKeys.Select(key => key.ToCamelCase())
-                .Select(key => withKeys ? $"ParentEntityKey_{key}: '{HttpContext.Request.Query[key]}'" : $"'{HttpContext.Request.Query[key]}'");
+            var parentEntityKeys = ParentEntityKeys.Select(key => $"ParentEntityKey_{key.ToCamelCase()}")
+                .Select(keyWithPrefix =>
+                    withKeys
+                        ? $"{keyWithPrefix}: '{HttpContext.Request.Query[keyWithPrefix]}'"
+                        : $"'{HttpContext.Request.Query[keyWithPrefix]}'");
             
             return Task.FromResult(entityKeys.Concat(parentEntityKeys).JoinAsString(", "));
         }
@@ -182,19 +185,23 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 : null);
         }
 
-        public virtual Task<string> GetJsParentEntityKeysCodeAsync()
+        public virtual Task<string> GetJsParentEntityKeysCodeAsync(bool keyWithPrefix, bool autoRemoveKey = true)
         {
             if (!IsSubEntity)
             {
                 return Task.FromResult(string.Empty);
             }
 
-            if (ParentEntityKeys.Length == 1)
+            if (autoRemoveKey && ParentEntityKeys.Length == 1)
             {
-                return Task.FromResult($"\"{HttpContext.Request.Query[ParentEntityKeys.First().ToCamelCase()]}\"");
+                return Task.FromResult(
+                    $"\"{HttpContext.Request.Query[EntityUiModalModelBase.QueryPrefixParentEntityKey + ParentEntityKeys.First().ToCamelCase()]}\"");
             }
 
-            var values = ParentEntityKeys.Select(x => x.ToCamelCase()).Select(key => $"{key}: \"{HttpContext.Request.Query[key]}\"");
+            var keyPrefix = keyWithPrefix ? EntityUiModalModelBase.QueryPrefixParentEntityKey : "";
+
+            var values = ParentEntityKeys.Select(x => x.ToCamelCase()).Select(key =>
+                $"{keyPrefix}{key}: \"{HttpContext.Request.Query[EntityUiModalModelBase.QueryPrefixParentEntityKey + key]}\"");
 
             return Task.FromResult($"{{ {values.JoinAsString(", ")} }}");
         }
@@ -220,7 +227,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 return Task.FromResult("var subEntitiesRowActionItems = []");
             }
 
-            var keys = EntityKeys.Select(x => x.ToCamelCase()).Select(key => $"'{key}=' + data.record.{key}").JoinAsString(" + '&' + ");
+            const string prefix = EntityUiModalModelBase.QueryPrefixParentEntityKey;
+
+            var keys = EntityKeys.Select(x => x.ToCamelCase()).Select(key => $"'{prefix}{key}=' + data.record.{key}").JoinAsString(" + '&' + ");
 
             var obj = subEntities.Select(x =>
                     $"{{ text: l('{Entity.Name}{x.Name}'), action: function (data) {{ document.location.href = document.location.origin + '/EntityUi/{ModuleName}/{x.GetTypeOrEntityNameWithoutNamespace()}?' + {keys}; }} }}")

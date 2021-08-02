@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
-using EasyAbp.Abp.EntityUi.Integration;
-using EasyAbp.Abp.EntityUi.Web.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using Volo.Abp.Json;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public class EditSubEntityModalModelModel : EditModalModelBase
+    public class EditSubEntityModalModel : EditModalModelBase
     {
         [HiddenInput]
         [BindProperty(SupportsGet = true)]
@@ -28,17 +25,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             get { return _subEntityKeys ??= CurrentEntity.GetEntity().Keys.Split(','); }
         }
 
-        public EditSubEntityModalModelModel(
-            ICurrentEntity currentEntity,
-            IJsonSerializer jsonSerializer,
-            IServiceProvider serviceProvider,
-            IIntegrationAppService integrationAppService,
-            IEntityUiStringLocalizerProvider stringLocalizerProvider)
-            : base(currentEntity, jsonSerializer, serviceProvider, integrationAppService, stringLocalizerProvider)
-        {
-        }
-
-        protected override void SetBindPropertiesOnGet(object objId)
+        protected override void SetBindIdsOnGet(object objId)
         {
             ParentEntityId = JsonSerializer.Serialize(objId);
             Id = JsonSerializer.Serialize(GetSubEntityIdFromQuery());

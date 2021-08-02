@@ -85,6 +85,6 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         public string AppServiceDeleteMethodName { get; set; }
 
         [DisplayName("EntityProperties")]
-        public List<CreateUpdatePropertyDto> Properties { get; set; }
+        public List<CreateUpdatePropertyDto> Properties { get; set; } = new();
     }
 }

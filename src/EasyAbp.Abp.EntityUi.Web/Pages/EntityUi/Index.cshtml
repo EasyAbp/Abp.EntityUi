@@ -1,4 +1,5 @@
 ﻿@page "EntityUi/{moduleName}/{entityName}"
+@using EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
 @model EasyAbp.Abp.EntityUi.Web.Pages.EntityUi.IndexModel
 @inject IPageLayout _pageLayout
@@ -11,7 +12,8 @@
 <script type="text/javascript">
     var moduleName = `@Html.Raw(Model.ModuleName)`;
     var localizationResourceName = `@Html.Raw(await Model.GetJsLocalizationResourceNameAsync())`;
-    var parentEntityKeysCode = `@Html.Raw(await Model.GetJsParentEntityKeysCodeAsync())`;
+    var parentEntityKeysCode = `@Html.Raw(await Model.GetJsParentEntityKeysCodeAsync(false))`;
+    var parentEntityKeysCodeForCreateSubEntityModal = `@Html.Raw(await Model.GetJsParentEntityKeysCodeAsync(true, false))`;
     var subEntityListPropertyName = `@Html.Raw(await Model.GetJsSubEntityCollectionPropertyNameAsync())`;
     var findSubEntityIndexCode = `@Html.Raw(await Model.GetJsFindSubEntityIndexCodeAsync("list", "data"))`;
     var serviceCode = `@Html.Raw(await Model.GetJsServiceAsync())`;

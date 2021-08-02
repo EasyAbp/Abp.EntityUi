@@ -1,14 +1,9 @@
-using System;
-using System.Linq;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
-using EasyAbp.Abp.EntityUi.Integration;
-using EasyAbp.Abp.EntityUi.Web.Localization;
 using Newtonsoft.Json.Linq;
-using Volo.Abp.Json;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public class EditModalModelModel : EditModalModelBase
+    public class EditModalModel : EditModalModelBase
     {
         protected override EntityDto EntityForAppService => CurrentEntity.GetEntity();
 
@@ -16,17 +11,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         protected override string QueryPrefix => QueryPrefixEntityKey;
 
-        public EditModalModelModel(
-            ICurrentEntity currentEntity,
-            IJsonSerializer jsonSerializer,
-            IServiceProvider serviceProvider,
-            IIntegrationAppService integrationAppService,
-            IEntityUiStringLocalizerProvider stringLocalizerProvider)
-            : base(currentEntity, jsonSerializer, serviceProvider, integrationAppService, stringLocalizerProvider)
-        {
-        }
-
-        protected override void SetBindPropertiesOnGet(object objId)
+        protected override void SetBindIdsOnGet(object objId)
         {
             Id = JsonSerializer.Serialize(objId);
         }

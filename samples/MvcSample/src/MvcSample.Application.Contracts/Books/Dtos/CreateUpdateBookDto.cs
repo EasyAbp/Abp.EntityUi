@@ -16,9 +16,9 @@ namespace MvcSample.Books.Dtos
         public int Length { get; set; }
 
         [DisplayName("BookDetail")]
-        public CreateUpdateBookDetailDto Detail { get; set; }
+        public CreateUpdateBookDetailDto Detail { get; set; } = new();
 
         [DisplayName("BookTags")]
-        public List<CreateUpdateBookTagDto> Tags { get; set; }
+        public List<CreateUpdateBookTagDto> Tags { get; set; } = new();
     }
 }

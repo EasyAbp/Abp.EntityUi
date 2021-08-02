@@ -45,7 +45,7 @@ $(function () {
                                     return eval(deletionConfirmMessageReturnCode);
                                 },
                                 action: function (data) {
-                                    eval('editModal.delete(' + deletionActionInputCode + ')' +
+                                    eval('service.delete(' + deletionActionInputCode + ')' +
                                         `.then(function () {
                                                 abp.notify.info(l(successfullyDeletedNotificationText));
                                                 dataTable.ajax.reload();

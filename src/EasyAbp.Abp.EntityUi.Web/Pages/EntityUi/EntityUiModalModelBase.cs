@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.Integration;
+using EasyAbp.Abp.EntityUi.Web.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Json;
@@ -12,10 +13,16 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
     public abstract class EntityUiModalModelBase : EntityUiPageModel
     {
-        private readonly ICurrentEntity _currentEntity;
-        private readonly IJsonSerializer _jsonSerializer;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IIntegrationAppService _integrationAppService;
+        public const string QueryPrefixEntityKey = "EntityKey_";
+        public const string QueryPrefixParentEntityKey = "ParentEntityKey_";
+        
+        protected ICurrentEntity CurrentEntity => LazyServiceProvider.LazyGetRequiredService<ICurrentEntity>();
+        protected IJsonSerializer JsonSerializer => LazyServiceProvider.LazyGetRequiredService<IJsonSerializer>();
+        protected IIntegrationAppService IntegrationAppService => LazyServiceProvider.LazyGetRequiredService<IIntegrationAppService>();
+        protected IEntityUiStringLocalizerProvider StringLocalizerProvider => LazyServiceProvider.LazyGetRequiredService<IEntityUiStringLocalizerProvider>();
+
+        protected abstract EntityDto EntityForAppService { get; }
+        protected abstract string QueryPrefix { get; }
 
         [BindProperty(SupportsGet = true)]
         public string ModuleName { get; set; }
@@ -30,17 +37,22 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         public bool IsSubEntity => !Entity.BelongsTo.IsNullOrEmpty();
 
         public object ViewModel { get; set; }
-        
-        public EntityUiModalModelBase(
-            ICurrentEntity currentEntity,
-            IJsonSerializer jsonSerializer,
-            IServiceProvider serviceProvider,
-            IIntegrationAppService integrationAppService)
+
+        protected virtual void SetBindIdsOnGet(object objId)
         {
-            _currentEntity = currentEntity;
-            _jsonSerializer = jsonSerializer;
-            _serviceProvider = serviceProvider;
-            _integrationAppService = integrationAppService;
+        }
+        
+        protected virtual object GetEntityIdForAppServiceFromQuery()
+        {
+            var entity = EntityForAppService;
+            var keys = entity.Keys.Split(',');
+
+            var jsonId = JsonSerializer.Serialize(keys.Length > 1
+                ? keys.ToDictionary(x => x.ToCamelCase(),
+                    x => HttpContext.Request.Query[$"{QueryPrefix}{x.ToCamelCase()}"].FirstOrDefault())
+                : HttpContext.Request.Query[$"{QueryPrefix}{keys.First().ToCamelCase()}"].FirstOrDefault());
+
+            return ConvertIdJsonToIdObject(entity, jsonId);
         }
 
         protected virtual Type GetAppServiceType()
@@ -50,12 +62,13 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         
         protected virtual object GetAppService()
         {
-            return _serviceProvider.GetRequiredService(GetAppServiceType());
+            return LazyServiceProvider.LazyGetRequiredService(GetAppServiceType());
         }
 
         protected virtual string MapFormToDtoJsonString()
         {
-            var formDict = Request.Form.ToDictionary(x => x.Key, x => x.Value.FirstOrDefault());
+            var formDict = Request.Form.Where(x => x.Key.StartsWith($"{nameof(ViewModel)}."))
+                .ToDictionary(x => x.Key.RemovePreFix($"{nameof(ViewModel)}."), x => x.Value.FirstOrDefault());
 
             var dict = new Dictionary<string, object>();
 
@@ -64,14 +77,14 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 SetMultiLevelDictKeyValue(pair, dict);
             }
 
-            return _jsonSerializer.Serialize(dict[nameof(ViewModel)]);
+            return JsonSerializer.Serialize(dict);
         }
 
         protected virtual void SetMultiLevelDictKeyValue(KeyValuePair<string, string> pair, Dictionary<string, object> dict)
         {
             var keys = pair.Key.Split('.');
 
-            var firstKey = keys.First();
+            var firstKey = keys.First().ToCamelCase();
 
             if (keys.Length == 1)
             {
@@ -91,18 +104,57 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         protected virtual async Task SetCurrentEntityAsync()
         {
-            var integration = await _integrationAppService.GetModuleAsync(ModuleName);
+            var integration = await IntegrationAppService.GetModuleAsync(ModuleName);
 
             var module = integration.Modules.Single(x => x.Name == ModuleName);
 
             Entity = integration.Entities.Single(x => x.Name == EntityName);
             
-            _currentEntity.Set(integration, module.Name, Entity.Name);
+            CurrentEntity.Set(integration, module.Name, Entity.Name);
 
             if (IsSubEntity)
             {
                 ParentEntity = integration.Entities.Single(x => x.Name == Entity.BelongsTo);
             }
+        }
+        
+        protected virtual object ConvertIdJsonToIdObject(EntityDto entityDto, string jsonId)
+        {
+            var keyType = entityDto.GetKeyClassTypeOrNull();
+
+            if (keyType != null)
+            {
+                return JsonSerializer.Deserialize(keyType, jsonId);
+            }
+
+            var keys = entityDto.Keys.Split(',');
+
+            if (keys.Length == 1)
+            {
+                keyType = Type.GetType(entityDto.Properties.Single(x => x.Name == entityDto.Keys).TypeOrEntityName);
+
+                var jsonIdString = JsonSerializer.Deserialize<string>(jsonId);
+                
+                return keyType == typeof(Guid) ? Guid.Parse(jsonIdString) : Convert.ChangeType(jsonIdString, keyType!);
+            }
+
+            return JsonSerializer.Deserialize<object>(jsonId);
+        }
+        
+        protected virtual async Task<object> GetEntityDtoFromAppServiceAsync(EntityDto entity, object id)
+        {
+            var appService = GetAppService();
+
+            dynamic task =
+                GetAppServiceType().GetInheritedMethod(entity.AppServiceGetMethodName)!.Invoke(appService,
+                    new[] {id});
+
+            if (task == null)
+            {
+                return null;
+            }
+
+            return await task;
         }
     }
 }

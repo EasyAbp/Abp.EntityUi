@@ -25,6 +25,6 @@ namespace EasyAbp.Abp.EntityUi.MenuItems.Dtos
         public string LocalizationItemName { get; set; }
 
         [DisplayName("MenuItemMenuItems")]
-        public List<CreateUpdateMenuItemDto> MenuItems { get; set; }
+        public List<CreateUpdateMenuItemDto> MenuItems { get; set; } = new();
     }
 }

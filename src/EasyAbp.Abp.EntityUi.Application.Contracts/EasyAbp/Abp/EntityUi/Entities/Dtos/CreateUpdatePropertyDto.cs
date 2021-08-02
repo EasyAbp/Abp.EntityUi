@@ -24,6 +24,6 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         public bool Nullable { get; set; }
 
         [DisplayName("PropertyShowIn")]
-        public PropertyShowInDto ShowIn { get; set; }
+        public PropertyShowInDto ShowIn { get; set; } = new();
     }
 }
