@@ -10,7 +10,7 @@ using Volo.Abp.Json;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public class EditSubEntityModalModel : EditModalBase
+    public class EditSubEntityModalModelModel : EditModalModelBase
     {
         [HiddenInput]
         [BindProperty(SupportsGet = true)]
@@ -28,7 +28,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             get { return _subEntityKeys ??= CurrentEntity.GetEntity().Keys.Split(','); }
         }
 
-        public EditSubEntityModalModel(
+        public EditSubEntityModalModelModel(
             ICurrentEntity currentEntity,
             IJsonSerializer jsonSerializer,
             IServiceProvider serviceProvider,

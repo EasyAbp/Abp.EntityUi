@@ -9,14 +9,14 @@ using Volo.Abp.Json;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public class CreateModalModel : EntityUiModalBase
+    public class CreateModalModelModel : EntityUiModalModelBase
     {
         private readonly ICurrentEntity _currentEntity;
         private readonly IJsonSerializer _jsonSerializer;
         private readonly IEntityUiStringLocalizerProvider _stringLocalizerProvider;
         private IStringLocalizer StringLocalizer { get; set; }
 
-        public CreateModalModel(
+        public CreateModalModelModel(
             ICurrentEntity currentEntity,
             IJsonSerializer jsonSerializer,
             IServiceProvider serviceProvider,

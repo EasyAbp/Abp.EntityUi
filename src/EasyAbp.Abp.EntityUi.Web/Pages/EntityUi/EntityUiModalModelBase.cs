@@ -10,7 +10,7 @@ using Volo.Abp.Json;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public abstract class EntityUiModalBase : EntityUiPageModel
+    public abstract class EntityUiModalModelBase : EntityUiPageModel
     {
         private readonly ICurrentEntity _currentEntity;
         private readonly IJsonSerializer _jsonSerializer;
@@ -31,7 +31,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public object ViewModel { get; set; }
         
-        public EntityUiModalBase(
+        public EntityUiModalModelBase(
             ICurrentEntity currentEntity,
             IJsonSerializer jsonSerializer,
             IServiceProvider serviceProvider,

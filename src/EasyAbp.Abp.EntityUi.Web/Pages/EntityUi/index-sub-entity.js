@@ -69,19 +69,11 @@
     }));
     
     function deleteSubEntity(data, parentData) {
-        console.log(data)
-        console.log(parentData)
         var list = eval('parentData.' + subEntityListPropertyName);
         var index = eval(findSubEntityIndexCode);
         list.splice(index, 1);
-        console.log(findSubEntityIndexCode)
-        console.log(index)
-        console.log(list)
-        console.log(parentEntityKeysCode)
-        console.log(parentData)
         eval(`service.update(` + parentEntityKeysCode + `, parentData)
             .then(function () {
-                    console.log('123');
                     abp.notify.info(l(successfullyDeletedNotificationText));
                     dataTable.ajax.reload();
                 }

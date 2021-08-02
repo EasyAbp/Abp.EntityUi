@@ -8,7 +8,7 @@ using Volo.Abp.Json;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public class EditModalModel : EditModalBase
+    public class EditModalModelModel : EditModalModelBase
     {
         protected override EntityDto EntityForAppService => CurrentEntity.GetEntity();
 
@@ -16,7 +16,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         protected override string QueryPrefix => QueryPrefixEntityKey;
 
-        public EditModalModel(
+        public EditModalModelModel(
             ICurrentEntity currentEntity,
             IJsonSerializer jsonSerializer,
             IServiceProvider serviceProvider,

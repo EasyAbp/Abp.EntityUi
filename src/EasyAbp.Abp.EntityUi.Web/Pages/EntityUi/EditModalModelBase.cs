@@ -12,7 +12,7 @@ using Volo.Abp.ObjectMapping;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
-    public abstract class EditModalBase : EntityUiModalBase
+    public abstract class EditModalModelBase : EntityUiModalModelBase
     {
         [HiddenInput]
         [BindProperty(SupportsGet = true)]
@@ -32,7 +32,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         protected readonly IEntityUiStringLocalizerProvider StringLocalizerProvider;
         protected IStringLocalizer StringLocalizer { get; set; }
 
-        public EditModalBase(
+        public EditModalModelBase(
             ICurrentEntity currentEntity,
             IJsonSerializer jsonSerializer,
             IServiceProvider serviceProvider,
