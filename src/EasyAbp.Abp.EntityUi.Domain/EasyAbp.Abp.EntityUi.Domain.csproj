@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="EasyAbp\Abp\EntityUi\EntityUi.json" />
+    <None Remove="EasyAbp\Abp\EntityUi\EntityUiSeed.json" />
     <EmbeddedResource Include="EasyAbp\Abp\EntityUi\EntityUiSeed.json" />
   </ItemGroup>
 
