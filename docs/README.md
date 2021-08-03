@@ -90,6 +90,7 @@ We have launched an online demo for this module: [https://entityui.samples.easya
 
 ## Road map
 
+- [ ] Detail modal.
 - [x] Support the MVC template.
 - [ ] Support the Blazor template.
 - [ ] Support the Angular template.
