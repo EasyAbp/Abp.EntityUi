@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Web.Pages.EntityUi;
 using Localization.Resources.AbpUi;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Extensions;
 using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 using Volo.Abp.DependencyInjection;
 
@@ -13,9 +18,10 @@ namespace EasyAbp.Abp.EntityUi.Web
 {
     [Dependency(ReplaceServices = true)]
     [ExposeServices(typeof(AbpDynamicFormTagHelperService))]
-    // [ExposeServices(typeof(IAbpTagHelperService<AbpDynamicFormTagHelper>))]
     public class EntityUiAbpDynamicFormTagHelperService : AbpDynamicFormTagHelperService
     {
+        private readonly HtmlEncoder _htmlEncoder;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ICurrentEntity _currentEntity;
 
         public EntityUiAbpDynamicFormTagHelperService(
@@ -26,6 +32,8 @@ namespace EasyAbp.Abp.EntityUi.Web
             ICurrentEntity currentEntity) :
             base(htmlEncoder, htmlGenerator, serviceProvider, localizer)
         {
+            _htmlEncoder = htmlEncoder;
+            _serviceProvider = serviceProvider;
             _currentEntity = currentEntity;
         }
 
@@ -61,6 +69,19 @@ namespace EasyAbp.Abp.EntityUi.Web
             }
             
             return type.ToString().StartsWith("System.Collections.Generic.IEnumerable`") || type.ToString().StartsWith("System.Collections.Generic.List`");
+        }
+        
+        protected override async Task ProcessInputGroupAsync(TagHelperContext context, TagHelperOutput output, ModelExpression model)
+        {
+            var abpInputTagHelper = _serviceProvider.GetRequiredService<AbpInputTagHelper>();
+            abpInputTagHelper.AspFor = model;
+            abpInputTagHelper.ViewContext = TagHelper.ViewContext;
+            abpInputTagHelper.DisplayRequiredSymbol = TagHelper.RequiredSymbols ?? true;
+            
+            // Todo: Wait for https://github.com/abpframework/abp/issues/9723
+            abpInputTagHelper.CheckBoxHiddenInputRenderMode = CheckBoxHiddenInputRenderMode.EndOfForm;
+
+            await abpInputTagHelper.RenderAsync(new TagHelperAttributeList(), context, _htmlEncoder, "div", TagMode.StartTagAndEndTag);
         }
     }
 }
