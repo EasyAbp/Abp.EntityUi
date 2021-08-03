@@ -47,7 +47,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var entity = EntityForAppService;
             var keys = entity.Keys.Split(',');
 
-            var jsonId = JsonSerializer.Serialize(keys.Length > 1
+            var jsonId = JsonSerializer.Serialize(entity.GetKeyClassTypeOrNull() != null
                 ? keys.ToDictionary(x => x.ToCamelCase(),
                     x => HttpContext.Request.Query[$"{QueryPrefix}{x.ToCamelCase()}"].FirstOrDefault())
                 : HttpContext.Request.Query[$"{QueryPrefix}{keys.First().ToCamelCase()}"].FirstOrDefault());
