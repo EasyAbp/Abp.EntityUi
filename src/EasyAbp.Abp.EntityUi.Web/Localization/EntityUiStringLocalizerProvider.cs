@@ -32,7 +32,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Localization
             return resourceType.GetCustomAttribute<LocalizationResourceNameAttribute>()!.Name;
         }
 
-        protected virtual Task<Type> GetResourceTypeAsync(ModuleDto module)
+        public virtual Task<Type> GetResourceTypeAsync(ModuleDto module)
         {
             return Task.FromResult(Type.GetType($"{module.LResourceTypeName}, {module.LResourceTypeAssemblyName}"));
         }

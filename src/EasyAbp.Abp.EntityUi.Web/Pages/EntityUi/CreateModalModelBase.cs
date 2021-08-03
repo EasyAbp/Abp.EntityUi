@@ -16,7 +16,10 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         {
             await SetCurrentEntityAsync();
 
-            StringLocalizer = await StringLocalizerProvider.GetAsync(CurrentEntity.GetModule());
+            var currentModule = CurrentEntity.GetModule();
+            
+            StringLocalizer = await StringLocalizerProvider.GetAsync(currentModule);
+            LocalizationResourceType = await StringLocalizerProvider.GetResourceTypeAsync(currentModule);
 
             if (IsSubEntity)
             {

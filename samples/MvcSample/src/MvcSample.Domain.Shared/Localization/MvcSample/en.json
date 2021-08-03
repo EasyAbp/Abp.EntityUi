@@ -1,6 +1,7 @@
 {
   "culture": "en",
   "texts": {
+    "Menu:MvcSample": "MvcSample",
     "Menu:Home": "Home",
     "Welcome": "Welcome",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
@@ -8,19 +9,22 @@
     "Permission:Create": "Create",
     "Permission:Update": "Update",
     "Permission:Delete": "Delete",
-    "Menu:Book": "MenuBook",
+    "Menu:Book": "Book",
     "Book": "Book",
-    "BookName": "BookName",
-    "BookIsbn": "BookIsbn",
-    "BookLength": "BookLength",
-    "BookDetail": "BookDetail",
-    "BookDetailOutline": "BookDetailOutline",
-    "BookTags": "BookTags",
-    "BookTag": "BookTag",
-    "BookTagTag": "BookTagTag",
-    "CreateBook": "CreateBook",
-    "EditBook": "EditBook",
+    "BookName": "Name",
+    "BookIsbn": "ISBN",
+    "BookLength": "Length",
+    "BookDetail": "Detail",
+    "BookDetailOutline": "Outline",
+    "BookTags": "Tags",
+    "CreateBook": "New",
+    "EditBook": "Edit",
     "BookDeletionConfirmationMessage": "Are you sure to delete the book {0}?",
-    "SuccessfullyDeleted": "Successfully deleted"
+    "SuccessfullyDeleted": "Successfully deleted",
+    "BookTag": "Tag",
+    "BookTagTag": "Tag",
+    "CreateBookTag": "New",
+    "EditBookTag": "Edit",
+    "BookTagDeletionConfirmationMessage": "Are you sure to delete the tag {0}?"
   }
 }

@@ -23,7 +23,11 @@ namespace EasyAbp.Abp.EntityUi.Web
         {
             context.Services.PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
             {
-                options.AddAssemblyResource(typeof(EntityUiResource), typeof(AbpEntityUiWebModule).Assembly);
+                options.AddAssemblyResource(
+                    typeof(EntityUiResource),
+                    typeof(AbpEntityUiApplicationContractsModule).Assembly,
+                    typeof(AbpEntityUiDomainSharedModule).Assembly,
+                    typeof(AbpEntityUiWebModule).Assembly);
             });
 
             PreConfigure<IMvcBuilder>(mvcBuilder =>

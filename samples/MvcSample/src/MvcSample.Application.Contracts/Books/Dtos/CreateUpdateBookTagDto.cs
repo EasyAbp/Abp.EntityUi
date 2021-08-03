@@ -6,7 +6,7 @@ namespace MvcSample.Books.Dtos
     [Serializable]
     public class CreateUpdateBookTagDto
     {
-        [DisplayName("BookTagsTag")]
+        [DisplayName("BookTagTag")]
         public string Tag { get; set; }
     }
 }
