@@ -67,7 +67,7 @@ We have launched an online demo for this module: [https://entityui.samples.easya
 
 1. Export the configurations with the http API: `/api/abp/entity-ui/integration/module/{moduleName}` (GET).
 
-2. Create a JSON file like `EntityUiSeed.json` in your module project to save the exported data.(see the [demo](https://github.com/EasyAbp/Abp.EntityUi/blob/main/src/EasyAbp.Abp.EntityUi.Domain/EasyAbp/Abp/EntityUi/EntityUiSeed.json)) and set it as an EmbeddedResource.
+2. Create a JSON file like `EntityUiSeed.json` in your module project to save the exported data (see the [demo](https://github.com/EasyAbp/Abp.EntityUi/blob/main/src/EasyAbp.Abp.EntityUi.Domain/EasyAbp/Abp/EntityUi/EntityUiSeed.json)) and set it as an EmbeddedResource.
 
 3. Configure the EntityUi to use it:
 ```csharp
