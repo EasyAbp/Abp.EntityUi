@@ -65,7 +65,14 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         {
             return SubEntityKeys.Select(x => x.ToCamelCase()).All(key => jToken[key]?.ToString() == keyValues[key]);
         }
-        
+
+        protected override JObject GetFormDataJObj()
+        {
+            return JObject.Parse(
+                JsonSerializer.Serialize(
+                    Activator.CreateInstance(CurrentEntity.GetEntity().GetAppServiceEditDtoType())));
+        }
+
         protected override void MergeFormDataJObjIntoUpdateDtoJObj(JObject formDataJObj, JObject updateDtoJObj)
         {
             var keyValues = JsonSerializer.Deserialize<Dictionary<string, string>>(Request.Form["Id"]);

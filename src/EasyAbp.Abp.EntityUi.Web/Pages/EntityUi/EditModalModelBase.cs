@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +54,12 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             var updateDtoJObj = JObject.Parse(JsonSerializer.Serialize(entityDto));
 
-            var formDataJObj = JObject.Parse(formDataJson);
+            var formDataJObj = GetFormDataJObj();
+            
+            formDataJObj.Merge(JObject.Parse(formDataJson), new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Union
+            });
             
             MergeFormDataJObjIntoUpdateDtoJObj(formDataJObj, updateDtoJObj);
 
@@ -71,7 +77,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             return NoContent();
         }
-        
+
+        protected abstract JObject GetFormDataJObj();
+
         protected abstract void MergeFormDataJObjIntoUpdateDtoJObj(JObject formDataJObj, JObject updateDtoJObj);
 
         public virtual Task<string> GetModalTitleAsync()

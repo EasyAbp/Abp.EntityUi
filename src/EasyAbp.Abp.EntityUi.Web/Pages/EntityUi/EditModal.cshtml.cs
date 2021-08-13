@@ -1,3 +1,4 @@
+using System;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using Newtonsoft.Json.Linq;
 
@@ -21,6 +22,12 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var json = JsonSerializer.Serialize(resultDto);
             
             ViewModel = JsonSerializer.Deserialize(CurrentEntity.GetEntity().GetAppServiceEditDtoType(), json);
+        }
+
+        protected override JObject GetFormDataJObj()
+        {
+            return JObject.Parse(
+                JsonSerializer.Serialize(Activator.CreateInstance(EntityForAppService.GetAppServiceEditDtoType())));
         }
 
         protected override void MergeFormDataJObjIntoUpdateDtoJObj(JObject formDataJObj, JObject updateDtoJObj)
