@@ -1,4 +1,5 @@
-﻿using EasyAbp.Abp.EntityUi;
+﻿using EasyAbp.Abp.DynamicEntity;
+using EasyAbp.Abp.EntityUi;
 using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
@@ -19,7 +20,8 @@ namespace MvcSample
         typeof(AbpTenantManagementApplicationModule),
         typeof(AbpFeatureManagementApplicationModule),
         typeof(AbpSettingManagementApplicationModule),
-        typeof(AbpEntityUiApplicationModule)
+        typeof(AbpEntityUiApplicationModule),
+        typeof(DynamicEntityApplicationModule)
     )]
     public class MvcSampleApplicationModule : AbpModule
     {

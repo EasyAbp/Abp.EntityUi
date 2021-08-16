@@ -29,6 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Abp.DynamicEntity\src\EasyAbp.Abp.DynamicEntity.Domain.Shared\EasyAbp.Abp.DynamicEntity.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\..\providers\dynamic-entity\EasyAbp.Abp.EntityUi.DynamicEntity.Domain.Shared\EasyAbp.Abp.EntityUi.DynamicEntity.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.Domain.Shared\EasyAbp.Abp.EntityUi.Domain.Shared.csproj" />
   </ItemGroup>
 

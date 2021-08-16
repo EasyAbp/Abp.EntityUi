@@ -12,6 +12,9 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         [DisplayName("EntityName")]
         public string Name { get; set; }
 
+        [DisplayName("EntityProviderName")]
+        public string ProviderName { get; set; }
+
         [DisplayName("EntityNamespace")]
         public string Namespace { get; set; }
 

@@ -17,6 +17,9 @@ namespace EasyAbp.Abp.EntityUi.Entities
         [NotNull]
         public virtual string Name { get; protected set; }
         
+        [NotNull]
+        public virtual string ProviderName { get; protected set; }
+        
         [CanBeNull]
         public virtual string Namespace { get; protected set; }
         
@@ -99,8 +102,8 @@ namespace EasyAbp.Abp.EntityUi.Entities
             Properties = new List<Property>();
         }
 
-        public Entity([NotNull] string moduleName, [NotNull] string name, [CanBeNull] string @namespace,
-            [CanBeNull] string belongsTo, [NotNull] string[] keys, bool creationEnabled,
+        public Entity([NotNull] string moduleName, [NotNull] string name, [NotNull] string providerName,
+            [CanBeNull] string @namespace, [CanBeNull] string belongsTo, [NotNull] string[] keys, bool creationEnabled,
             [CanBeNull] string creationPermission, bool editEnabled, [CanBeNull] string editPermission,
             bool deletionEnabled, [CanBeNull] string deletionPermission, bool detailEnabled,
             [CanBeNull] string detailPermission, [CanBeNull] string contractsAssemblyName,
@@ -114,6 +117,7 @@ namespace EasyAbp.Abp.EntityUi.Entities
         {
             ModuleName = moduleName;
             Name = name;
+            ProviderName = providerName;
             Namespace = @namespace;
             BelongsTo = belongsTo;
             Keys = keys;

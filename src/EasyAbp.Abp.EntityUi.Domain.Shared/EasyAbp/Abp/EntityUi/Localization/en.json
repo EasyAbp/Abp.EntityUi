@@ -27,6 +27,7 @@
     "Entity": "Entity",
     "EntityModuleName": "Module",
     "EntityName": "Name",
+    "EntityProviderName": "Provider",
     "EntityNamespace": "Namespace",
     "EntityBelongsTo": "Belongs to",
     "EntityKeys": "Keys",

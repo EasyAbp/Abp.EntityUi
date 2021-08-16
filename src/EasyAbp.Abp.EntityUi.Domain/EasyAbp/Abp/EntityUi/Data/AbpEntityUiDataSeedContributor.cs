@@ -240,7 +240,7 @@ namespace EasyAbp.Abp.EntityUi.Data
                 }
             }
 
-            await _menuItemRepository.UpdateAsync(moduleMenuItem);
+            await _menuItemRepository.UpdateAsync(moduleMenuItem, true);
         }
 
         protected virtual string GetMenuItemName(string moduleName)
@@ -369,10 +369,11 @@ namespace EasyAbp.Abp.EntityUi.Data
                     
                     var appServiceDeleteMethod = appServiceMethods?.FirstOrDefault(x =>
                         AppServiceDeleteMethodNames.Contains(x.Name) && IsDeleteMethod(x, keyClassType, keys));
-                    
+
                     entity = new Entity(
                         moduleName: module.Name,
                         name: entityName,
+                        providerName: AbpEntityUiConsts.DefaultEntityProviderName,
                         @namespace: entityTypeInfo.Namespace,
                         belongsTo: belongsTo,
                         keys: keys,

@@ -7,7 +7,7 @@ namespace MvcSample.DbMigrator
 {
     [DependsOn(
         typeof(AbpAutofacModule),
-        typeof(MvcSampleEntityFrameworkCoreDbMigrationsModule),
+        typeof(MvcSampleEntityFrameworkCoreModule),
         typeof(MvcSampleApplicationContractsModule)
         )]
     public class MvcSampleDbMigratorModule : AbpModule

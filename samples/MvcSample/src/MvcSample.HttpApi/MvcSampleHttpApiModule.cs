@@ -1,4 +1,5 @@
-﻿using EasyAbp.Abp.EntityUi;
+﻿using EasyAbp.Abp.DynamicEntity;
+using EasyAbp.Abp.EntityUi;
 using Localization.Resources.AbpUi;
 using MvcSample.Localization;
 using Volo.Abp.Account;
@@ -20,7 +21,8 @@ namespace MvcSample
         typeof(AbpTenantManagementHttpApiModule),
         typeof(AbpFeatureManagementHttpApiModule),
         typeof(AbpSettingManagementHttpApiModule),
-        typeof(AbpEntityUiHttpApiModule)
+        typeof(AbpEntityUiHttpApiModule),
+        typeof(DynamicEntityHttpApiModule)
     )]
     public class MvcSampleHttpApiModule : AbpModule
     {

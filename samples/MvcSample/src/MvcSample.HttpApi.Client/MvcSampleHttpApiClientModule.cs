@@ -1,4 +1,5 @@
-﻿using EasyAbp.Abp.EntityUi;
+﻿using EasyAbp.Abp.DynamicEntity;
+using EasyAbp.Abp.EntityUi;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Account;
 using Volo.Abp.FeatureManagement;
@@ -18,7 +19,8 @@ namespace MvcSample
         typeof(AbpTenantManagementHttpApiClientModule),
         typeof(AbpFeatureManagementHttpApiClientModule),
         typeof(AbpSettingManagementHttpApiClientModule),
-        typeof(AbpEntityUiHttpApiClientModule)
+        typeof(AbpEntityUiHttpApiClientModule),
+        typeof(DynamicEntityHttpApiClientModule)
     )]
     public class MvcSampleHttpApiClientModule : AbpModule
     {

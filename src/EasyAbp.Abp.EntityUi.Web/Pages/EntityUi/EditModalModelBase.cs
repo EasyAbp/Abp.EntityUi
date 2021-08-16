@@ -46,7 +46,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             var appService = GetAppService();
 
-            var formDataJson = MapFormToDtoJsonString();
+            var formDataJson = await MapFormToDtoJsonStringAsync();
 
             var objId = ConvertIdJsonToIdObject(entity, IdForAppServiceUpdateMethod);
             

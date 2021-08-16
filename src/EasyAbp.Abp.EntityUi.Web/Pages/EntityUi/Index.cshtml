@@ -17,6 +17,7 @@
     var subEntityListPropertyName = `@Html.Raw(await Model.GetJsSubEntityCollectionPropertyNameAsync())`;
     var findSubEntityIndexCode = `@Html.Raw(await Model.GetJsFindSubEntityIndexCodeAsync("list", "data"))`;
     var serviceCode = `@Html.Raw(await Model.GetJsServiceAsync())`;
+    var getListInput = @Html.Raw(await Model.GetJsGetListInputCodeAsync());
     var createModalSubPath = `@Html.Raw(await Model.GetJsCreateModalSubPathAsync())`;
     var editModalSubPath = `@Html.Raw(await Model.GetJsEditModalSubPathAsync())`;
     var tableId = '@Html.Raw(await Model.GetTableIdAsync())';

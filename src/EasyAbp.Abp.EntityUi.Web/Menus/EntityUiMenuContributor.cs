@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Integration;
@@ -53,12 +54,18 @@ namespace EasyAbp.Abp.EntityUi.Web.Menus
                 
                 if (menuItem.MenuItems.IsNullOrEmpty())
                 {
+                    if (menuItem.ParentName.IsNullOrEmpty())
+                    {
+                        continue;
+                    }
+                    
                     child.Url = $"/EntityUi/{menuItem.ModuleName}/{menuItem.EntityName}";
                 }
                 else
                 {
                     await AddMenuItemsAsync(child, menuItem.MenuItems, integration, stringLocalizerProvider, context);
                 }
+                
                 parent.Items.Add(child);
             }
         }

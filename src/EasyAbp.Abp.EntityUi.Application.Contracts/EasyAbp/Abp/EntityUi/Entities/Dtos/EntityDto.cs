@@ -5,11 +5,13 @@ using Volo.Abp.Application.Dtos;
 namespace EasyAbp.Abp.EntityUi.Entities.Dtos
 {
     [Serializable]
-    public class EntityDto : Volo.Abp.Application.Dtos.EntityDto
+    public class EntityDto : ExtensibleEntityDto
     {
         public string ModuleName { get; set; }
 
         public string Name { get; set; }
+        
+        public string ProviderName { get; set; }
         
         public string Namespace { get; set; }
 

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using EasyAbp.Abp.DynamicEntity.Web;
 using EasyAbp.Abp.EntityUi;
 using EasyAbp.Abp.EntityUi.Web;
 using Microsoft.AspNetCore.Builder;
@@ -45,7 +46,7 @@ namespace MvcSample.Web
     [DependsOn(
         typeof(MvcSampleHttpApiModule),
         typeof(MvcSampleApplicationModule),
-        typeof(MvcSampleEntityFrameworkCoreDbMigrationsModule),
+        typeof(MvcSampleEntityFrameworkCoreModule),
         typeof(AbpAutofacModule),
         typeof(AbpIdentityWebModule),
         typeof(AbpSettingManagementWebModule),
@@ -55,7 +56,9 @@ namespace MvcSample.Web
         typeof(AbpTenantManagementWebModule),
         typeof(AbpAspNetCoreSerilogModule),
         typeof(AbpSwashbuckleModule),
-        typeof(AbpEntityUiWebModule)
+        typeof(AbpEntityUiWebModule),
+        typeof(AbpEntityUiDynamicEntityWebModule),
+        typeof(DynamicEntityWebModule)
     )]
     public class MvcSampleWebModule : AbpModule
     {

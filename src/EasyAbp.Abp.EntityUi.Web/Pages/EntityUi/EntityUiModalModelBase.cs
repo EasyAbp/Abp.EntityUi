@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.Integration;
+using EasyAbp.Abp.EntityUi.Web.Infrastructures;
 using EasyAbp.Abp.EntityUi.Web.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,7 +66,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return LazyServiceProvider.LazyGetRequiredService(GetAppServiceType());
         }
 
-        protected virtual string MapFormToDtoJsonString()
+        protected virtual Task<string> MapFormToDtoJsonStringAsync()
         {
             var formDict = Request.Form.Where(x => x.Key.StartsWith($"{nameof(ViewModel)}."))
                 .ToDictionary(x => x.Key.RemovePreFix($"{nameof(ViewModel)}."), x => x.Value.FirstOrDefault());
@@ -77,7 +78,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 SetMultiLevelDictKeyValue(pair, dict);
             }
 
-            return JsonSerializer.Serialize(dict);
+            var dataProvider = LazyServiceProvider.GetEntityUiPageDataProviderOrDefault(Entity.ProviderName);
+            
+            return dataProvider.MapDictionaryToCreateUpdateDtoJsonStringAsync(dict);
         }
 
         protected virtual void SetMultiLevelDictKeyValue(KeyValuePair<string, string> pair, Dictionary<string, object> dict)

@@ -13,11 +13,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             var appService = GetAppService();
 
-            var formDataJson = MapFormToDtoJsonString();
+            var creationDtoJson = await MapFormToDtoJsonStringAsync();
 
             dynamic task =
                 GetAppServiceType().GetInheritedMethod(entity.AppServiceCreateMethodName)!.Invoke(appService,
-                    new[] {JsonSerializer.Deserialize(entity.GetAppServiceCreationDtoType(), formDataJson)});
+                    new[] {JsonSerializer.Deserialize(entity.GetAppServiceCreationDtoType(), creationDtoJson)});
 
             if (task != null)
             {

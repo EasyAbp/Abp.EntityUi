@@ -27,6 +27,7 @@
     "Entity": "實體",
     "EntityModuleName": "所屬模塊",
     "EntityName": "實體",
+    "EntityProviderName": "實體提供者",
     "EntityNamespace": "命名空間",
     "EntityBelongsTo": "歸屬於",
     "EntityKeys": "主鍵",

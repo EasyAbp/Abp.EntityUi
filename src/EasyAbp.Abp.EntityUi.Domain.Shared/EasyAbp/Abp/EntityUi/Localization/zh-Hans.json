@@ -27,6 +27,7 @@
     "Entity": "实体",
     "EntityModuleName": "所属模块",
     "EntityName": "实体",
+    "EntityProviderName": "实体提供者",
     "EntityNamespace": "命名空间",
     "EntityBelongsTo": "归属于",
     "EntityKeys": "主键",

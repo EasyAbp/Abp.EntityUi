@@ -45,6 +45,8 @@ namespace MvcSample.Web.Menus
 
             administration.SetSubItemOrder(IdentityMenuNames.GroupName, 2);
             administration.SetSubItemOrder(SettingManagementMenuNames.GroupName, 3);
+
+            await Task.CompletedTask;
         }
     }
 }

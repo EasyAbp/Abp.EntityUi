@@ -1,3 +1,4 @@
+using EasyAbp.Abp.DynamicEntity.EntityFrameworkCore;
 using EasyAbp.Abp.EntityUi.EntityFrameworkCore;
 using MvcSample.Books;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,8 @@ namespace MvcSample.EntityFrameworkCore
         typeof(AbpAuditLoggingEntityFrameworkCoreModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpFeatureManagementEntityFrameworkCoreModule),
-        typeof(AbpEntityUiEntityFrameworkCoreModule)
+        typeof(AbpEntityUiEntityFrameworkCoreModule),
+        typeof(DynamicEntityEntityFrameworkCoreModule)
     )]
     public class MvcSampleEntityFrameworkCoreModule : AbpModule
     {
@@ -48,7 +50,7 @@ namespace MvcSample.EntityFrameworkCore
             Configure<AbpDbContextOptions>(options =>
             {
                 /* The main point to change your DBMS.
-                 * See also MvcSampleMigrationsDbContextFactory for EF Core tooling. */
+                 * See also MvcSampleDbContextFactory for EF Core tooling. */
                 options.UseSqlServer();
             });
         }

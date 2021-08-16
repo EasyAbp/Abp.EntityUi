@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using EasyAbp.Abp.EntityUi.Web.Infrastructures;
 using EasyAbp.Abp.EntityUi.Web.Pages.EntityUi;
 using Localization.Resources.AbpUi;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -37,16 +38,19 @@ namespace EasyAbp.Abp.EntityUi.Web
         {
             var entity = _currentEntity.GetEntity();
 
-            if (entity.Properties.Any(x => !x.ShowIn.Creation && x.Name == model.Metadata.PropertyName))
+            if (entity != null)
             {
-                return list;
+                if (entity.Properties.Any(x => !x.ShowIn.Creation && x.Name == model.Metadata.PropertyName))
+                {
+                    return list;
+                }
+
+                if (IsListOfClass(model.ModelType))
+                {
+                    return list;
+                }
             }
 
-            if (IsListOfClass(model.ModelType))
-            {
-                return list;
-            }
-            
             return base.ExploreModelsRecursively(list, model);
         }
 

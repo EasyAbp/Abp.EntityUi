@@ -1,4 +1,6 @@
-﻿using EasyAbp.Abp.EntityUi;
+﻿using EasyAbp.Abp.DynamicEntity;
+using EasyAbp.Abp.EntityUi;
+using EasyAbp.Abp.EntityUi.DynamicEntity;
 using EasyAbp.Abp.EntityUi.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -30,7 +32,9 @@ namespace MvcSample
         typeof(AbpSettingManagementDomainModule),
         typeof(AbpTenantManagementDomainModule),
         typeof(AbpEmailingModule),
-        typeof(AbpEntityUiDomainModule)
+        typeof(AbpEntityUiDomainModule),
+        typeof(AbpEntityUiDynamicEntityDomainModule),
+        typeof(DynamicEntityDomainModule)
     )]
     public class MvcSampleDomainModule : AbpModule
     {

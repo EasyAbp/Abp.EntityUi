@@ -5,20 +5,25 @@ using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using EasyAbp.Abp.EntityUi.Integration;
 using EasyAbp.Abp.EntityUi.Modules.Dtos;
+using EasyAbp.Abp.EntityUi.Web.Infrastructures;
 using EasyAbp.Abp.EntityUi.Web.Localization;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
+using Volo.Abp.DependencyInjection;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
     public class IndexModel : PageModel
     {
+        private readonly IAbpLazyServiceProvider _lazyServiceProvider;
         private readonly IAuthorizationService _authorizationService;
         private readonly IIntegrationAppService _integrationAppService;
         private readonly IEntityUiStringLocalizerProvider _stringLocalizerProvider;
+        
+        private IEntityUiPageDataProvider PageDataProvider;
         private IStringLocalizer StringLocalizer { get; set; }
 
         [BindProperty(SupportsGet = true)]
@@ -38,12 +43,14 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         public string[] ParentEntityKeys { get; set; }
 
         public bool IsSubEntity => !Entity.BelongsTo.IsNullOrEmpty();
-
+        
         public IndexModel(
+            IAbpLazyServiceProvider lazyServiceProvider,
             IAuthorizationService authorizationService,
             IIntegrationAppService integrationAppService,
             IEntityUiStringLocalizerProvider stringLocalizerProvider)
         {
+            _lazyServiceProvider = lazyServiceProvider;
             _authorizationService = authorizationService;
             _integrationAppService = integrationAppService;
             _stringLocalizerProvider = stringLocalizerProvider;
@@ -65,6 +72,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             Module = integration.Modules.Single(x => x.Name == ModuleName);
 
             StringLocalizer = await _stringLocalizerProvider.GetAsync(Module);
+            PageDataProvider = _lazyServiceProvider.GetEntityUiPageDataProviderOrDefault(Entity.ProviderName);
         }
         
         public virtual async Task<bool> IsCreationPermissionGrantedAsync()
@@ -103,12 +111,14 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return Task.FromResult(menuItemName);
         }
 
-        public virtual Task<string> GetJsServiceAsync()
+        public virtual async Task<string> GetJsServiceAsync()
         {
-            var entityNamePart = IsSubEntity ? Entity.BelongsTo.ToCamelCase() : Entity.Name.ToCamelCase();
+            return await PageDataProvider.GetJsServiceCodeAsync(Entity);
+        }
 
-            return Task.FromResult(
-                Entity.Namespace.Split('.').Select(x => x.ToCamelCase()).JoinAsString(".") + '.' + entityNamePart);
+        public virtual async Task<string> GetJsGetListInputCodeAsync()
+        {
+            return await PageDataProvider.GetJsGetListInputCodeAsync(Entity);
         }
 
         public virtual Task<string> GetJsCreateModalSubPathAsync()
@@ -245,7 +255,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             properties.Reverse();
             
             return Task.FromResult(properties.Where(x => x.ShowIn.List)
-                .Select(async x => $"{x.Name.ToCamelCase()}: `{await GetPropertyTitleTextAsync(x)}`")
+                .Select(async x => $"\"{await PageDataProvider.GetJsEntityListPropertyObjectCodeAsync(x)}\": `{await GetPropertyTitleTextAsync(x)}`")
                 .Select(x => x.Result).JoinAsString(", "));
         }
 

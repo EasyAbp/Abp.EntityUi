@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MvcSample.EntityFrameworkCore.DbMigrations\MvcSample.EntityFrameworkCore.DbMigrations.csproj" />
+    <ProjectReference Include="..\..\src\MvcSample.EntityFrameworkCore\MvcSample.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\MvcSample.TestBase\MvcSample.TestBase.csproj" />
     <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="$(AbpVersion)" />
   </ItemGroup>

@@ -1,4 +1,6 @@
-﻿using EasyAbp.Abp.EntityUi;
+﻿using EasyAbp.Abp.DynamicEntity;
+using EasyAbp.Abp.EntityUi;
+using EasyAbp.Abp.EntityUi.DynamicEntity;
 using MvcSample.Localization;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
@@ -25,7 +27,9 @@ namespace MvcSample
         typeof(AbpPermissionManagementDomainSharedModule),
         typeof(AbpSettingManagementDomainSharedModule),
         typeof(AbpTenantManagementDomainSharedModule),
-        typeof(AbpEntityUiDomainSharedModule)
+        typeof(AbpEntityUiDomainSharedModule),
+        typeof(AbpEntityUiDynamicEntityDomainSharedModule),
+        typeof(DynamicEntityDomainSharedModule)
     )]
     public class MvcSampleDomainSharedModule : AbpModule
     {
