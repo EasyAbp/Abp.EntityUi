@@ -1,10 +1,7 @@
-using System;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
@@ -33,10 +30,10 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             SetBindIdsOnGet(objId);
 
-            SetGetResultDtoToViewModel(await GetEntityDtoFromAppServiceAsync(entity, objId));
+            await SetGetResultDtoToViewModelAsync(await GetEntityDtoFromAppServiceAsync(entity, objId));
         }
         
-        protected abstract void SetGetResultDtoToViewModel(object resultDto);
+        protected abstract Task SetGetResultDtoToViewModelAsync(object resultDto);
 
         public virtual async Task<IActionResult> OnPostAsync()
         {
@@ -46,25 +43,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             var appService = GetAppService();
 
-            var formDataJson = await MapFormToDtoJsonStringAsync();
-
             var objId = ConvertIdJsonToIdObject(entity, IdForAppServiceUpdateMethod);
             
-            var entityDto = await GetEntityDtoFromAppServiceAsync(entity, objId);
-
-            var updateDtoJObj = JObject.Parse(JsonSerializer.Serialize(entityDto));
-
-            var formDataJObj = GetFormDataJObj();
-            
-            formDataJObj.Merge(JObject.Parse(formDataJson), new JsonMergeSettings
-            {
-                MergeArrayHandling = MergeArrayHandling.Union
-            });
-            
-            MergeFormDataJObjIntoUpdateDtoJObj(formDataJObj, updateDtoJObj);
-
-            var updateDto = JsonSerializer.Deserialize(entity.GetAppServiceEditDtoType(),
-                updateDtoJObj.ToString(Formatting.None));
+            var updateDto = await GetUpdateDtoFromFormDataAsync(entity, objId);
 
             dynamic task =
                 GetAppServiceType().GetInheritedMethod(entity.AppServiceUpdateMethodName)!.Invoke(appService,
@@ -78,9 +59,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return NoContent();
         }
 
-        protected abstract JObject GetFormDataJObj();
-
-        protected abstract void MergeFormDataJObjIntoUpdateDtoJObj(JObject formDataJObj, JObject updateDtoJObj);
+        protected abstract Task<object> GetUpdateDtoFromFormDataAsync(EntityDto entityDto, object objId);
 
         public virtual Task<string> GetModalTitleAsync()
         {

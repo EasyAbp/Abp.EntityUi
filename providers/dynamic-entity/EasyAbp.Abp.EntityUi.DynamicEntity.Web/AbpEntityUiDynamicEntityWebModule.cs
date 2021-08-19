@@ -1,6 +1,7 @@
 using EasyAbp.Abp.EntityUi.DynamicEntity;
 using Microsoft.Extensions.DependencyInjection;
 using EasyAbp.Abp.EntityUi.Localization;
+using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AutoMapper;
@@ -38,6 +39,11 @@ namespace EasyAbp.Abp.EntityUi.Web
             {
                 options.AddMaps<AbpEntityUiDynamicEntityWebModule>(validate: true);
             });
+        }
+
+        public override void OnApplicationInitialization(ApplicationInitializationContext context)
+        {
+            NatashaInitializer.Initialize();
         }
     }
 }

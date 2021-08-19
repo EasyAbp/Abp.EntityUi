@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
@@ -41,7 +43,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return ConvertIdJsonToIdObject(entity, jsonId);
         }
 
-        protected override void SetGetResultDtoToViewModel(object resultDto)
+        protected override Task SetGetResultDtoToViewModelAsync(object resultDto)
         {
             var parentJObj = JObject.Parse(JsonSerializer.Serialize(resultDto));
 
@@ -51,6 +53,8 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var subEntityJson = FindSubEntityJToken(parentJObj, keyValues)?.ToString();
             
             ViewModel = JsonSerializer.Deserialize(Entity.GetAppServiceEditDtoType(), subEntityJson);
+            
+            return Task.CompletedTask;
         }
 
         protected virtual JToken FindSubEntityJToken(JObject parentJObj, Dictionary<string, string> keyValues)
@@ -66,15 +70,23 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return SubEntityKeys.Select(x => x.ToCamelCase()).All(key => jToken[key]?.ToString() == keyValues[key]);
         }
 
-        protected override JObject GetFormDataJObj()
+        protected override async Task<object> GetUpdateDtoFromFormDataAsync(EntityDto entityDto, object objId)
         {
-            return JObject.Parse(
-                JsonSerializer.Serialize(
-                    Activator.CreateInstance(CurrentEntity.GetEntity().GetAppServiceEditDtoType())));
-        }
+            var entityObj = await GetEntityDtoFromAppServiceAsync(entityDto, objId);
 
-        protected override void MergeFormDataJObjIntoUpdateDtoJObj(JObject formDataJObj, JObject updateDtoJObj)
-        {
+            var updateDtoJObj = JObject.Parse(JsonSerializer.Serialize(entityObj));
+            
+            var formDataJson = await MapFormToDtoJsonStringAsync();
+
+            var formDataJObj =
+                JObject.Parse(
+                    JsonSerializer.Serialize(Activator.CreateInstance(Entity.GetAppServiceEditDtoType())));
+            
+            formDataJObj.Merge(JObject.Parse(formDataJson), new JsonMergeSettings
+            {
+                MergeArrayHandling = MergeArrayHandling.Union
+            });
+
             var keyValues = JsonSerializer.Deserialize<Dictionary<string, string>>(Request.Form["Id"]);
             
             var subEntityJContainer = FindSubEntityJToken(updateDtoJObj, keyValues) as JContainer;
@@ -83,6 +95,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             {
                 MergeArrayHandling = MergeArrayHandling.Union
             });
+
+            return JsonSerializer.Deserialize(entityDto.GetAppServiceEditDtoType(),
+                updateDtoJObj.ToString(Formatting.None));
         }
     }
 }

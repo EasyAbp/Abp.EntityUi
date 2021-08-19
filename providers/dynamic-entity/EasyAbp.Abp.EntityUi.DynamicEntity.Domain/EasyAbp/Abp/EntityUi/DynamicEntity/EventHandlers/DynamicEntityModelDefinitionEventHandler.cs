@@ -45,6 +45,9 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                         MapFieldDataTypeToCSharpType(x.FieldDefinition.Type), true,
                         new PropertyShowInValueObject(true, true, true, true))).ToList();
 
+                properties.AddFirst(new Property(moduleName, entityName, "Id", false, typeof(Guid).FullName!, false,
+                    new PropertyShowInValueObject(false, true, false, false)));
+
                 entity = new Entity(
                     moduleName: moduleName,
                     name: entityName,
@@ -65,8 +68,8 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                     contractsAssemblyName: "EasyAbp.Abp.DynamicEntity.Application.Contracts",
                     listItemDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.DynamicEntityDto",
                     detailDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.DynamicEntityDto",
-                    creationDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.CreateUpdateDynamicEntityDto",
-                    editDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.CreateUpdateDynamicEntityDto",
+                    creationDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.CreateDynamicEntityDto",
+                    editDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.UpdateDynamicEntityDto",
                     getListInputDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.GetListInput",
                     keyClassTypeName: null,
                     appServiceInterfaceName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.IDynamicEntityAppService",

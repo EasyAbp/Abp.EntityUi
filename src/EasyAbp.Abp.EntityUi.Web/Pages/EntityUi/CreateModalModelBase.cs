@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
+using EasyAbp.Abp.EntityUi.Web.Infrastructures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -28,8 +29,10 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 SetBindIdsOnGet(objId);
             }
 
+            var dataProvider = LazyServiceProvider.GetEntityUiPageDataProviderOrDefault(Entity.ProviderName);
+
             ViewModel = Activator.CreateInstance(
-                Type.GetType($"{Entity.CreationDtoTypeName}, {Entity.ContractsAssemblyName}")!);
+                await dataProvider.GetCreationViewModelTypeAsync(CurrentEntity.GetEntity()));
         }
 
         public virtual async Task<IActionResult> OnPostAsync()

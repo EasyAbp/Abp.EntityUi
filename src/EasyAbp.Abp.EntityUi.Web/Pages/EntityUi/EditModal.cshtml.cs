@@ -1,5 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
+using EasyAbp.Abp.EntityUi.Web.Infrastructures;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
@@ -17,25 +20,27 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             Id = JsonSerializer.Serialize(objId);
         }
 
-        protected override void SetGetResultDtoToViewModel(object resultDto)
+        protected override async Task SetGetResultDtoToViewModelAsync(object resultDto)
         {
-            var json = JsonSerializer.Serialize(resultDto);
+            var dataProvider = LazyServiceProvider.GetEntityUiPageDataProviderOrDefault(Entity.ProviderName);
+
+            ViewModel = await dataProvider.ConvertGetResultDtoToViewModelAsync(CurrentEntity.GetEntity(), resultDto);
+        }
+
+        protected override async Task<object> GetUpdateDtoFromFormDataAsync(EntityDto entityDto, object objId)
+        {
+            var entityObj = await GetEntityDtoFromAppServiceAsync(entityDto, objId);
+
+            var updateDtoJObj = JObject.Parse(JsonSerializer.Serialize(entityObj));
             
-            ViewModel = JsonSerializer.Deserialize(CurrentEntity.GetEntity().GetAppServiceEditDtoType(), json);
-        }
+            var formDataJson = await MapFormToDtoJsonStringAsync();
 
-        protected override JObject GetFormDataJObj()
-        {
-            return JObject.Parse(
-                JsonSerializer.Serialize(Activator.CreateInstance(EntityForAppService.GetAppServiceEditDtoType())));
-        }
+            var dataProvider = LazyServiceProvider.GetEntityUiPageDataProviderOrDefault(Entity.ProviderName);
 
-        protected override void MergeFormDataJObjIntoUpdateDtoJObj(JObject formDataJObj, JObject updateDtoJObj)
-        {
-            updateDtoJObj.Merge(formDataJObj, new JsonMergeSettings
-            {
-                MergeArrayHandling = MergeArrayHandling.Union
-            });
+            await dataProvider.MergeFormDataJsonStringIntoUpdateDtoJObjAsync(formDataJson, updateDtoJObj, entityDto);
+
+            return JsonSerializer.Deserialize(entityDto.GetAppServiceEditDtoType(),
+                updateDtoJObj.ToString(Formatting.None));
         }
     }
 }

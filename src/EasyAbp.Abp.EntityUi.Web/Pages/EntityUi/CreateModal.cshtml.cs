@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
+using EasyAbp.Abp.EntityUi.Web.Infrastructures;
 
 namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 {
@@ -13,11 +14,14 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             var appService = GetAppService();
 
-            var creationDtoJson = await MapFormToDtoJsonStringAsync();
+            var dataProvider = LazyServiceProvider.GetEntityUiPageDataProviderOrDefault(Entity.ProviderName);
 
-            dynamic task =
-                GetAppServiceType().GetInheritedMethod(entity.AppServiceCreateMethodName)!.Invoke(appService,
-                    new[] {JsonSerializer.Deserialize(entity.GetAppServiceCreationDtoType(), creationDtoJson)});
+            dynamic task = GetAppServiceType().GetInheritedMethod(entity.AppServiceCreateMethodName)!.Invoke(appService,
+                new[]
+                {
+                    await dataProvider.ConvertCreationDataJsonToCreateDtoAsync(entity,
+                        await MapFormToDtoJsonStringAsync())
+                });
 
             if (task != null)
             {
