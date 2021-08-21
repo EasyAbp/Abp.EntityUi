@@ -7,8 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["samples/MvcSample/nuget.config", "samples/MvcSample/"]
-COPY ["nuget.config", "."]
+COPY ["samples/MvcSample/NuGet.Config", "samples/MvcSample/"]
+COPY ["NuGet.Config", "."]
 COPY ["samples/MvcSample/src/MvcSample.Web/MvcSample.Web.csproj", "samples/MvcSample/src/MvcSample.Web/"]
 COPY ["src/EasyAbp.Abp.EntityUi.Web/EasyAbp.Abp.EntityUi.Web.csproj", "src/EasyAbp.Abp.EntityUi.Web/"]
 COPY ["src/EasyAbp.Abp.EntityUi.HttpApi/EasyAbp.Abp.EntityUi.HttpApi.csproj", "src/EasyAbp.Abp.EntityUi.HttpApi/"]
