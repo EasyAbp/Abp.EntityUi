@@ -82,10 +82,9 @@ namespace MvcSample.EntityFrameworkCore
             builder.ConfigureIdentityServer();
             builder.ConfigureFeatureManagement();
             builder.ConfigureTenantManagement();
-            builder.ConfigureDynamicEntity();
             
             builder.ConfigureAbpEntityUi();
-            builder.ConfigureDynamicEntity();
+            builder.ConfigureAbpDynamicEntity();
             
             /* Configure your own tables/entities inside here */
 
