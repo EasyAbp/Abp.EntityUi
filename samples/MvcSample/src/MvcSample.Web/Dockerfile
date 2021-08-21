@@ -26,6 +26,7 @@ COPY ["src/EasyAbp.Abp.EntityUi.Application/EasyAbp.Abp.EntityUi.Application.csp
 COPY ["providers/dynamic-entity/EasyAbp.Abp.EntityUi.DynamicEntity.Web/EasyAbp.Abp.EntityUi.DynamicEntity.Web.csproj", "providers/dynamic-entity/EasyAbp.Abp.EntityUi.DynamicEntity.Web/"]
 COPY ["samples/MvcSample/src/MvcSample.EntityFrameworkCore/MvcSample.EntityFrameworkCore.csproj", "samples/MvcSample/src/MvcSample.EntityFrameworkCore/"]
 COPY ["src/EasyAbp.Abp.EntityUi.EntityFrameworkCore/EasyAbp.Abp.EntityUi.EntityFrameworkCore.csproj", "src/EasyAbp.Abp.EntityUi.EntityFrameworkCore/"]
+COPY Directory.Build.props .
 RUN dotnet restore "samples/MvcSample/src/MvcSample.Web/MvcSample.Web.csproj"
 COPY . .
 WORKDIR "/src/samples/MvcSample/src/MvcSample.Web"
