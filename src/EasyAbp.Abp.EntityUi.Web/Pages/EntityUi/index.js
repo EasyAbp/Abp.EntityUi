@@ -6,7 +6,10 @@ $(function () {
     for (var propertyName in propertyNameTitleMapping) {
         propertyColumns.push({
             title: l(propertyNameTitleMapping[propertyName]),
-            data: propertyName
+            data: propertyName,
+            render: function (data) {
+                return data ?? null;
+            }
         })
     }
     

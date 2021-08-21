@@ -88,9 +88,14 @@ We have launched an online demo for this module: [https://entityui.samples.easya
     }
 ```
 
+### Entity UI for dynamic entities?
+
+See the Entity UI dynamic entity provider [document](/docs/providers/dynamic-entity/README.md).
+
 ## Road map
 
 - [ ] Detail modal.
+- [x] Support dynamic entities.
 - [x] Support the MVC template.
 - [ ] Support the Blazor template.
 - [ ] Support the Angular template.

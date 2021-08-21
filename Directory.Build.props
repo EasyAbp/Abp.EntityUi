@@ -2,6 +2,7 @@
   <PropertyGroup>
 
     <AbpVersion>4.4.0</AbpVersion>
+    <EasyAbpAbpDynamicEntityModuleVersion>0.1.1</EasyAbpAbpDynamicEntityModuleVersion>
 
   </PropertyGroup>
 </Project>

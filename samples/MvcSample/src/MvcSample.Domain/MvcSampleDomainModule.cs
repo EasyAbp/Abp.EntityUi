@@ -34,7 +34,7 @@ namespace MvcSample
         typeof(AbpEmailingModule),
         typeof(AbpEntityUiDomainModule),
         typeof(AbpEntityUiDynamicEntityDomainModule),
-        typeof(DynamicEntityDomainModule)
+        typeof(AbpDynamicEntityDomainModule)
     )]
     public class MvcSampleDomainModule : AbpModule
     {

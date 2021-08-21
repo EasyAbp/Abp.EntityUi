@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\Abp.DynamicEntity\src\EasyAbp.Abp.DynamicEntity.Application.Contracts\EasyAbp.Abp.DynamicEntity.Application.Contracts.csproj" />
+        <PackageReference Include="EasyAbp.Abp.DynamicEntity.Application.Contracts" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
         <ProjectReference Include="..\..\..\src\EasyAbp.Abp.EntityUi.Web\EasyAbp.Abp.EntityUi.Web.csproj" />
         <ProjectReference Include="..\EasyAbp.Abp.EntityUi.DynamicEntity.Domain.Shared\EasyAbp.Abp.EntityUi.DynamicEntity.Domain.Shared.csproj" />
     </ItemGroup>

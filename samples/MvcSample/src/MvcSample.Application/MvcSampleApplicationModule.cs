@@ -21,7 +21,7 @@ namespace MvcSample
         typeof(AbpFeatureManagementApplicationModule),
         typeof(AbpSettingManagementApplicationModule),
         typeof(AbpEntityUiApplicationModule),
-        typeof(DynamicEntityApplicationModule)
+        typeof(AbpDynamicEntityApplicationModule)
     )]
     public class MvcSampleApplicationModule : AbpModule
     {

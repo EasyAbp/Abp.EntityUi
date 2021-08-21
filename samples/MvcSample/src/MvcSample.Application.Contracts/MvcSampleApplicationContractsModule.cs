@@ -21,7 +21,7 @@ namespace MvcSample
         typeof(AbpTenantManagementApplicationContractsModule),
         typeof(AbpObjectExtendingModule),
         typeof(AbpEntityUiApplicationContractsModule),
-        typeof(DynamicEntityApplicationContractsModule)
+        typeof(AbpDynamicEntityApplicationContractsModule)
     )]
     public class MvcSampleApplicationContractsModule : AbpModule
     {

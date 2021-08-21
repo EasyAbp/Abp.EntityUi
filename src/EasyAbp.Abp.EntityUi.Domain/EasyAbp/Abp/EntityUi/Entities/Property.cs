@@ -46,6 +46,18 @@ namespace EasyAbp.Abp.EntityUi.Entities
             bool nullable,
             PropertyShowInValueObject showIn)
         {
+            Update(entityModuleName, entityName, name, isEntityCollection, typeOrEntityName, nullable, showIn);
+        }
+        
+        public void Update(
+            [NotNull] string entityModuleName,
+            [NotNull] string entityName,
+            [NotNull] string name,
+            bool isEntityCollection,
+            [NotNull] string typeOrEntityName,
+            bool nullable,
+            PropertyShowInValueObject showIn)
+        {
             EntityModuleName = entityModuleName;
             EntityName = entityName;
             Name = name;
@@ -53,7 +65,6 @@ namespace EasyAbp.Abp.EntityUi.Entities
             TypeOrEntityName = typeOrEntityName;
             Nullable = nullable;
             ShowIn = showIn;
-            
         }
 
         public override object[] GetKeys()

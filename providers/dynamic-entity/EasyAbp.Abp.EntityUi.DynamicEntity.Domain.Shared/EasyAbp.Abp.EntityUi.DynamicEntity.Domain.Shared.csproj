@@ -10,7 +10,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\src\EasyAbp.Abp.EntityUi.Domain.Shared\EasyAbp.Abp.EntityUi.Domain.Shared.csproj" />
-        <ProjectReference Include="..\..\..\..\Abp.DynamicEntity\src\EasyAbp.Abp.DynamicEntity.Domain.Shared\EasyAbp.Abp.DynamicEntity.Domain.Shared.csproj" />
+        <PackageReference Include="EasyAbp.Abp.DynamicEntity.Domain.Shared" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
     </ItemGroup>
 
     <ItemGroup>

@@ -370,7 +370,7 @@ namespace EasyAbp.Abp.EntityUi.Data
                     var appServiceDeleteMethod = appServiceMethods?.FirstOrDefault(x =>
                         AppServiceDeleteMethodNames.Contains(x.Name) && IsDeleteMethod(x, keyClassType, keys));
 
-                    entity = new Entity(
+                    var model = new EntityDataModel(
                         moduleName: module.Name,
                         name: entityName,
                         providerName: AbpEntityUiConsts.DefaultEntityProviderName,
@@ -399,6 +399,8 @@ namespace EasyAbp.Abp.EntityUi.Data
                         appServiceUpdateMethodName: appServiceUpdateMethod?.Name,
                         appServiceDeleteMethodName: appServiceDeleteMethod?.Name,
                         properties: properties);
+
+                    entity = new Entity(model);
                     
                     await _entityRepository.InsertAsync(entity, true);
                 }

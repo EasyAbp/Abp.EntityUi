@@ -8,7 +8,7 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity
 {
     [DependsOn(
         typeof(AbpEntityUiDomainSharedModule),
-        typeof(DynamicEntityDomainSharedModule)
+        typeof(AbpDynamicEntityDomainSharedModule)
     )]
     public class AbpEntityUiDynamicEntityDomainSharedModule : AbpModule
     {

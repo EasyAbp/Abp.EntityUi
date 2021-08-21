@@ -28,7 +28,7 @@ namespace MvcSample.EntityFrameworkCore
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpFeatureManagementEntityFrameworkCoreModule),
         typeof(AbpEntityUiEntityFrameworkCoreModule),
-        typeof(DynamicEntityEntityFrameworkCoreModule)
+        typeof(AbpDynamicEntityEntityFrameworkCoreModule)
     )]
     public class MvcSampleEntityFrameworkCoreModule : AbpModule
     {

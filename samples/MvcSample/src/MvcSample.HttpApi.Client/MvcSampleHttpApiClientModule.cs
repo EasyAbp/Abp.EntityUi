@@ -20,7 +20,7 @@ namespace MvcSample
         typeof(AbpFeatureManagementHttpApiClientModule),
         typeof(AbpSettingManagementHttpApiClientModule),
         typeof(AbpEntityUiHttpApiClientModule),
-        typeof(DynamicEntityHttpApiClientModule)
+        typeof(AbpDynamicEntityHttpApiClientModule)
     )]
     public class MvcSampleHttpApiClientModule : AbpModule
     {

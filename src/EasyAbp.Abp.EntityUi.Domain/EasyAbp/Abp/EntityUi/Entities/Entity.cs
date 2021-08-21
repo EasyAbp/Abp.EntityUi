@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using JetBrains.Annotations;
 using Volo.Abp.Domain.Entities;
 
@@ -102,6 +103,7 @@ namespace EasyAbp.Abp.EntityUi.Entities
             Properties = new List<Property>();
         }
 
+        [JsonConstructor]
         public Entity([NotNull] string moduleName, [NotNull] string name, [NotNull] string providerName,
             [CanBeNull] string @namespace, [CanBeNull] string belongsTo, [NotNull] string[] keys, bool creationEnabled,
             [CanBeNull] string creationPermission, bool editEnabled, [CanBeNull] string editPermission,
@@ -115,35 +117,50 @@ namespace EasyAbp.Abp.EntityUi.Entities
             [CanBeNull] string appServiceUpdateMethodName, [CanBeNull] string appServiceDeleteMethodName,
             List<Property> properties)
         {
-            ModuleName = moduleName;
-            Name = name;
-            ProviderName = providerName;
-            Namespace = @namespace;
-            BelongsTo = belongsTo;
-            Keys = keys;
-            CreationEnabled = creationEnabled;
-            CreationPermission = creationPermission;
-            EditEnabled = editEnabled;
-            EditPermission = editPermission;
-            DeletionEnabled = deletionEnabled;
-            DeletionPermission = deletionPermission;
-            DetailEnabled = detailEnabled;
-            DetailPermission = detailPermission;
-            ContractsAssemblyName = contractsAssemblyName;
-            ListItemDtoTypeName = listItemDtoTypeName;
-            DetailDtoTypeName = detailDtoTypeName;
-            CreationDtoTypeName = creationDtoTypeName;
-            EditDtoTypeName = editDtoTypeName;
-            GetListInputDtoTypeName = getListInputDtoTypeName;
-            KeyClassTypeName = keyClassTypeName;
-            AppServiceInterfaceName = appServiceInterfaceName;
-            AppServiceGetListMethodName = appServiceGetListMethodName;
-            AppServiceGetMethodName = appServiceGetMethodName;
-            AppServiceCreateMethodName = appServiceCreateMethodName;
-            AppServiceUpdateMethodName = appServiceUpdateMethodName;
-            AppServiceDeleteMethodName = appServiceDeleteMethodName;
+            Update(new EntityDataModel(moduleName, name, providerName, @namespace, belongsTo, keys, creationEnabled,
+                creationPermission, editEnabled, editPermission, deletionEnabled, deletionPermission, detailEnabled,
+                detailPermission, contractsAssemblyName, listItemDtoTypeName, detailDtoTypeName, creationDtoTypeName,
+                editDtoTypeName, getListInputDtoTypeName, keyClassTypeName, appServiceInterfaceName,
+                appServiceGetListMethodName, appServiceGetMethodName, appServiceCreateMethodName,
+                appServiceUpdateMethodName, appServiceDeleteMethodName, properties));
+        }
 
-            Properties = properties ?? new List<Property>();
+        public Entity(EntityDataModel model)
+        {
+            Update(model);
+        }
+
+        public void Update(EntityDataModel model)
+        {
+            ModuleName = model.ModuleName;
+            Name = model.Name;
+            ProviderName = model.ProviderName;
+            Namespace = model.Namespace;
+            BelongsTo = model.BelongsTo;
+            Keys = model.Keys;
+            CreationEnabled = model.CreationEnabled;
+            CreationPermission = model.CreationPermission;
+            EditEnabled = model.EditEnabled;
+            EditPermission = model.EditPermission;
+            DeletionEnabled = model.DeletionEnabled;
+            DeletionPermission = model.DeletionPermission;
+            DetailEnabled = model.DetailEnabled;
+            DetailPermission = model.DetailPermission;
+            ContractsAssemblyName = model.ContractsAssemblyName;
+            ListItemDtoTypeName = model.ListItemDtoTypeName;
+            DetailDtoTypeName = model.DetailDtoTypeName;
+            CreationDtoTypeName = model.CreationDtoTypeName;
+            EditDtoTypeName = model.EditDtoTypeName;
+            GetListInputDtoTypeName = model.GetListInputDtoTypeName;
+            KeyClassTypeName = model.KeyClassTypeName;
+            AppServiceInterfaceName = model.AppServiceInterfaceName;
+            AppServiceGetListMethodName = model.AppServiceGetListMethodName;
+            AppServiceGetMethodName = model.AppServiceGetMethodName;
+            AppServiceCreateMethodName = model.AppServiceCreateMethodName;
+            AppServiceUpdateMethodName = model.AppServiceUpdateMethodName;
+            AppServiceDeleteMethodName = model.AppServiceDeleteMethodName;
+
+            Properties = model.Properties ?? new List<Property>();
         }
 
         public override object[] GetKeys()

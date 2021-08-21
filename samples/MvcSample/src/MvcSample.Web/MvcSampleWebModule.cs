@@ -58,7 +58,7 @@ namespace MvcSample.Web
         typeof(AbpSwashbuckleModule),
         typeof(AbpEntityUiWebModule),
         typeof(AbpEntityUiDynamicEntityWebModule),
-        typeof(DynamicEntityWebModule)
+        typeof(AbpDynamicEntityWebModule)
     )]
     public class MvcSampleWebModule : AbpModule
     {

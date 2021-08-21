@@ -29,7 +29,7 @@ namespace MvcSample
         typeof(AbpTenantManagementDomainSharedModule),
         typeof(AbpEntityUiDomainSharedModule),
         typeof(AbpEntityUiDynamicEntityDomainSharedModule),
-        typeof(DynamicEntityDomainSharedModule)
+        typeof(AbpDynamicEntityDomainSharedModule)
     )]
     public class MvcSampleDomainSharedModule : AbpModule
     {
