@@ -77,7 +77,10 @@ We have launched an online demo for this module: [https://entityui.samples.easya
         {
             Configure<AbpEntityUiOptions>(options =>
             {
-                options.Modules.Add("MyProject", new AbpEntityUiModuleOptions(typeof(MyProjectDomainModule), "/EntityUiSeed.json"));
+                options.Modules.Add(
+                    "MyProject",
+                    new AbpEntityUiModuleOptions(typeof(MyProjectDomainModule), "/EntityUiSeed.json")
+                );
             });
             
             Configure<AbpVirtualFileSystemOptions>(options =>
