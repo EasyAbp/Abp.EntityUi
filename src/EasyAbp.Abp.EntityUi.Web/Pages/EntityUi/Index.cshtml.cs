@@ -75,8 +75,13 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             PageDataProvider = _lazyServiceProvider.GetEntityUiPageDataProviderOrDefault(Entity.ProviderName);
         }
         
-        public virtual async Task<bool> IsCreationPermissionGrantedAsync()
+        public virtual async Task<bool> IsCreationPermissionGrantedOrNullAsync()
         {
+            if (Entity.CreationPermission.IsNullOrWhiteSpace())
+            {
+                return true;
+            }
+            
             return await _authorizationService.IsGrantedAsync(Entity.CreationPermission);
         }
 
@@ -114,6 +119,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         public virtual async Task<string> GetJsServiceAsync()
         {
             return await PageDataProvider.GetJsServiceCodeAsync(Entity);
+        }
+
+        public virtual Task<string> GetJsGetListMethodNameAsync()
+        {
+            return Task.FromResult(Entity.AppServiceGetListMethodName.RemovePostFix("Async").ToCamelCase());
         }
 
         public virtual async Task<string> GetJsGetListInputCodeAsync()

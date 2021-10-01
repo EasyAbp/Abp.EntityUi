@@ -17,6 +17,7 @@
     var subEntityListPropertyName = `@Html.Raw(await Model.GetJsSubEntityCollectionPropertyNameAsync())`;
     var findSubEntityIndexCode = `@Html.Raw(await Model.GetJsFindSubEntityIndexCodeAsync("list", "data"))`;
     var serviceCode = `@Html.Raw(await Model.GetJsServiceAsync())`;
+    var getListMethodName = `@Html.Raw(await Model.GetJsGetListMethodNameAsync())`;
     var getListInput = @Html.Raw(await Model.GetJsGetListInputCodeAsync());
     var createModalSubPath = `@Html.Raw(await Model.GetJsCreateModalSubPathAsync())`;
     var editModalSubPath = `@Html.Raw(await Model.GetJsEditModalSubPathAsync())`;
@@ -55,7 +56,7 @@
                 <abp-card-title>@await Model.GetPageTitleAsync()</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-right">
-			    @if (Model.Entity.CreationEnabled && await Model.IsCreationPermissionGrantedAsync())
+			    @if (Model.Entity.CreationEnabled && await Model.IsCreationPermissionGrantedOrNullAsync())
                 {
                 <abp-button id="@await Model.GetNewButtonIdAsync()"
                             text="@await Model.GetNewButtonTextAsync()"

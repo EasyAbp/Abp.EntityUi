@@ -87,7 +87,8 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         {
             var keys = pair.Key.Split('.');
 
-            var firstKey = keys.First().ToCamelCase();
+            // var firstKey = keys.First().ToCamelCase();
+            var firstKey = keys.First();
 
             if (keys.Length == 1)
             {

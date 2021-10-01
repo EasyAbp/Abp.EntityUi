@@ -5,7 +5,7 @@ using Volo.Abp.Application.Dtos;
 namespace EasyAbp.Abp.EntityUi.Entities.Dtos
 {
     [Serializable]
-    public class EntityDto : ExtensibleEntityDto
+    public class EntityDto : ExtensibleAuditedEntityDto
     {
         public string ModuleName { get; set; }
 
@@ -62,5 +62,10 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
         public string AppServiceDeleteMethodName { get; set; }
 
         public List<PropertyDto> Properties { get; set; }
+
+        public string GetFullName()
+        {
+            return $"{ModuleName}_{Name}";
+        }
     }
 }

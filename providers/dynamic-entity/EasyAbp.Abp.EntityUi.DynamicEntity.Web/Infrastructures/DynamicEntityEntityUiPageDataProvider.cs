@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos;
 using EasyAbp.Abp.EntityUi.DynamicEntity;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
-using Natasha.CSharp;
 using Newtonsoft.Json.Linq;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
@@ -21,13 +19,16 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
 
         private readonly ICurrentEntity _currentEntity;
         private readonly IJsonSerializer _jsonSerializer;
+        private readonly IViewModelTypeProvider _viewModelTypeProvider;
 
         public DynamicEntityEntityUiPageDataProvider(
             ICurrentEntity currentEntity,
-            IJsonSerializer jsonSerializer)
+            IJsonSerializer jsonSerializer,
+            IViewModelTypeProvider viewModelTypeProvider)
         {
             _currentEntity = currentEntity;
             _jsonSerializer = jsonSerializer;
+            _viewModelTypeProvider = viewModelTypeProvider;
         }
 
         public virtual Task<string> MapDictionaryToCreateUpdateDtoJsonStringAsync(Dictionary<string, object> dict)
@@ -62,27 +63,17 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
 
         public virtual Task<string> GetJsEntityListPropertyObjectCodeAsync(PropertyDto propertyDto)
         {
-            return Task.FromResult($"extraProperties.{propertyDto.Name.ToCamelCase()}");
+            return Task.FromResult($"extraProperties.{propertyDto.Name}");
+        }
+        
+        public virtual async Task<Type> GetCreationViewModelTypeAsync(EntityDto entityDto)
+        {
+            return await _viewModelTypeProvider.GetCreationViewModelTypeAsync(entityDto);
         }
 
-        protected virtual Task<Type> GetEditViewModelTypeAsync(EntityDto entityDto)
+        protected virtual async Task<Type> GetEditViewModelTypeAsync(EntityDto entityDto)
         {
-            var nClass = NClass.RandomDomain();
-            nClass
-                .Namespace("EasyAbp.Abp.EntityUi.Web.Pages.EntityUi")
-                .Public()
-                .Name($"DynamicEntityUpdate{entityDto.Name}Dto")
-                .Ctor(ctor => ctor.Public().Body(string.Empty));
-
-            foreach (var property in entityDto.Properties.Where(x => x.ShowIn.Edit))
-            {
-                nClass.Property(prop => prop
-                    .Type(Type.GetType(property.TypeOrEntityName))
-                    .Name(property.Name)
-                    .Public());
-            }
-
-            return Task.FromResult(nClass.GetType());
+            return await _viewModelTypeProvider.GetEditViewModelTypeAsync(entityDto);
         }
 
         public Task MergeFormDataJsonStringIntoUpdateDtoJObjAsync(string formDataJson, JObject updateDtoJObj,
@@ -104,26 +95,6 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
 
             return _jsonSerializer.Deserialize(await GetEditViewModelTypeAsync(entityDto),
                 JObject.Parse(json)["extraProperties"]!.ToString());
-        }
-
-        public virtual Task<Type> GetCreationViewModelTypeAsync(EntityDto entityDto)
-        {
-            var nClass = NClass.RandomDomain();
-            nClass
-                .Namespace("EasyAbp.Abp.EntityUi.Web.Pages.EntityUi")
-                .Public()
-                .Name($"DynamicEntityCreate{entityDto.Name}Dto")
-                .Ctor(ctor => ctor.Public().Body(string.Empty));
-
-            foreach (var property in entityDto.Properties.Where(x => x.ShowIn.Creation))
-            {
-                nClass.Property(prop => prop
-                    .Type(Type.GetType(property.TypeOrEntityName))
-                    .Name(property.Name)
-                    .Public());
-            }
-
-            return Task.FromResult(nClass.GetType());
         }
 
         public virtual Task<object> ConvertCreationDataJsonToCreateDtoAsync(EntityDto entityDto, string dataJson)

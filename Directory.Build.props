@@ -1,8 +1,8 @@
 <Project>
   <PropertyGroup>
 
-    <AbpVersion>4.4.0</AbpVersion>
-    <EasyAbpAbpDynamicEntityModuleVersion>0.1.2</EasyAbpAbpDynamicEntityModuleVersion>
+    <AbpVersion>4.4.1</AbpVersion>
+    <EasyAbpAbpDynamicEntityModuleVersion>0.3.1</EasyAbpAbpDynamicEntityModuleVersion>
 
   </PropertyGroup>
 </Project>

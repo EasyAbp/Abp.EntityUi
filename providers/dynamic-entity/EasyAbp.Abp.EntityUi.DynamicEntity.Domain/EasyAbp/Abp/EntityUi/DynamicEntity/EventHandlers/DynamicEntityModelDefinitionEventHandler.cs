@@ -67,7 +67,7 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                     menuItemName,
                     ModuleName,
                     entityName,
-                    "EasyAbp.Abp.DynamicEntity.DynamicEntity", // Todo: should be customizable.
+                    eventData.Entity.PermissionSet.GetList,
                     localizationItemName,
                     new List<MenuItem>());
                     
@@ -120,15 +120,13 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                 belongsTo: null, // Todo: sub-entities for dynamic entities?
                 keys: new[] {"Id"},
                 creationEnabled: true,
-                creationPermission:
-                "EasyAbp.Abp.DynamicEntity.DynamicEntity.Create", // Todo: should be customizable.
+                creationPermission: eto.PermissionSet.Create,
                 editEnabled: true,
-                editPermission: "EasyAbp.Abp.DynamicEntity.DynamicEntity.Update", // Todo: should be customizable.
+                editPermission: eto.PermissionSet.Update,
                 deletionEnabled: true,
-                deletionPermission:
-                "EasyAbp.Abp.DynamicEntity.DynamicEntity.Delete", // Todo: should be customizable.
+                deletionPermission: eto.PermissionSet.Delete,
                 detailEnabled: true,
-                detailPermission: "EasyAbp.Abp.DynamicEntity.DynamicEntity", // Todo: should be customizable.
+                detailPermission: eto.PermissionSet.Get,
                 contractsAssemblyName: "EasyAbp.Abp.DynamicEntity.Application.Contracts",
                 listItemDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.DynamicEntityDto",
                 detailDtoTypeName: "EasyAbp.Abp.DynamicEntity.DynamicEntities.Dtos.DynamicEntityDto",

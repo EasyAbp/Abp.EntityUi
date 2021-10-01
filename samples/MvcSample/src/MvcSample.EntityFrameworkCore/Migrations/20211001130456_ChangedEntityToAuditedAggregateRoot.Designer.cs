@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MvcSample.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -10,9 +11,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace MvcSample.Migrations
 {
     [DbContext(typeof(MvcSampleDbContext))]
-    partial class MvcSampleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211001130456_ChangedEntityToAuditedAggregateRoot")]
+    partial class ChangedEntityToAuditedAggregateRoot
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2421,57 +2423,6 @@ namespace MvcSample.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("ModelDefinition");
-                });
-
-            modelBuilder.Entity("EasyAbp.Abp.DynamicEntity.ModelDefinitions.ModelDefinition", b =>
-                {
-                    b.OwnsOne("EasyAbp.Abp.DynamicEntity.ModelDefinitions.PermissionSetValueObject", "PermissionSet", b1 =>
-                        {
-                            b1.Property<Guid>("ModelDefinitionId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<bool>("AnonymousCreate")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("AnonymousDelete")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("AnonymousGet")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("AnonymousGetList")
-                                .HasColumnType("bit");
-
-                            b1.Property<bool>("AnonymousUpdate")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("Create")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Delete")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Get")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("GetList")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Manage")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Update")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("ModelDefinitionId");
-
-                            b1.ToTable("EasyAbpAbpDynamicEntityModelDefinitions");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ModelDefinitionId");
-                        });
-
-                    b.Navigation("PermissionSet");
                 });
 
             modelBuilder.Entity("EasyAbp.Abp.DynamicEntity.ModelDefinitions.ModelField", b =>

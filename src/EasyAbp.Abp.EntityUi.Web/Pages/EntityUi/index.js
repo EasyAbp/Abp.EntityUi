@@ -12,12 +12,17 @@ $(function () {
             }
         })
     }
+
+    function isEmptyOrSpaces(str){
+        return str === null || str.match(/^ *$/) !== null;
+    }
     
     var service = eval(serviceCode);
     var createModal = new abp.ModalManager(abp.appPath + createModalSubPath);
     var editModal = new abp.ModalManager(abp.appPath + editModalSubPath);
     
     eval(buildSubEntitiesRowActionItemsCode);
+    eval('var getListMethod = service.' + getListMethodName);
 
     var dataTable = $('#' + tableId).DataTable(abp.libs.datatables.normalizeConfiguration({
         processing: true,
@@ -27,7 +32,7 @@ $(function () {
         autoWidth: false,
         scrollCollapse: true,
         order: [[0, "asc"]],
-        ajax: abp.libs.datatables.createAjax(service.getList, function () {
+        ajax: abp.libs.datatables.createAjax(getListMethod, function () {
             return getListInput ?? {}
         }),
         columnDefs: [
@@ -38,14 +43,14 @@ $(function () {
                             ... subEntitiesRowActionItems,
                             {
                                 text: l(editRowActionItemText),
-                                visible: editEnable && abp.auth.isGranted(editPermission),
+                                visible: editEnable && (isEmptyOrSpaces(editPermission) || abp.auth.isGranted(editPermission)),
                                 action: function (data) {
                                     eval('editModal.open(' + editKeysCode + ')');
                                 }
                             },
                             {
                                 text: l(deletionRowActionItemText),
-                                visible: deletionEnable && abp.auth.isGranted(deletionPermission),
+                                visible: deletionEnable && (isEmptyOrSpaces(deletionPermission) || abp.auth.isGranted(deletionPermission)),
                                 confirmMessage: function (data) {
                                     return eval(deletionConfirmMessageReturnCode);
                                 },

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using JetBrains.Annotations;
-using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
 
 namespace EasyAbp.Abp.EntityUi.Entities
 {
-    public class Entity : AggregateRoot
+    public class Entity : AuditedAggregateRoot
     {
         [Key, Column(Order = 0)]
         [NotNull]
