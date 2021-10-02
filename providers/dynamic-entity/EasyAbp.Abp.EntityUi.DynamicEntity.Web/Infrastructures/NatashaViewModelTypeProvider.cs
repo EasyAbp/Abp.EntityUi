@@ -32,10 +32,13 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
         protected virtual Task<DomainBase> RecreateAndGetDomainAsync(EntityDto entityDto)
         {
             var domainKey = $"{DomainKeyPrefix}_{entityDto.GetFullName()}";
-            
-            DomainManagement.Get(domainKey)?.Dispose();
 
-            return Task.FromResult(DomainManagement.CreateDomain(domainKey));
+            if (DomainManagement.Get(domainKey) != null)
+            {
+                DomainManagement.Remove(domainKey);
+            }
+
+            return Task.FromResult(DomainManagement.Create(domainKey));
         }
 
         protected virtual async Task<NatashaViewModelTypeModel> GetTypeModelAsync(EntityDto entityDto)
