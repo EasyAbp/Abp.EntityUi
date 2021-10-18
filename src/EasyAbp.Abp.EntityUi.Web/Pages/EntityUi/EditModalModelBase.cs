@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
+using EasyAbp.Abp.EntityUi.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 
@@ -22,7 +23,8 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var currentModule = CurrentEntity.GetModule();
             
             StringLocalizer = await StringLocalizerProvider.GetAsync(currentModule);
-            LocalizationResourceType = await StringLocalizerProvider.GetResourceTypeAsync(currentModule);
+            LocalizationResourceType = await StringLocalizerProvider.GetResourceTypeOrNullAsync(currentModule) ??
+                                       typeof(EntityUiResource);
 
             var entity = EntityForAppService;
             

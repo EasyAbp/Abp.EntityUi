@@ -11,6 +11,6 @@ namespace EasyAbp.Abp.EntityUi.Web.Localization
         
         Task<string> GetResourceNameAsync(ModuleDto module);
 
-        Task<Type> GetResourceTypeAsync(ModuleDto module);
+        Task<Type> GetResourceTypeOrNullAsync(ModuleDto module);
     }
 }
