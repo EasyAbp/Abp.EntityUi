@@ -37,7 +37,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Localization
         {
             if (module.LResourceTypeName.IsNullOrEmpty() || module.LResourceTypeAssemblyName.IsNullOrEmpty())
             {
-                return null;
+                return Task.FromResult<Type>(null);
             }
             
             return Task.FromResult(Type.GetType($"{module.LResourceTypeName}, {module.LResourceTypeAssemblyName}"));
