@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using EasyAbp.Abp.EntityUi.Entities;
-using EasyAbp.Abp.EntityUi.MenuItems;
 using EasyAbp.Abp.EntityUi.Modules;
 
 namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
@@ -14,7 +13,6 @@ namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
          * DbSet<Question> Questions { get; }
          */
         DbSet<Entity> Entities { get; set; }
-        DbSet<MenuItem> MenuItems { get; set; }
         DbSet<Module> Modules { get; set; }
     }
 }

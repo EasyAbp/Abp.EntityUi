@@ -11,18 +11,6 @@
     "EditModule": "Edit",
     "ModuleDeletionConfirmationMessage": "Are you sure to delete the module {0}?",
     "SuccessfullyDeleted": "Successfully deleted",
-    "Menu:MenuItem": "Menu item",
-    "MenuItem": "Menu item",
-    "MenuItemParentName": "Parent name",
-    "MenuItemName": "Name",
-    "MenuItemModuleName": "Module",
-    "MenuItemEntityName": "Entity",
-    "MenuItemPermission": "Permission",
-    "MenuItemLocalizationItemName": "Localization item name",
-    "MenuItemMenuItems": "Menu item",
-    "CreateMenuItem": "New",
-    "EditMenuItem": "Edit",
-    "MenuItemDeletionConfirmationMessage": "Are you sure to delete the menu item {0}?",
     "Menu:Entity": "Entity",
     "Entity": "Entity",
     "EntityModuleName": "Module",
@@ -70,6 +58,7 @@
     "PropertyShowInEdit": "Show in edit",
     "CreateProperty": "New",
     "EditProperty": "Edit",
-    "PropertyDeletionConfirmationMessage": "Are you sure to delete the property {0}?"
+    "PropertyDeletionConfirmationMessage": "Are you sure to delete the property {0}?",
+    "AutoCreateDynamicMenuItem": "Auto-create menu items for entities"
   }
 }

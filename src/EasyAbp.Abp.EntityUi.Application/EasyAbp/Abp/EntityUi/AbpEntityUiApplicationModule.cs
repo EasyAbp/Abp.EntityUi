@@ -10,7 +10,7 @@ namespace EasyAbp.Abp.EntityUi
         typeof(AbpEntityUiApplicationContractsModule),
         typeof(AbpDddApplicationModule),
         typeof(AbpAutoMapperModule)
-        )]
+    )]
     public class AbpEntityUiApplicationModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

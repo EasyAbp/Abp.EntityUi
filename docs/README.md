@@ -13,6 +13,8 @@ We have launched an online demo for this module: [https://entityui.samples.easya
 
 ## Installation
 
+1. Follow [the document](https://github.com/EasyAbp/Abp.DynamicMenu#installation) to install the dependent Abp.DynamicMenu module.
+
 1. Install the following NuGet packages. ([see how](https://github.com/EasyAbp/EasyAbpGuide/blob/master/docs/How-To.md#add-nuget-packages))
 
     * EasyAbp.Abp.EntityUi.Application

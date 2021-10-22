@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.DynamicEntity.FieldDefinitions;
+using EasyAbp.Abp.DynamicEntity.Localization;
 using EasyAbp.Abp.DynamicEntity.ModelDefinitions;
+using EasyAbp.Abp.DynamicMenu.MenuItems;
 using EasyAbp.Abp.EntityUi.Entities;
-using EasyAbp.Abp.EntityUi.MenuItems;
 using JetBrains.Annotations;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
@@ -27,13 +28,16 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
         
         private readonly IEntityRepository _entityRepository;
         private readonly IMenuItemRepository _menuItemRepository;
+        private readonly IMenuItemNameCalculator _menuItemNameCalculator;
 
         public DynamicEntityModelDefinitionEventHandler(
             IEntityRepository entityRepository,
-            IMenuItemRepository menuItemRepository)
+            IMenuItemRepository menuItemRepository,
+            IMenuItemNameCalculator menuItemNameCalculator)
         {
             _entityRepository = entityRepository;
             _menuItemRepository = menuItemRepository;
+            _menuItemNameCalculator = menuItemNameCalculator;
         }
         
         public virtual async Task HandleEventAsync(EntityCreatedEto<ModelDefinitionEto> eventData)
@@ -52,29 +56,51 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                 await _entityRepository.InsertAsync(entity, true);
             }
 
-            var menuItemName = GetMenuItemName(ModuleName, entityName);
-
-            var menuItem = await _menuItemRepository.FindAsync(x => x.Name == menuItemName);
+            var menuItem = await _menuItemRepository.FindAsync(x =>
+                x.Name == _menuItemNameCalculator.GetName(ModuleName, eventData.Entity.Name));
 
             if (menuItem == null)
             {
-                var localizationItemName = $"Menu:{menuItemName.Split('.').Last()}";
+                var moduleMenuItem = await GetOrCreateModuleMenuItemAsync();
 
-                var moduleMenuItem = await GetOrCreateModuleMenuItemAsync(ModuleName);
-
-                menuItem = new MenuItem(
-                    moduleMenuItem.Name,
-                    menuItemName,
-                    ModuleName,
-                    entityName,
-                    eventData.Entity.PermissionSet.GetList,
-                    localizationItemName,
-                    new List<MenuItem>());
+                menuItem = await GenerateEntityMenuItemAsync(eventData.Entity);
                     
                 moduleMenuItem.MenuItems.Add(menuItem);
                 
                 await _menuItemRepository.UpdateAsync(moduleMenuItem, true);
             }
+        }
+
+        protected virtual Task<MenuItem> GenerateModuleMenuItemAsync()
+        {
+            return Task.FromResult(new MenuItem(
+                parentName: null,
+                name: _menuItemNameCalculator.GetName(ModuleName),
+                displayName: _menuItemNameCalculator.GetDisplayName(ModuleName),
+                url: null,
+                urlMvc: null,
+                urlBlazor: null,
+                urlAngular: null,
+                permission: null,
+                lResourceTypeName: typeof(DynamicEntityResource).FullName,
+                lResourceTypeAssemblyName: typeof(DynamicEntityResource).Assembly.GetName().Name,
+                menuItems: new List<MenuItem>()));
+        }
+
+        protected virtual Task<MenuItem> GenerateEntityMenuItemAsync(ModelDefinitionEto modelDefinition)
+        {
+            return Task.FromResult(new MenuItem(
+                parentName: _menuItemNameCalculator.GetName(ModuleName),
+                name: _menuItemNameCalculator.GetName(ModuleName, modelDefinition.Name),
+                displayName: _menuItemNameCalculator.GetDisplayName(ModuleName, modelDefinition.Name),
+                url: $"/EntityUi/{ModuleName}/{modelDefinition.Name}",
+                urlMvc: null,
+                urlBlazor: null,
+                urlAngular: $"/entity-ui/{ModuleName}/{modelDefinition.Name.ToKebabCase()}",
+                permission: modelDefinition.PermissionSet.GetList,
+                lResourceTypeName: typeof(DynamicEntityResource).FullName,
+                lResourceTypeAssemblyName: typeof(DynamicEntityResource).Assembly.GetName().Name,
+                menuItems: new List<MenuItem>()));
         }
 
         protected virtual Task<EntityDataModel> CreateEntityDataModelAsync(ModelDefinitionEto eto, [CanBeNull] Entity existingEntity)
@@ -118,7 +144,7 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                 providerName: AbpEntityUiDynamicEntityConsts.DynamicEntityEntityProviderName,
                 @namespace: Namespace,
                 belongsTo: null, // Todo: sub-entities for dynamic entities?
-                keys: new[] {"Id"},
+                keys: "Id",
                 creationEnabled: true,
                 creationPermission: eto.PermissionSet.Create,
                 editEnabled: true,
@@ -142,10 +168,10 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                 appServiceDeleteMethodName: "DeleteAsync",
                 properties: existingProperties));
         }
-
-        protected virtual async Task<MenuItem> GetOrCreateModuleMenuItemAsync(string moduleName)
+        
+        protected virtual async Task<MenuItem> GetOrCreateModuleMenuItemAsync()
         {
-            var moduleMenuItemName = GetMenuItemName(moduleName);
+            var moduleMenuItemName = _menuItemNameCalculator.GetName(ModuleName);
             
             var moduleMenuItem = await _menuItemRepository.FindAsync(x => x.Name == moduleMenuItemName);
 
@@ -154,23 +180,13 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                 return moduleMenuItem;
             }
 
-            var localizationItemName = $"Menu:{moduleName.Split('.').Last()}";
+            moduleMenuItem = await GenerateModuleMenuItemAsync();
 
-            return await _menuItemRepository.InsertAsync(
-                new MenuItem(null, moduleMenuItemName, moduleName, null, null, localizationItemName,
-                    new List<MenuItem>()), true);
+            await _menuItemRepository.InsertAsync(moduleMenuItem, true);
+
+            return moduleMenuItem;
         }
 
-        protected virtual string GetMenuItemName(string moduleName)
-        {
-            return $"{moduleName}";
-        }
-        
-        protected virtual string GetMenuItemName(string moduleName, string aggregateRootName)
-        {
-            return $"{moduleName}.{aggregateRootName}";
-        }
-        
         protected virtual string MapFieldDataTypeToCSharpType(FieldDataType fieldDefinitionType)
         {
             return fieldDefinitionType switch
@@ -207,7 +223,18 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                 return;
             }
 
-            await _menuItemRepository.DeleteAsync(x => x.ModuleName == ModuleName && x.EntityName == entity.Name, true);
+            var moduleMenuItemName = _menuItemNameCalculator.GetName(ModuleName);
+            var entityMenuItemName = _menuItemNameCalculator.GetName(ModuleName, entity.Name);
+            
+            await _menuItemRepository.DeleteAsync(
+                x => x.Name == entityMenuItemName && x.ParentName == moduleMenuItemName, true);
+
+            var moduleMenuItem = await _menuItemRepository.FindAsync(x => x.Name == moduleMenuItemName);
+
+            if (moduleMenuItem != null && !moduleMenuItem.MenuItems.Any())
+            {
+                await _menuItemRepository.DeleteAsync(moduleMenuItem, true);
+            }
 
             await _entityRepository.DeleteAsync(entity, true);
         }

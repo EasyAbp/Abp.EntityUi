@@ -1,4 +1,5 @@
-﻿using EasyAbp.Abp.EntityUi.Options;
+﻿using EasyAbp.Abp.DynamicMenu;
+using EasyAbp.Abp.EntityUi.Options;
 using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 using Volo.Abp.VirtualFileSystem;
@@ -7,6 +8,7 @@ namespace EasyAbp.Abp.EntityUi
 {
     [DependsOn(
         typeof(AbpDddDomainModule),
+        typeof(AbpDynamicMenuDomainModule),
         typeof(AbpEntityUiDomainSharedModule)
     )]
     public class AbpEntityUiDomainModule : AbpModule

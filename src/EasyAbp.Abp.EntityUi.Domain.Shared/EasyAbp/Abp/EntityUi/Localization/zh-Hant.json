@@ -11,18 +11,6 @@
     "EditModule": "編輯",
     "ModuleDeletionConfirmationMessage": "確認刪除模塊 {0}?",
     "SuccessfullyDeleted": "刪除成功",
-    "Menu:MenuItem": "菜單項",
-    "MenuItem": "菜單項",
-    "MenuItemParentName": "父級名稱",
-    "MenuItemName": "名稱",
-    "MenuItemModuleName": "模塊",
-    "MenuItemEntityName": "實體",
-    "MenuItemPermission": "要求權限",
-    "MenuItemLocalizationItemName": "本地化項名",
-    "MenuItemMenuItems": "菜單項",
-    "CreateMenuItem": "新建",
-    "EditMenuItem": "編輯",
-    "MenuItemDeletionConfirmationMessage": "確認刪除菜單項 {0}?",
     "Menu:Entity": "實體",
     "Entity": "實體",
     "EntityModuleName": "所屬模塊",
@@ -70,6 +58,7 @@
     "PropertyShowInEdit": "顯示於編輯",
     "CreateProperty": "新建",
     "EditProperty": "編輯",
-    "PropertyDeletionConfirmationMessage": "確認刪除屬性 {0}?"
+    "PropertyDeletionConfirmationMessage": "確認刪除屬性 {0}?",
+    "AutoCreateDynamicMenuItem": "自動為實體創建菜單項"
   }
 }

@@ -6,55 +6,14 @@
       "lResourceTypeAssemblyName": "EasyAbp.Abp.EntityUi.Domain.Shared"
     }
   ],
-  "menuItems": [
-    {
-      "parentName": null,
-      "name": "EasyAbp.Abp.EntityUi",
-      "moduleName": "EasyAbp.Abp.EntityUi",
-      "entityName": null,
-      "permission": null,
-      "localizationItemName": "Menu:EntityUi",
-      "menuItems": [
-        {
-          "parentName": "EasyAbp.Abp.EntityUi",
-          "name": "EasyAbp.Abp.EntityUi.Entity",
-          "moduleName": "EasyAbp.Abp.EntityUi",
-          "entityName": "Entity",
-          "permission": "EasyAbp.Abp.EntityUi",
-          "localizationItemName": "Menu:Entity",
-          "menuItems": []
-        },
-        {
-          "parentName": "EasyAbp.Abp.EntityUi",
-          "name": "EasyAbp.Abp.EntityUi.MenuItem",
-          "moduleName": "EasyAbp.Abp.EntityUi",
-          "entityName": "MenuItem",
-          "permission": "EasyAbp.Abp.EntityUi",
-          "localizationItemName": "Menu:MenuItem",
-          "menuItems": []
-        },
-        {
-          "parentName": "EasyAbp.Abp.EntityUi",
-          "name": "EasyAbp.Abp.EntityUi.Module",
-          "moduleName": "EasyAbp.Abp.EntityUi",
-          "entityName": "Module",
-          "permission": "EasyAbp.Abp.EntityUi",
-          "localizationItemName": "Menu:Module",
-          "menuItems": []
-        }
-      ]
-    }
-  ],
   "entities": [
     {
       "moduleName": "EasyAbp.Abp.EntityUi",
       "name": "Entity",
+      "providerName": "Entity",
       "namespace": "EasyAbp.Abp.EntityUi.Entities",
       "belongsTo": null,
-      "keys": [
-        "ModuleName",
-        "Name"
-      ],
+      "keys": "ModuleName,Name",
       "creationEnabled": true,
       "creationPermission": "EasyAbp.Abp.EntityUi.Manage",
       "editEnabled": true,
@@ -259,16 +218,20 @@
             "edit": false
           }
         }
-      ]
+      ],
+      "lastModificationTime": null,
+      "lastModifierId": null,
+      "creationTime": "2021-10-22T18:49:33.1374413",
+      "creatorId": null,
+      "extraProperties": {}
     },
     {
       "moduleName": "EasyAbp.Abp.EntityUi",
       "name": "MenuItem",
+      "providerName": "Entity",
       "namespace": "EasyAbp.Abp.EntityUi.MenuItems",
       "belongsTo": null,
-      "keys": [
-        "Name"
-      ],
+      "keys": "Name",
       "creationEnabled": true,
       "creationPermission": "EasyAbp.Abp.EntityUi.Manage",
       "editEnabled": true,
@@ -375,16 +338,20 @@
             "edit": true
           }
         }
-      ]
+      ],
+      "lastModificationTime": null,
+      "lastModifierId": null,
+      "creationTime": "2021-10-22T18:49:33.194844",
+      "creatorId": null,
+      "extraProperties": {}
     },
     {
       "moduleName": "EasyAbp.Abp.EntityUi",
       "name": "Module",
+      "providerName": "Entity",
       "namespace": "EasyAbp.Abp.EntityUi.Modules",
       "belongsTo": null,
-      "keys": [
-        "Name"
-      ],
+      "keys": "Name",
       "creationEnabled": true,
       "creationPermission": "EasyAbp.Abp.EntityUi.Manage",
       "editEnabled": true,
@@ -421,18 +388,20 @@
             "edit": true
           }
         }
-      ]
+      ],
+      "lastModificationTime": null,
+      "lastModifierId": null,
+      "creationTime": "2021-10-22T18:49:33.2032157",
+      "creatorId": null,
+      "extraProperties": {}
     },
     {
       "moduleName": "EasyAbp.Abp.EntityUi",
       "name": "Property",
+      "providerName": "Entity",
       "namespace": "EasyAbp.Abp.EntityUi.Entities",
       "belongsTo": "Entity",
-      "keys": [
-        "EntityModuleName",
-        "EntityName",
-        "Name"
-      ],
+      "keys": "EntityModuleName,EntityName,Name",
       "creationEnabled": true,
       "creationPermission": "EasyAbp.Abp.EntityUi.Manage",
       "editEnabled": true,
@@ -553,7 +522,57 @@
             "edit": true
           }
         }
-      ]
+      ],
+      "lastModificationTime": null,
+      "lastModifierId": null,
+      "creationTime": "2021-10-22T18:49:33.2135611",
+      "creatorId": null,
+      "extraProperties": {}
+    }
+  ],
+  "menuItems": [
+    {
+      "parentName": null,
+      "name": "EasyAbp.Abp.EntityUi",
+      "displayName": "Menu:EntityUi",
+      "url": null,
+      "urlMvc": null,
+      "urlBlazor": null,
+      "urlAngular": null,
+      "permission": null,
+      "lResourceTypeName": "EasyAbp.Abp.EntityUi.Localization.EntityUiResource",
+      "lResourceTypeAssemblyName": "EasyAbp.Abp.EntityUi.Domain.Shared",
+      "menuItems": [
+        {
+          "parentName": "EasyAbp.Abp.EntityUi",
+          "name": "EasyAbp.Abp.EntityUi.Entity",
+          "displayName": "Entity",
+          "url": "/EntityUi/EasyAbp.Abp.EntityUi/Entity",
+          "urlMvc": null,
+          "urlBlazor": null,
+          "urlAngular": "/entity-ui/EasyAbp.Abp.EntityUi/entity",
+          "permission": "EasyAbp.Abp.EntityUi",
+          "lResourceTypeName": "EasyAbp.Abp.EntityUi.Localization.EntityUiResource",
+          "lResourceTypeAssemblyName": "EasyAbp.Abp.EntityUi.Domain.Shared",
+          "menuItems": [],
+          "extraProperties": {}
+        },
+        {
+          "parentName": "EasyAbp.Abp.EntityUi",
+          "name": "EasyAbp.Abp.EntityUi.Module",
+          "displayName": "Module",
+          "url": "/EntityUi/EasyAbp.Abp.EntityUi/Module",
+          "urlMvc": null,
+          "urlBlazor": null,
+          "urlAngular": "/entity-ui/EasyAbp.Abp.EntityUi/module",
+          "permission": "EasyAbp.Abp.EntityUi",
+          "lResourceTypeName": "EasyAbp.Abp.EntityUi.Localization.EntityUiResource",
+          "lResourceTypeAssemblyName": "EasyAbp.Abp.EntityUi.Domain.Shared",
+          "menuItems": [],
+          "extraProperties": {}
+        }
+      ],
+      "extraProperties": {}
     }
   ]
 }

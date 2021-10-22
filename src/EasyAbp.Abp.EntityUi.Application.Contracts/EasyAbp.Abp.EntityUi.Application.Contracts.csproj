@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="$(AbpVersion)" />
     <PackageReference Include="Volo.Abp.Authorization" Version="$(AbpVersion)" />
+    <PackageReference Include="EasyAbp.Abp.DynamicMenu.Application.Contracts" Version="$(EasyAbpAbpDynamicMenuModuleVersion)" />
     <ProjectReference Include="..\EasyAbp.Abp.EntityUi.Domain.Shared\EasyAbp.Abp.EntityUi.Domain.Shared.csproj" />
   </ItemGroup>
 

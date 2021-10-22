@@ -41,6 +41,7 @@
 
   <ItemGroup>
     <PackageReference Include="EasyAbp.Abp.DynamicEntity.Web" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
+    <PackageReference Include="EasyAbp.Abp.DynamicMenu.Web" Version="$(EasyAbpAbpDynamicMenuModuleVersion)" />
     <ProjectReference Include="..\..\..\..\providers\dynamic-entity\EasyAbp.Abp.EntityUi.DynamicEntity.Web\EasyAbp.Abp.EntityUi.DynamicEntity.Web.csproj" />
     <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.Web\EasyAbp.Abp.EntityUi.Web.csproj" />
     <ProjectReference Include="..\MvcSample.Application\MvcSample.Application.csproj" />

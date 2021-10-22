@@ -30,10 +30,10 @@ namespace EasyAbp.Abp.EntityUi.Entities
         public virtual string BelongsTo { get; protected set; }
 
         /// <summary>
-        /// Will be mapped to "{key1},{key2},{key3}"
+        /// e.g. {key1},{key2},{key3}
         /// </summary>
         [NotNull]
-        public virtual string[] Keys { get; protected set; }
+        public virtual string Keys { get; protected set; }
         
         public virtual bool CreationEnabled { get; protected set; }
         
@@ -104,7 +104,7 @@ namespace EasyAbp.Abp.EntityUi.Entities
 
         [JsonConstructor]
         public Entity([NotNull] string moduleName, [NotNull] string name, [NotNull] string providerName,
-            [CanBeNull] string @namespace, [CanBeNull] string belongsTo, [NotNull] string[] keys, bool creationEnabled,
+            [CanBeNull] string @namespace, [CanBeNull] string belongsTo, [NotNull] string keys, bool creationEnabled,
             [CanBeNull] string creationPermission, bool editEnabled, [CanBeNull] string editPermission,
             bool deletionEnabled, [CanBeNull] string deletionPermission, bool detailEnabled,
             [CanBeNull] string detailPermission, [CanBeNull] string contractsAssemblyName,

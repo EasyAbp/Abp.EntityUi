@@ -1,4 +1,5 @@
 ﻿using EasyAbp.Abp.DynamicEntity;
+using EasyAbp.Abp.DynamicMenu;
 using EasyAbp.Abp.EntityUi;
 using EasyAbp.Abp.EntityUi.DynamicEntity;
 using EasyAbp.Abp.EntityUi.Options;
@@ -34,7 +35,8 @@ namespace MvcSample
         typeof(AbpEmailingModule),
         typeof(AbpEntityUiDomainModule),
         typeof(AbpEntityUiDynamicEntityDomainModule),
-        typeof(AbpDynamicEntityDomainModule)
+        typeof(AbpDynamicEntityDomainModule),
+        typeof(AbpDynamicMenuDomainModule)
     )]
     public class MvcSampleDomainModule : AbpModule
     {

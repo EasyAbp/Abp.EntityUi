@@ -11,18 +11,6 @@
     "EditModule": "编辑",
     "ModuleDeletionConfirmationMessage": "确认删除模块 {0}?",
     "SuccessfullyDeleted": "删除成功",
-    "Menu:MenuItem": "菜单项",
-    "MenuItem": "菜单项",
-    "MenuItemParentName": "父级名称",
-    "MenuItemName": "名称",
-    "MenuItemModuleName": "模块",
-    "MenuItemEntityName": "实体",
-    "MenuItemPermission": "要求权限",
-    "MenuItemLocalizationItemName": "本地化项名",
-    "MenuItemMenuItems": "菜单项",
-    "CreateMenuItem": "新建",
-    "EditMenuItem": "编辑",
-    "MenuItemDeletionConfirmationMessage": "确认删除菜单项 {0}?",
     "Menu:Entity": "实体",
     "Entity": "实体",
     "EntityModuleName": "所属模块",
@@ -70,6 +58,7 @@
     "PropertyShowInEdit": "显示于编辑",
     "CreateProperty": "新建",
     "EditProperty": "编辑",
-    "PropertyDeletionConfirmationMessage": "确认删除属性 {0}?"
+    "PropertyDeletionConfirmationMessage": "确认删除属性 {0}?",
+    "AutoCreateDynamicMenuItem": "自动为实体创建菜单项"
   }
 }

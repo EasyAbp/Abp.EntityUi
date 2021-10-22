@@ -1,4 +1,5 @@
 ﻿using EasyAbp.Abp.DynamicEntity;
+using EasyAbp.Abp.DynamicMenu;
 using EasyAbp.Abp.EntityUi;
 using EasyAbp.Abp.EntityUi.DynamicEntity;
 using MvcSample.Localization;
@@ -29,7 +30,8 @@ namespace MvcSample
         typeof(AbpTenantManagementDomainSharedModule),
         typeof(AbpEntityUiDomainSharedModule),
         typeof(AbpEntityUiDynamicEntityDomainSharedModule),
-        typeof(AbpDynamicEntityDomainSharedModule)
+        typeof(AbpDynamicEntityDomainSharedModule),
+        typeof(AbpDynamicMenuDomainSharedModule)
     )]
     public class MvcSampleDomainSharedModule : AbpModule
     {

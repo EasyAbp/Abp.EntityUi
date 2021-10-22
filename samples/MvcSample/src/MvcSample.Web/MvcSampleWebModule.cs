@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using EasyAbp.Abp.DynamicEntity.Web;
+using EasyAbp.Abp.DynamicMenu.Web;
 using EasyAbp.Abp.EntityUi;
 using EasyAbp.Abp.EntityUi.Web;
 using Microsoft.AspNetCore.Builder;
@@ -58,7 +59,8 @@ namespace MvcSample.Web
         typeof(AbpSwashbuckleModule),
         typeof(AbpEntityUiWebModule),
         typeof(AbpEntityUiDynamicEntityWebModule),
-        typeof(AbpDynamicEntityWebModule)
+        typeof(AbpDynamicEntityWebModule),
+        typeof(AbpDynamicMenuWebModule)
     )]
     public class MvcSampleWebModule : AbpModule
     {

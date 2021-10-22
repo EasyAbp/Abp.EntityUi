@@ -15,7 +15,7 @@ namespace EasyAbp.Abp.EntityUi.Entities
         
         public string BelongsTo { get; set; }
 
-        public string[] Keys { get; set; }
+        public string Keys { get; set; }
         
         public bool CreationEnabled { get; set; }
         
@@ -62,7 +62,7 @@ namespace EasyAbp.Abp.EntityUi.Entities
         public List<Property> Properties { get; set; }
         
         public EntityDataModel([NotNull] string moduleName, [NotNull] string name, [NotNull] string providerName,
-            [CanBeNull] string @namespace, [CanBeNull] string belongsTo, [NotNull] string[] keys, bool creationEnabled,
+            [CanBeNull] string @namespace, [CanBeNull] string belongsTo, [NotNull] string keys, bool creationEnabled,
             [CanBeNull] string creationPermission, bool editEnabled, [CanBeNull] string editPermission,
             bool deletionEnabled, [CanBeNull] string deletionPermission, bool detailEnabled,
             [CanBeNull] string detailPermission, [CanBeNull] string contractsAssemblyName,

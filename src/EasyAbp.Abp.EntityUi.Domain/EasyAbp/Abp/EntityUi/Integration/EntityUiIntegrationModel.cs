@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using EasyAbp.Abp.DynamicMenu.MenuItems;
 using EasyAbp.Abp.EntityUi.Entities;
-using EasyAbp.Abp.EntityUi.MenuItems;
 using EasyAbp.Abp.EntityUi.Modules;
 
 namespace EasyAbp.Abp.EntityUi.Integration

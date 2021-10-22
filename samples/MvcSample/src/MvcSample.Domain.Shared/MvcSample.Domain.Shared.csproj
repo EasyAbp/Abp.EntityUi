@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="EasyAbp.Abp.DynamicEntity.Domain.Shared" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
+    <PackageReference Include="EasyAbp.Abp.DynamicMenu.Domain.Shared" Version="$(EasyAbpAbpDynamicMenuModuleVersion)" />
     <ProjectReference Include="..\..\..\..\providers\dynamic-entity\EasyAbp.Abp.EntityUi.DynamicEntity.Domain.Shared\EasyAbp.Abp.EntityUi.DynamicEntity.Domain.Shared.csproj" />
     <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.Domain.Shared\EasyAbp.Abp.EntityUi.Domain.Shared.csproj" />
   </ItemGroup>

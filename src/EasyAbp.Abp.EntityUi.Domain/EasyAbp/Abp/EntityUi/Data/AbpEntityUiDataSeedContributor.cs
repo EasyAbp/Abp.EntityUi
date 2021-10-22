@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using EasyAbp.Abp.DynamicMenu.MenuItems;
 using EasyAbp.Abp.EntityUi.Entities;
 using EasyAbp.Abp.EntityUi.Integration;
-using EasyAbp.Abp.EntityUi.MenuItems;
 using EasyAbp.Abp.EntityUi.Modules;
 using EasyAbp.Abp.EntityUi.Options;
 using Microsoft.Extensions.FileProviders;
@@ -18,6 +17,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Json;
 using Volo.Abp.Localization;
 using Volo.Abp.Reflection;
+using Volo.Abp.Uow;
 using Volo.Abp.VirtualFileSystem;
 using Entity = EasyAbp.Abp.EntityUi.Entities.Entity;
 using Module = EasyAbp.Abp.EntityUi.Modules.Module;
@@ -108,6 +108,7 @@ namespace EasyAbp.Abp.EntityUi.Data
         private readonly IMenuItemRepository _menuItemRepository;
         private readonly IEntityRepository _entityRepository;
         private readonly IModuleRepository _moduleRepository;
+        private readonly IMenuItemNameCalculator _menuItemNameCalculator;
         private readonly AbpEntityUiOptions _options;
 
         public AbpEntityUiDataSeedContributor(
@@ -116,16 +117,19 @@ namespace EasyAbp.Abp.EntityUi.Data
             IVirtualFileProvider virtualFileProvider,
             IMenuItemRepository menuItemRepository,
             IEntityRepository entityRepository,
-            IModuleRepository moduleRepository)
+            IModuleRepository moduleRepository,
+            IMenuItemNameCalculator menuItemNameCalculator)
         {
             _jsonSerializer = jsonSerializer;
             _virtualFileProvider = virtualFileProvider;
             _menuItemRepository = menuItemRepository;
             _entityRepository = entityRepository;
             _moduleRepository = moduleRepository;
+            _menuItemNameCalculator = menuItemNameCalculator;
             _options = options.Value;
         }
         
+        [UnitOfWork(true)]
         public virtual async Task SeedAsync(DataSeedContext context)
         {
             await TrySeedByJsonFileAsync();
@@ -193,14 +197,14 @@ namespace EasyAbp.Abp.EntityUi.Data
                 
                 await GetOrCreateEntitiesAsync(module, entityTypeInfos);
 
-                var moduleMenuItem = await GetOrCreateModuleMenuItemAsync(module.Name);
-                await TryCreateEntityMenuItemsAsync(module.Name, entityTypeInfos, moduleMenuItem);
+                var moduleMenuItem = await GetOrCreateModuleMenuItemAsync(module);
+                await TryCreateEntityMenuItemsAsync(module, entityTypeInfos, moduleMenuItem);
             }
         }
 
-        protected virtual async Task<MenuItem> GetOrCreateModuleMenuItemAsync(string moduleName)
+        protected virtual async Task<MenuItem> GetOrCreateModuleMenuItemAsync(Module module)
         {
-            var moduleMenuItemName = GetMenuItemName(moduleName);
+            var moduleMenuItemName = _menuItemNameCalculator.GetName(module.Name);
             
             var moduleMenuItem = await _menuItemRepository.FindAsync(x => x.Name == moduleMenuItemName);
 
@@ -209,49 +213,64 @@ namespace EasyAbp.Abp.EntityUi.Data
                 return moduleMenuItem;
             }
 
-            var localizationItemName = $"Menu:{moduleName.Split('.').Last()}";
+            var menuItem = await GenerateModuleMenuItemAsync(module);
 
-            return await _menuItemRepository.InsertAsync(
-                new MenuItem(null, moduleMenuItemName, moduleName, null, null, localizationItemName,
-                    new List<MenuItem>()), true);
+            return await _menuItemRepository.InsertAsync(menuItem, true);
         }
 
-        protected virtual async Task TryCreateEntityMenuItemsAsync(string moduleName, TypeInfo[] entityTypeInfos, MenuItem moduleMenuItem)
+        protected virtual async Task TryCreateEntityMenuItemsAsync(Module module, TypeInfo[] entityTypeInfos, MenuItem moduleMenuItem)
         {
             var aggregateRoots = entityTypeInfos.Where(typeof(IAggregateRoot).IsAssignableFrom).ToArray();
 
             foreach (var aggregateRoot in aggregateRoots)
             {
                 var entityName = aggregateRoot.Name;
-                
-                var menuItemName = GetMenuItemName(moduleName, entityName);
+
+                var menuItemName = _menuItemNameCalculator.GetName(module.Name, entityName);
                 
                 var menuItem = await _menuItemRepository.FindAsync(x => x.Name == menuItemName);
 
                 if (menuItem == null)
                 {
-                    var localizationItemName = $"Menu:{menuItemName.Split('.').Last()}";
+                    menuItem = await GenerateEntityMenuItemAsync(module, aggregateRoot.Name);
 
-                    menuItem = new MenuItem(moduleMenuItem.Name, menuItemName, moduleName, aggregateRoot.Name,
-                        GetDefaultMenuItemPermission(moduleName, entityName), localizationItemName,
-                        new List<MenuItem>());
-                    
                     moduleMenuItem.MenuItems.Add(menuItem);
                 }
             }
 
             await _menuItemRepository.UpdateAsync(moduleMenuItem, true);
         }
-
-        protected virtual string GetMenuItemName(string moduleName)
+        
+        protected virtual Task<MenuItem> GenerateModuleMenuItemAsync(Module module)
         {
-            return $"{moduleName}";
+            return Task.FromResult(new MenuItem(
+                parentName: null,
+                name: _menuItemNameCalculator.GetName(module.Name),
+                displayName: _menuItemNameCalculator.GetDisplayName(module.Name),
+                url: null,
+                urlMvc: null,
+                urlBlazor: null,
+                urlAngular: null,
+                permission: null,
+                lResourceTypeName: module.LResourceTypeName,
+                lResourceTypeAssemblyName: module.LResourceTypeAssemblyName,
+                menuItems: new List<MenuItem>()));
         }
 
-
-        protected virtual string GetMenuItemName(string moduleName, string aggregateRootName)
+        protected virtual Task<MenuItem> GenerateEntityMenuItemAsync(Module module, string entityName)
         {
-            return $"{moduleName}.{aggregateRootName}";
+            return Task.FromResult(new MenuItem(
+                parentName: _menuItemNameCalculator.GetName(module.Name),
+                name: _menuItemNameCalculator.GetName(module.Name, entityName),
+                displayName: _menuItemNameCalculator.GetDisplayName(module.Name, entityName),
+                url: $"/EntityUi/{module.Name}/{entityName}",
+                urlMvc: null,
+                urlBlazor: null,
+                urlAngular: $"/entity-ui/{module.Name}/{entityName.ToKebabCase()}",
+                permission: GetDefaultMenuItemPermission(module.Name, entityName),
+                lResourceTypeName: module.LResourceTypeName,
+                lResourceTypeAssemblyName: module.LResourceTypeAssemblyName,
+                menuItems: new List<MenuItem>()));
         }
 
         protected virtual async Task<Module> GetOrCreateModuleAsync(string moduleName)
@@ -317,7 +336,7 @@ namespace EasyAbp.Abp.EntityUi.Data
                     var belongsTo = parentEntityName != entityName ? parentEntityName : null;
 
                     var keys = typeof(Entity<>).IsAssignableFrom(entityTypeInfo)
-                        ? new[] {"Id"}
+                        ? "Id"
                         : GetEntityKeys(entityTypeInfo);
 
                     var parentEntity = parentEntityName != null
@@ -411,7 +430,7 @@ namespace EasyAbp.Abp.EntityUi.Data
             return entities;
         }
 
-        protected virtual bool IsDeleteMethod(MethodInfo methodInfo, TypeInfo keyClassType, string[] keys)
+        protected virtual bool IsDeleteMethod(MethodInfo methodInfo, TypeInfo keyClassType, string keys)
         {
             var @params = methodInfo.GetParameters();
             
@@ -423,7 +442,7 @@ namespace EasyAbp.Abp.EntityUi.Data
             return IsKeyParam(@params[0], keyClassType, keys);
         }
 
-        protected virtual bool IsUpdateMethod(MethodInfo methodInfo, TypeInfo keyClassType, string[] keys,
+        protected virtual bool IsUpdateMethod(MethodInfo methodInfo, TypeInfo keyClassType, string keys,
             TypeInfo editDtoType)
         {
             var @params = methodInfo.GetParameters();
@@ -448,7 +467,7 @@ namespace EasyAbp.Abp.EntityUi.Data
             return @params[0].ParameterType == creationDtoType;
         }
 
-        protected virtual bool IsGetMethod(MethodInfo methodInfo, TypeInfo keyClassType, string[] keys)
+        protected virtual bool IsGetMethod(MethodInfo methodInfo, TypeInfo keyClassType, string keys)
         {
             var @params = methodInfo.GetParameters();
             
@@ -460,7 +479,7 @@ namespace EasyAbp.Abp.EntityUi.Data
             return IsKeyParam(@params[0], keyClassType, keys);
         }
 
-        protected virtual bool IsKeyParam(ParameterInfo parameterInfo, TypeInfo keyClassType, string[] keys)
+        protected virtual bool IsKeyParam(ParameterInfo parameterInfo, TypeInfo keyClassType, string keys)
         {
             if (keyClassType == null)
             {
@@ -469,7 +488,7 @@ namespace EasyAbp.Abp.EntityUi.Data
                     return false;
                 }
                 
-                return parameterInfo.Name.Equals(keys.First(), StringComparison.OrdinalIgnoreCase);
+                return parameterInfo.Name.Equals(keys.Split(',').First(), StringComparison.OrdinalIgnoreCase);
             }
 
             return parameterInfo.ParameterType == keyClassType;
@@ -614,10 +633,9 @@ namespace EasyAbp.Abp.EntityUi.Data
             return $"{moduleName}.{entityName}";
         }
 
-        protected virtual string[] GetEntityKeys(TypeInfo entityTypeInfo)
+        protected virtual string GetEntityKeys(TypeInfo entityTypeInfo)
         {
-            // Todo: Get key properties from GetKeys() method.
-            return new[] {"Id"};
+            return "Id";
         }
     }
 }

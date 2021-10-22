@@ -1,4 +1,5 @@
 using EasyAbp.Abp.DynamicEntity.EntityFrameworkCore;
+using EasyAbp.Abp.DynamicMenu.EntityFrameworkCore;
 using EasyAbp.Abp.EntityUi.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -85,6 +86,7 @@ namespace MvcSample.EntityFrameworkCore
             
             builder.ConfigureAbpEntityUi();
             builder.ConfigureAbpDynamicEntity();
+            builder.ConfigureAbpDynamicMenu();
             
             /* Configure your own tables/entities inside here */
 

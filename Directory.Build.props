@@ -3,6 +3,7 @@
 
     <AbpVersion>4.4.1</AbpVersion>
     <EasyAbpAbpDynamicEntityModuleVersion>0.3.1</EasyAbpAbpDynamicEntityModuleVersion>
+    <EasyAbpAbpDynamicMenuModuleVersion>0.3.2</EasyAbpAbpDynamicMenuModuleVersion>
 
   </PropertyGroup>
 </Project>

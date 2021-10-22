@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="EasyAbp.Abp.DynamicEntity.Application" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
+    <PackageReference Include="EasyAbp.Abp.DynamicMenu.Application" Version="$(EasyAbpAbpDynamicMenuModuleVersion)" />
     <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.Application\EasyAbp.Abp.EntityUi.Application.csproj" />
     <ProjectReference Include="..\MvcSample.Domain\MvcSample.Domain.csproj" />
     <ProjectReference Include="..\MvcSample.Application.Contracts\MvcSample.Application.Contracts.csproj" />

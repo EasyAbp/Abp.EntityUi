@@ -1,5 +1,4 @@
 using EasyAbp.Abp.EntityUi.Modules;
-using EasyAbp.Abp.EntityUi.MenuItems;
 using EasyAbp.Abp.EntityUi.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
@@ -21,7 +20,6 @@ namespace EasyAbp.Abp.EntityUi.EntityFrameworkCore
                  * options.AddRepository<Question, EfCoreQuestionRepository>();
                  */
                 options.AddRepository<Entity, EntityRepository>();
-                options.AddRepository<MenuItem, MenuItemRepository>();
                 options.AddRepository<Module, ModuleRepository>();
             });
         }
