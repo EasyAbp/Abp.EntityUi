@@ -1,5 +1,6 @@
 using EasyAbp.Abp.DynamicEntity.EntityFrameworkCore;
 using EasyAbp.Abp.DynamicMenu.EntityFrameworkCore;
+using EasyAbp.Abp.DynamicPermission.EntityFrameworkCore;
 using EasyAbp.Abp.EntityUi.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -85,6 +86,7 @@ namespace MvcSample.EntityFrameworkCore
             builder.ConfigureTenantManagement();
             
             builder.ConfigureAbpEntityUi();
+            builder.ConfigureAbpDynamicPermission();
             builder.ConfigureAbpDynamicEntity();
             builder.ConfigureAbpDynamicMenu();
             

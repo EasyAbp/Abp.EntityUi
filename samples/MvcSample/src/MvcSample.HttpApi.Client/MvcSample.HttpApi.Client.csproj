@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyAbp.Abp.DynamicPermission.HttpApi.Client" Version="$(EasyAbpAbpDynamicPermissionModuleVersion)" />
     <PackageReference Include="EasyAbp.Abp.DynamicEntity.HttpApi.Client" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
     <PackageReference Include="EasyAbp.Abp.DynamicMenu.HttpApi.Client" Version="$(EasyAbpAbpDynamicMenuModuleVersion)" />
     <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.HttpApi.Client\EasyAbp.Abp.EntityUi.HttpApi.Client.csproj" />
@@ -21,6 +22,11 @@
     <PackageReference Include="Volo.Abp.TenantManagement.HttpApi.Client" Version="$(AbpVersion)" />
     <PackageReference Include="Volo.Abp.FeatureManagement.HttpApi.Client" Version="$(AbpVersion)" />
     <PackageReference Include="Volo.Abp.SettingManagement.HttpApi.Client" Version="$(AbpVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="**\*generate-proxy.json" />
+    <Content Remove="**\*generate-proxy.json" />
   </ItemGroup>
 
 </Project>

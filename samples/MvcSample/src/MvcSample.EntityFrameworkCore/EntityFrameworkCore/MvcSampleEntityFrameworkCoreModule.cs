@@ -1,5 +1,6 @@
 using EasyAbp.Abp.DynamicEntity.EntityFrameworkCore;
 using EasyAbp.Abp.DynamicMenu.EntityFrameworkCore;
+using EasyAbp.Abp.DynamicPermission.EntityFrameworkCore;
 using EasyAbp.Abp.EntityUi.EntityFrameworkCore;
 using MvcSample.Books;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@ namespace MvcSample.EntityFrameworkCore
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpFeatureManagementEntityFrameworkCoreModule),
         typeof(AbpEntityUiEntityFrameworkCoreModule),
+        typeof(AbpDynamicPermissionEntityFrameworkCoreModule),
         typeof(AbpDynamicEntityEntityFrameworkCoreModule),
         typeof(AbpDynamicMenuEntityFrameworkCoreModule)
     )]

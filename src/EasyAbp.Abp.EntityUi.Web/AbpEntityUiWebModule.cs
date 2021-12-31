@@ -12,7 +12,7 @@ using EasyAbp.Abp.EntityUi.Permissions;
 namespace EasyAbp.Abp.EntityUi.Web
 {
     [DependsOn(
-        typeof(AbpEntityUiHttpApiModule),
+        typeof(AbpEntityUiApplicationContractsModule),
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
         typeof(AbpAutoMapperModule)
         )]

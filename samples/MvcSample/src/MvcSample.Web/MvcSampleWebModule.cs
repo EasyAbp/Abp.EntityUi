@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using EasyAbp.Abp.DynamicEntity.Web;
 using EasyAbp.Abp.DynamicMenu.Web;
+using EasyAbp.Abp.DynamicPermission.Web;
 using EasyAbp.Abp.EntityUi;
 using EasyAbp.Abp.EntityUi.Web;
 using Microsoft.AspNetCore.Builder;
@@ -29,14 +30,17 @@ using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.Data;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity.Web;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
+using Volo.Abp.PermissionManagement;
 using Volo.Abp.PermissionManagement.Web;
 using Volo.Abp.SettingManagement.Web;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.TenantManagement.Web;
+using Volo.Abp.Threading;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.UI;
 using Volo.Abp.UI.Navigation;
@@ -59,6 +63,7 @@ namespace MvcSample.Web
         typeof(AbpSwashbuckleModule),
         typeof(AbpEntityUiWebModule),
         typeof(AbpEntityUiDynamicEntityWebModule),
+        typeof(AbpDynamicPermissionWebModule),
         typeof(AbpDynamicEntityWebModule),
         typeof(AbpDynamicMenuWebModule)
     )]
@@ -245,6 +250,16 @@ namespace MvcSample.Web
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
             app.UseConfiguredEndpoints();
+            
+            using (var scope = context.ServiceProvider.CreateScope())
+            {
+                AsyncHelper.RunSync(async () =>
+                {
+                    await scope.ServiceProvider
+                        .GetRequiredService<PermissionDataSeedContributor>()
+                        .SeedAsync(new DataSeedContext());
+                });
+            }
         }
     }
 }

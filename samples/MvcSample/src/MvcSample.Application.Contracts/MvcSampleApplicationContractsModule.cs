@@ -1,5 +1,6 @@
 ﻿using EasyAbp.Abp.DynamicEntity;
 using EasyAbp.Abp.DynamicMenu;
+using EasyAbp.Abp.DynamicPermission;
 using EasyAbp.Abp.EntityUi;
 using Volo.Abp.Account;
 using Volo.Abp.FeatureManagement;
@@ -22,6 +23,7 @@ namespace MvcSample
         typeof(AbpTenantManagementApplicationContractsModule),
         typeof(AbpObjectExtendingModule),
         typeof(AbpEntityUiApplicationContractsModule),
+        typeof(AbpDynamicPermissionApplicationContractsModule),
         typeof(AbpDynamicEntityApplicationContractsModule),
         typeof(AbpDynamicMenuApplicationContractsModule)
     )]

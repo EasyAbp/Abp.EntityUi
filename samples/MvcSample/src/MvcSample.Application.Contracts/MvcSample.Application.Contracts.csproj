@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyAbp.Abp.DynamicPermission.Application.Contracts" Version="$(EasyAbpAbpDynamicPermissionModuleVersion)" />
     <PackageReference Include="EasyAbp.Abp.DynamicEntity.Application.Contracts" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
     <PackageReference Include="EasyAbp.Abp.DynamicMenu.Application.Contracts" Version="$(EasyAbpAbpDynamicMenuModuleVersion)" />
     <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.Application.Contracts\EasyAbp.Abp.EntityUi.Application.Contracts.csproj" />

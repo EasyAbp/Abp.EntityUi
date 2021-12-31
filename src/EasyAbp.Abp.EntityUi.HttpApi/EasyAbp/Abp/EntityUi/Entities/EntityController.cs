@@ -1,17 +1,15 @@
-using System;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
 using Volo.Abp.Application.Dtos;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp;
-using Volo.Abp.Application.Dtos;
 using EntityDto = EasyAbp.Abp.EntityUi.Entities.Dtos.EntityDto;
 
 namespace EasyAbp.Abp.EntityUi.Entities
 {
-    [RemoteService(Name = "EasyAbpAbpEntityUi")]
+    [RemoteService(Name = AbpEntityUiRemoteServiceConsts.RemoteServiceName)]
     [Route("/api/abp/entity-ui/entity")]
-    public class EntityController : EntityUiController, IEntityAppService
+    public class EntityController : AbpEntityUiController, IEntityAppService
     {
         private readonly IEntityAppService _service;
 

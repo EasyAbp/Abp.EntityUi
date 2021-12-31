@@ -88,7 +88,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
         
         protected virtual Task<Type> CreateCreationViewModelTypeAsync(EntityDto entityDto, DomainBase domain)
         {
-            var nClass = NClass.UseDomain(domain, b => b.UseStreamCompile());
+            var nClass = NClass.UseDomain(domain);
 
             nClass
                 .Namespace("EasyAbp.Abp.EntityUi.Web.Pages.EntityUi")
@@ -99,7 +99,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
             foreach (var property in entityDto.Properties.Where(x => x.ShowIn.Creation))
             {
                 nClass.Property(prop => prop
-                    .Type(Type.GetType(property.TypeOrEntityName))
+                    .Type(Type.GetType(property.TypeOrEntityName) ?? throw new InvalidOperationException())
                     .Name(property.Name)
                     .Public());
             }
@@ -109,7 +109,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
         
         protected virtual Task<Type> CreateEditViewModelTypeAsync(EntityDto entityDto, DomainBase domain)
         {
-            var nClass = NClass.UseDomain(domain, b => b.UseStreamCompile());
+            var nClass = NClass.UseDomain(domain);
             
             nClass
                 .Namespace("EasyAbp.Abp.EntityUi.Web.Pages.EntityUi")

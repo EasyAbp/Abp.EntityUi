@@ -1,5 +1,6 @@
 ﻿using EasyAbp.Abp.DynamicEntity;
 using EasyAbp.Abp.DynamicMenu;
+using EasyAbp.Abp.DynamicPermission;
 using EasyAbp.Abp.EntityUi;
 using Localization.Resources.AbpUi;
 using MvcSample.Localization;
@@ -23,6 +24,7 @@ namespace MvcSample
         typeof(AbpFeatureManagementHttpApiModule),
         typeof(AbpSettingManagementHttpApiModule),
         typeof(AbpEntityUiHttpApiModule),
+        typeof(AbpDynamicPermissionHttpApiModule),
         typeof(AbpDynamicEntityHttpApiModule),
         typeof(AbpDynamicMenuHttpApiModule)
     )]

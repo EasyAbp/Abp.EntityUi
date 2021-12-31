@@ -9,11 +9,11 @@ namespace EasyAbp.Abp.EntityUi.Entities
 {
     public class Entity : AuditedAggregateRoot
     {
-        [Key, Column(Order = 0)]
+        [Key]
         [NotNull]
         public virtual string ModuleName { get; protected set; }
         
-        [Key, Column(Order = 1)]
+        [Key]
         [NotNull]
         public virtual string Name { get; protected set; }
         

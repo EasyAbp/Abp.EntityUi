@@ -3,11 +3,12 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>MvcSample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyAbp.Abp.DynamicPermission.Application" Version="$(EasyAbpAbpDynamicPermissionModuleVersion)" />
     <PackageReference Include="EasyAbp.Abp.DynamicEntity.Application" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
     <PackageReference Include="EasyAbp.Abp.DynamicMenu.Application" Version="$(EasyAbpAbpDynamicMenuModuleVersion)" />
     <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.Application\EasyAbp.Abp.EntityUi.Application.csproj" />

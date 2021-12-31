@@ -55,7 +55,7 @@
             <abp-column size-md="_6">
                 <abp-card-title>@await Model.GetPageTitleAsync()</abp-card-title>
             </abp-column>
-            <abp-column size-md="_6" class="text-right">
+            <abp-column size-md="_6" class="text-end">
 			    @if (Model.Entity.CreationEnabled && await Model.IsCreationPermissionGrantedOrNullAsync())
                 {
                 <abp-button id="@await Model.GetNewButtonIdAsync()"

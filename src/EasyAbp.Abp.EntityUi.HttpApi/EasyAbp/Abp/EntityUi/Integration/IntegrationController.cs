@@ -6,9 +6,9 @@ using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.Abp.EntityUi.Integration
 {
-    [RemoteService(Name = "EasyAbpAbpEntityUi")]
+    [RemoteService(Name = AbpEntityUiRemoteServiceConsts.RemoteServiceName)]
     [Route("/api/abp/entity-ui/integration")]
-    public class IntegrationController : EntityUiController, IIntegrationAppService
+    public class IntegrationController : AbpEntityUiController, IIntegrationAppService
     {
         private readonly IIntegrationAppService _service;
 

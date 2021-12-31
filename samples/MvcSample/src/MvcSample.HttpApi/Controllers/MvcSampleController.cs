@@ -5,7 +5,7 @@ namespace MvcSample.Controllers
 {
     /* Inherit your controllers from this class.
      */
-    public abstract class MvcSampleController : AbpController
+    public abstract class MvcSampleController : AbpControllerBase
     {
         protected MvcSampleController()
         {

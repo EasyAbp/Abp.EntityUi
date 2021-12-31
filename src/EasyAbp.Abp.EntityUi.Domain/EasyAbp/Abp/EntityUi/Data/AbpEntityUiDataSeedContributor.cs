@@ -283,7 +283,7 @@ namespace EasyAbp.Abp.EntityUi.Data
         protected virtual async Task<Module> CreateModuleAsync(string moduleName)
         {
             var assembly = AppDomain.CurrentDomain.GetAssemblies()
-                .SingleOrDefault(x => x.GetName().Name == $"{moduleName}.Domain.Shared");
+                .FirstOrDefault(x => x.GetName().Name == $"{moduleName}.Domain.Shared");
             
             var resourceType = assembly?.DefinedTypes
                 .FirstOrDefault(x => Attribute.IsDefined(x, typeof(LocalizationResourceNameAttribute)));
@@ -348,7 +348,7 @@ namespace EasyAbp.Abp.EntityUi.Data
                     var entityNameForPermission = belongsTo ?? entityName;
                     
                     var contractsAssembly = AppDomain.CurrentDomain.GetAssemblies()
-                        .SingleOrDefault(x => x.GetName().Name == $"{module.Name}.Application.Contracts");
+                        .FirstOrDefault(x => x.GetName().Name == $"{module.Name}.Application.Contracts");
 
                     var listItemDtoType = contractsAssembly?.DefinedTypes.FirstOrDefault(x =>
                         ListItemDtoNames.Select(y => string.Format(y, entityName)).Contains(x.Name));

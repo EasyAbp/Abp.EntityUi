@@ -3,11 +3,12 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>MvcSample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyAbp.Abp.DynamicPermission.EntityFrameworkCore" Version="$(EasyAbpAbpDynamicPermissionModuleVersion)" />
     <PackageReference Include="EasyAbp.Abp.DynamicEntity.EntityFrameworkCore" Version="$(EasyAbpAbpDynamicEntityModuleVersion)" />
     <PackageReference Include="EasyAbp.Abp.DynamicMenu.EntityFrameworkCore" Version="$(EasyAbpAbpDynamicMenuModuleVersion)" />
     <ProjectReference Include="..\..\..\..\src\EasyAbp.Abp.EntityUi.EntityFrameworkCore\EasyAbp.Abp.EntityUi.EntityFrameworkCore.csproj" />
@@ -24,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.*">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.*">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>compile; contentFiles; build; buildMultitargeting; buildTransitive; analyzers; native</PrivateAssets>
     </PackageReference>

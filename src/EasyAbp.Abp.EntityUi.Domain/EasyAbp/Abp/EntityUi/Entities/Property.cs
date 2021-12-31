@@ -6,15 +6,15 @@ namespace EasyAbp.Abp.EntityUi.Entities
 {
     public class Property : Volo.Abp.Domain.Entities.Entity
     {
-        [Key, Column(Order = 0)]
+        [Key]
         [NotNull]
         public virtual string EntityModuleName { get; protected set; }
         
-        [Key, Column(Order = 1)]
+        [Key]
         [NotNull]
         public virtual string EntityName { get; protected set; }
         
-        [Key, Column(Order = 2)]
+        [Key]
         [NotNull]
         public virtual string Name { get; protected set; }
         

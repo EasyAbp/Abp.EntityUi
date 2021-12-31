@@ -1,16 +1,14 @@
-using System;
 using EasyAbp.Abp.EntityUi.Modules.Dtos;
 using Volo.Abp.Application.Dtos;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Volo.Abp;
-using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.Abp.EntityUi.Modules
 {
-    [RemoteService(Name = "EasyAbpAbpEntityUi")]
+    [RemoteService(Name = AbpEntityUiRemoteServiceConsts.RemoteServiceName)]
     [Route("/api/abp/entity-ui/module")]
-    public class ModuleController : EntityUiController, IModuleAppService
+    public class ModuleController : AbpEntityUiController, IModuleAppService
     {
         private readonly IModuleAppService _service;
 
