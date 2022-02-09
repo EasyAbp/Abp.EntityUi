@@ -9,11 +9,11 @@ namespace EasyAbp.Abp.EntityUi
     {
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            using (var application = AbpApplicationFactory.Create<EntityUiConsoleApiClientModule>())
+            using (var application = await AbpApplicationFactory.CreateAsync<EntityUiConsoleApiClientModule>())
             {
-                application.Initialize();
+                await application.InitializeAsync();
 
-                application.Shutdown();
+                await application.ShutdownAsync();
             }
         }
 
