@@ -2,7 +2,7 @@
   <PropertyGroup>
 
     <AbpVersion>5.1.3</AbpVersion>
-    <NatashaVersion>4.0.0-beta.1</NatashaVersion>
+    <NatashaVersion>4.0.0-alpha.1</NatashaVersion>
     <EasyAbpAbpDynamicPermissionModuleVersion>0.2.1</EasyAbpAbpDynamicPermissionModuleVersion>
     <EasyAbpAbpDynamicEntityModuleVersion>0.5.2</EasyAbpAbpDynamicEntityModuleVersion>
     <EasyAbpAbpDynamicMenuModuleVersion>0.4.1</EasyAbpAbpDynamicMenuModuleVersion>
