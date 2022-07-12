@@ -12,8 +12,4 @@
     <ProjectReference Include="..\EasyAbp.Abp.EntityUi.Domain\EasyAbp.Abp.EntityUi.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="EasyAbp\Abp\EntityUi" />
-  </ItemGroup>
-
 </Project>
