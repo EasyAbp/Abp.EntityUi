@@ -147,7 +147,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual Task<string> GetJsDeletionConfirmMessageTextAsync()
         {
-            return Task.FromResult(StringLocalizer[$"{Entity.Name}DeletionConfirmationMessage"].Value);
+            return Task.FromResult($"{Entity.Name}DeletionConfirmationMessage");
         }
 
         public virtual Task<string> GetJsSuccessfullyDeletedNotificationTextAsync()
@@ -155,10 +155,10 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return Task.FromResult(StringLocalizer["SuccessfullyDeleted"].Value);
         }
 
-        public virtual Task<string> GetJsDataTableDataRecordKeysCodeAsync(bool withKeys = true)
+        public virtual Task<string> GetJsDataTableDataRecordKeysCodeAsync(bool withKeys = true, string keyPrefix = "EntityKey_")
         {
             var entityKeys = EntityKeys.Select(key => key.ToCamelCase())
-                .Select(key => withKeys ? $"EntityKey_{key}: data.record.{key}" : $"data.record.{key}");
+                .Select(key => withKeys ? $"{keyPrefix}{key}: data.record.{key}" : $"data.record.{key}");
 
             var parentEntityKeys = ParentEntityKeys.Select(key => $"ParentEntityKey_{key.ToCamelCase()}")
                 .Select(keyWithPrefix =>
@@ -191,8 +191,8 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
         public virtual async Task<string> GetJsDataTableDeletionActionInputAsync()
         {
-            return EntityKeys.Length > 1
-                ? $"{{ {await GetJsDataTableDataRecordKeysCodeAsync()} }}"
+            return EntityKeys.Length > 1 || EntityKeys.SingleOrDefault() != "Id"
+                ? $"{{ {await GetJsDataTableDataRecordKeysCodeAsync(true, string.Empty)} }}"
                 : await GetJsDataTableDataRecordKeysCodeAsync(false);
         }
 
