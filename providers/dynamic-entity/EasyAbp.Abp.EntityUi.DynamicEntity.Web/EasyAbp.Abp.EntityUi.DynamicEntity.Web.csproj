@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DotNetCore.Natasha.CSharp.All" Version="$(NatashaVersion)" />
+        <PackageReference Include="DotNetCore.Natasha.CSharp" Version="$(NatashaVersion)" />
         <PackageReference Include="Volo.Abp.AutoMapper" Version="$(AbpVersion)" />
         <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared" Version="$(AbpVersion)" />
     </ItemGroup>

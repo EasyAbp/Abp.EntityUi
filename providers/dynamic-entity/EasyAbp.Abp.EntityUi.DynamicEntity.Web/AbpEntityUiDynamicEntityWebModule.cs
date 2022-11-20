@@ -43,7 +43,7 @@ namespace EasyAbp.Abp.EntityUi.Web
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
-            NatashaInitializer.InitializeAndPreheating();
+            NatashaInitializer.Preheating();
         }
     }
 }

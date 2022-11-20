@@ -5,8 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
-using Natasha.CSharp;
-using Natasha.Framework;
 using Volo.Abp.DependencyInjection;
 
 namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
@@ -16,9 +14,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
         private const string DomainKeyPrefix = "AbpDynamicEntity";
 
         private readonly Dictionary<string, NatashaViewModelTypeModel> _entityFullNameViewModelTypeMapping = new();
-        
+
         private readonly ConcurrentDictionary<string, SemaphoreSlim> _asyncLocks = new();
-        
+
         public virtual async Task<Type> GetCreationViewModelTypeAsync(EntityDto entityDto)
         {
             return (await GetTypeModelAsync(entityDto)).CreationViewModelType;
@@ -29,7 +27,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
             return (await GetTypeModelAsync(entityDto)).EditViewModelType;
         }
 
-        protected virtual Task<DomainBase> RecreateAndGetDomainAsync(EntityDto entityDto)
+        protected virtual Task<NatashaReferenceDomain> RecreateAndGetDomainAsync(EntityDto entityDto)
         {
             var domainKey = $"{DomainKeyPrefix}_{entityDto.GetFullName()}";
 
@@ -85,8 +83,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
 
             return model;
         }
-        
-        protected virtual Task<Type> CreateCreationViewModelTypeAsync(EntityDto entityDto, DomainBase domain)
+
+        protected virtual Task<Type> CreateCreationViewModelTypeAsync(EntityDto entityDto,
+            NatashaReferenceDomain domain)
         {
             var nClass = NClass.UseDomain(domain);
 
@@ -106,11 +105,11 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
 
             return Task.FromResult(nClass.GetType());
         }
-        
-        protected virtual Task<Type> CreateEditViewModelTypeAsync(EntityDto entityDto, DomainBase domain)
+
+        protected virtual Task<Type> CreateEditViewModelTypeAsync(EntityDto entityDto, NatashaReferenceDomain domain)
         {
             var nClass = NClass.UseDomain(domain);
-            
+
             nClass
                 .Namespace("EasyAbp.Abp.EntityUi.Web.Pages.EntityUi")
                 .Public()
