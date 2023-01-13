@@ -481,14 +481,16 @@ namespace EasyAbp.Abp.EntityUi.Data
 
         protected virtual bool IsKeyParam(ParameterInfo parameterInfo, TypeInfo keyClassType, string keys)
         {
+            var keyList = keys.Split(',').ToList();
+
             if (keyClassType == null)
             {
-                if (keys.Length != 1)
+                if (keyList.Count != 1)
                 {
                     return false;
                 }
                 
-                return parameterInfo.Name.Equals(keys.Split(',').First(), StringComparison.OrdinalIgnoreCase);
+                return parameterInfo.Name.Equals(keyList.First(), StringComparison.OrdinalIgnoreCase);
             }
 
             return parameterInfo.ParameterType == keyClassType;
