@@ -75,6 +75,7 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
         {
             return Task.FromResult(new MenuItem(
                 parentName: null,
+                inAdministration: true,
                 name: _menuItemNameCalculator.GetName(ModuleName),
                 displayName: _menuItemNameCalculator.GetDisplayName(ModuleName),
                 url: null,
@@ -82,6 +83,10 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                 urlBlazor: null,
                 urlAngular: null,
                 permission: null,
+                order: null,
+                icon: "fa fa-cubes",
+                target: null,
+                isDisabled: false,
                 lResourceTypeName: typeof(DynamicEntityResource).FullName,
                 lResourceTypeAssemblyName: typeof(DynamicEntityResource).Assembly.GetName().Name,
                 menuItems: new List<MenuItem>()));
@@ -91,6 +96,7 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
         {
             return Task.FromResult(new MenuItem(
                 parentName: _menuItemNameCalculator.GetName(ModuleName),
+                inAdministration: false,
                 name: _menuItemNameCalculator.GetName(ModuleName, modelDefinition.Name),
                 displayName: _menuItemNameCalculator.GetDisplayName(ModuleName, modelDefinition.Name),
                 url: $"/EntityUi/{ModuleName}/{modelDefinition.Name}",
@@ -98,6 +104,10 @@ namespace EasyAbp.Abp.EntityUi.DynamicEntity.EventHandlers
                 urlBlazor: null,
                 urlAngular: $"/entity-ui/{ModuleName}/{modelDefinition.Name.ToKebabCase()}",
                 permission: modelDefinition.PermissionSet.GetList,
+                order: null,
+                icon: null,
+                target: null,
+                isDisabled: false,
                 lResourceTypeName: typeof(DynamicEntityResource).FullName,
                 lResourceTypeAssemblyName: typeof(DynamicEntityResource).Assembly.GetName().Name,
                 menuItems: new List<MenuItem>()));

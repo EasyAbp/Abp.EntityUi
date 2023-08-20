@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MvcSample.Migrations
 {
-    public partial class InitialAbp501 : Migration
+    /// <inheritdoc />
+    public partial class InitialAbp730 : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -18,9 +20,11 @@ namespace MvcSample.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TenantName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TenantName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     ImpersonatorUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ImpersonatorUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ImpersonatorTenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ImpersonatorTenantName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
                     ExecutionTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExecutionDuration = table.Column<int>(type: "int", nullable: false),
                     ClientIpAddress = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: true),
@@ -83,6 +87,42 @@ namespace MvcSample.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AbpFeatureGroups",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbpFeatureGroups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AbpFeatures",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GroupName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ParentName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    DefaultValue = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    IsVisibleToClients = table.Column<bool>(type: "bit", nullable: false),
+                    IsAvailableToHost = table.Column<bool>(type: "bit", nullable: false),
+                    AllowedProviders = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ValueType = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbpFeatures", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AbpFeatureValues",
                 columns: table => new
                 {
@@ -121,6 +161,7 @@ namespace MvcSample.Migrations
                     ParentId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Code = table.Column<string>(type: "nvarchar(95)", maxLength: 95, nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    EntityVersion = table.Column<int>(type: "int", nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -157,6 +198,40 @@ namespace MvcSample.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AbpPermissionGroups",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbpPermissionGroups", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AbpPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GroupName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ParentName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    IsEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    MultiTenancySide = table.Column<byte>(type: "tinyint", nullable: false),
+                    Providers = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: true),
+                    StateCheckers = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbpPermissions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AbpRoles",
                 columns: table => new
                 {
@@ -167,6 +242,7 @@ namespace MvcSample.Migrations
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
                     IsStatic = table.Column<bool>(type: "bit", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    EntityVersion = table.Column<int>(type: "int", nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true)
                 },
@@ -221,6 +297,7 @@ namespace MvcSample.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    EntityVersion = table.Column<int>(type: "int", nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -234,6 +311,22 @@ namespace MvcSample.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbpTenants", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AbpUserDelegations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SourceUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TargetUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbpUserDelegations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -259,6 +352,9 @@ namespace MvcSample.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    ShouldChangePasswordOnNextLogin = table.Column<bool>(type: "bit", nullable: false),
+                    EntityVersion = table.Column<int>(type: "int", nullable: false),
+                    LastPasswordChangeTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -317,17 +413,17 @@ namespace MvcSample.Migrations
                     Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
                     Type = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    PermissionSet_Get = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PermissionSet_GetList = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PermissionSet_Create = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PermissionSet_Update = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PermissionSet_Delete = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PermissionSet_Manage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PermissionSet_AnonymousGet = table.Column<bool>(type: "bit", nullable: true),
-                    PermissionSet_AnonymousGetList = table.Column<bool>(type: "bit", nullable: true),
-                    PermissionSet_AnonymousCreate = table.Column<bool>(type: "bit", nullable: true),
-                    PermissionSet_AnonymousUpdate = table.Column<bool>(type: "bit", nullable: true),
-                    PermissionSet_AnonymousDelete = table.Column<bool>(type: "bit", nullable: true),
+                    PermissionSetGet = table.Column<string>(name: "PermissionSet_Get", type: "nvarchar(max)", nullable: true),
+                    PermissionSetGetList = table.Column<string>(name: "PermissionSet_GetList", type: "nvarchar(max)", nullable: true),
+                    PermissionSetCreate = table.Column<string>(name: "PermissionSet_Create", type: "nvarchar(max)", nullable: true),
+                    PermissionSetUpdate = table.Column<string>(name: "PermissionSet_Update", type: "nvarchar(max)", nullable: true),
+                    PermissionSetDelete = table.Column<string>(name: "PermissionSet_Delete", type: "nvarchar(max)", nullable: true),
+                    PermissionSetManage = table.Column<string>(name: "PermissionSet_Manage", type: "nvarchar(max)", nullable: true),
+                    PermissionSetAnonymousGet = table.Column<bool>(name: "PermissionSet_AnonymousGet", type: "bit", nullable: true),
+                    PermissionSetAnonymousGetList = table.Column<bool>(name: "PermissionSet_AnonymousGetList", type: "bit", nullable: true),
+                    PermissionSetAnonymousCreate = table.Column<bool>(name: "PermissionSet_AnonymousCreate", type: "bit", nullable: true),
+                    PermissionSetAnonymousUpdate = table.Column<bool>(name: "PermissionSet_AnonymousUpdate", type: "bit", nullable: true),
+                    PermissionSetAnonymousDelete = table.Column<bool>(name: "PermissionSet_AnonymousDelete", type: "bit", nullable: true),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -349,12 +445,17 @@ namespace MvcSample.Migrations
                 {
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ParentName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    InAdministration = table.Column<bool>(type: "bit", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UrlMvc = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UrlBlazor = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UrlAngular = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Permission = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Order = table.Column<int>(type: "int", nullable: true),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Target = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsDisabled = table.Column<bool>(type: "bit", nullable: false),
                     LResourceTypeName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LResourceTypeAssemblyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -368,6 +469,26 @@ namespace MvcSample.Migrations
                         column: x => x.ParentName,
                         principalTable: "EasyAbpAbpDynamicMenuMenuItems",
                         principalColumn: "Name");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EasyAbpAbpDynamicPermissionPermissionDefinitions",
+                columns: table => new
+                {
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EasyAbpAbpDynamicPermissionPermissionDefinitions", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
@@ -933,10 +1054,10 @@ namespace MvcSample.Migrations
                     IsEntityCollection = table.Column<bool>(type: "bit", nullable: false),
                     TypeOrEntityName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Nullable = table.Column<bool>(type: "bit", nullable: false),
-                    ShowIn_List = table.Column<bool>(type: "bit", nullable: true),
-                    ShowIn_Detail = table.Column<bool>(type: "bit", nullable: true),
-                    ShowIn_Creation = table.Column<bool>(type: "bit", nullable: true),
-                    ShowIn_Edit = table.Column<bool>(type: "bit", nullable: true)
+                    ShowInList = table.Column<bool>(name: "ShowIn_List", type: "bit", nullable: true),
+                    ShowInDetail = table.Column<bool>(name: "ShowIn_Detail", type: "bit", nullable: true),
+                    ShowInCreation = table.Column<bool>(name: "ShowIn_Creation", type: "bit", nullable: true),
+                    ShowInEdit = table.Column<bool>(name: "ShowIn_Edit", type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1348,6 +1469,23 @@ namespace MvcSample.Migrations
                 column: "EntityChangeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AbpFeatureGroups_Name",
+                table: "AbpFeatureGroups",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpFeatures_GroupName",
+                table: "AbpFeatures",
+                column: "GroupName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpFeatures_Name",
+                table: "AbpFeatures",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AbpFeatureValues_Name_ProviderName_ProviderKey",
                 table: "AbpFeatureValues",
                 columns: new[] { "Name", "ProviderName", "ProviderKey" },
@@ -1382,6 +1520,23 @@ namespace MvcSample.Migrations
                 columns: new[] { "TenantId", "Name", "ProviderName", "ProviderKey" },
                 unique: true,
                 filter: "[TenantId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpPermissionGroups_Name",
+                table: "AbpPermissionGroups",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpPermissions_GroupName",
+                table: "AbpPermissions",
+                column: "GroupName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpPermissions_Name",
+                table: "AbpPermissions",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AbpRoleClaims_RoleId",
@@ -1532,6 +1687,7 @@ namespace MvcSample.Migrations
                 columns: new[] { "SubjectId", "SessionId", "Type" });
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -1547,6 +1703,12 @@ namespace MvcSample.Migrations
                 name: "AbpEntityPropertyChanges");
 
             migrationBuilder.DropTable(
+                name: "AbpFeatureGroups");
+
+            migrationBuilder.DropTable(
+                name: "AbpFeatures");
+
+            migrationBuilder.DropTable(
                 name: "AbpFeatureValues");
 
             migrationBuilder.DropTable(
@@ -1557,6 +1719,12 @@ namespace MvcSample.Migrations
 
             migrationBuilder.DropTable(
                 name: "AbpPermissionGrants");
+
+            migrationBuilder.DropTable(
+                name: "AbpPermissionGroups");
+
+            migrationBuilder.DropTable(
+                name: "AbpPermissions");
 
             migrationBuilder.DropTable(
                 name: "AbpRoleClaims");
@@ -1572,6 +1740,9 @@ namespace MvcSample.Migrations
 
             migrationBuilder.DropTable(
                 name: "AbpUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AbpUserDelegations");
 
             migrationBuilder.DropTable(
                 name: "AbpUserLogins");
@@ -1596,6 +1767,9 @@ namespace MvcSample.Migrations
 
             migrationBuilder.DropTable(
                 name: "EasyAbpAbpDynamicMenuMenuItems");
+
+            migrationBuilder.DropTable(
+                name: "EasyAbpAbpDynamicPermissionPermissionDefinitions");
 
             migrationBuilder.DropTable(
                 name: "EasyAbpAbpEntityUiModules");

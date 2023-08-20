@@ -245,6 +245,7 @@ namespace EasyAbp.Abp.EntityUi.Data
         {
             return Task.FromResult(new MenuItem(
                 parentName: null,
+                inAdministration: true,
                 name: _menuItemNameCalculator.GetName(module.Name),
                 displayName: _menuItemNameCalculator.GetDisplayName(module.Name),
                 url: null,
@@ -252,6 +253,10 @@ namespace EasyAbp.Abp.EntityUi.Data
                 urlBlazor: null,
                 urlAngular: null,
                 permission: null,
+                order: null,
+                icon: "fa fa-cubes",
+                target: null,
+                isDisabled: false,
                 lResourceTypeName: module.LResourceTypeName,
                 lResourceTypeAssemblyName: module.LResourceTypeAssemblyName,
                 menuItems: new List<MenuItem>()));
@@ -261,6 +266,7 @@ namespace EasyAbp.Abp.EntityUi.Data
         {
             return Task.FromResult(new MenuItem(
                 parentName: _menuItemNameCalculator.GetName(module.Name),
+                inAdministration: false,
                 name: _menuItemNameCalculator.GetName(module.Name, entityName),
                 displayName: _menuItemNameCalculator.GetDisplayName(module.Name, entityName),
                 url: $"/EntityUi/{module.Name}/{entityName}",
@@ -268,6 +274,10 @@ namespace EasyAbp.Abp.EntityUi.Data
                 urlBlazor: null,
                 urlAngular: $"/entity-ui/{module.Name}/{entityName.ToKebabCase()}",
                 permission: GetDefaultMenuItemPermission(module.Name, entityName),
+                order: null,
+                icon: null,
+                target: null,
+                isDisabled: false,
                 lResourceTypeName: module.LResourceTypeName,
                 lResourceTypeAssemblyName: module.LResourceTypeAssemblyName,
                 menuItems: new List<MenuItem>()));
