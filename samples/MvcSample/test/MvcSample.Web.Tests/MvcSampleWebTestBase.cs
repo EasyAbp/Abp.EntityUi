@@ -8,15 +8,8 @@ using Volo.Abp.AspNetCore.TestBase;
 
 namespace MvcSample
 {
-    public abstract class MvcSampleWebTestBase : AbpAspNetCoreIntegratedTestBase<MvcSampleWebTestStartup>
+    public abstract class MvcSampleWebTestBase : AbpWebApplicationFactoryIntegratedTest<MvcSampleWebTestStartup>
     {
-        protected override IHostBuilder CreateHostBuilder()
-        {
-            return base
-                .CreateHostBuilder()
-                .UseContentRoot(WebContentDirectoryFinder.CalculateContentRootFolder());
-        }
-
         protected virtual async Task<T> GetResponseAsObjectAsync<T>(string url, HttpStatusCode expectedStatusCode = HttpStatusCode.OK)
         {
             var strResponse = await GetResponseAsStringAsync(url, expectedStatusCode);

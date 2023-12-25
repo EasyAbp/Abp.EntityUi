@@ -8,10 +8,6 @@
 
 An abp module that dynamically generates management UI for entities in runtime.
 
-## Online Demo
-
-We have launched an online demo for this module: [https://entityui.samples.easyabp.io](https://entityui.samples.easyabp.io)
-
 ## Installation
 
 1. Follow [the document](https://github.com/EasyAbp/Abp.DynamicMenu#installation) to install the dependent Abp.DynamicMenu module.

@@ -8,10 +8,6 @@
 
 Dynamic-entity implementation of the EasyAbp.Abp.EntityUi.DynamicEntity module.
 
-## Online Demo
-
-We have launched an online demo for this module: [https://entityui.samples.easyabp.io](https://entityui.samples.easyabp.io)
-
 ## Installation
 
 > Should also install the [Abp.EntityUI](/docs/README.md#installation) module and the [Abp.DynamicEntity](https://github.com/EasyAbp/Abp.DynamicEntity) module since this module depends on them.
