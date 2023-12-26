@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
     <ProjectReference Include="..\MvcSample.Application.Tests\MvcSample.Application.Tests.csproj" />
     <ProjectReference Include="..\..\src\MvcSample.Web\MvcSample.Web.csproj" />
     <PackageReference Include="Volo.Abp.AspNetCore.TestBase" Version="$(AbpVersion)" />
