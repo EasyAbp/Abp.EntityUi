@@ -193,7 +193,7 @@ namespace MvcSample.Web
 
         private void ConfigureAutoApiControllers()
         {
-            Configure<AbpAspNetCoreMvcOptions>(options =>
+            PreConfigure<AbpAspNetCoreMvcOptions>(options =>
             {
                 options.ConventionalControllers.Create(typeof(MvcSampleApplicationModule).Assembly);
             });
