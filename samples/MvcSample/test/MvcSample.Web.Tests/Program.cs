@@ -3,7 +3,9 @@ using MvcSample;
 using Volo.Abp.AspNetCore.TestBase;
 
 var builder = WebApplication.CreateBuilder();
-await builder.RunAbpModuleAsync<MvcSampleWebTestModule>();
+
+builder.Environment.ContentRootPath = GetWebProjectContentRootPathHelper.Get("MvcSample.Web.csproj");
+await builder.RunAbpModuleAsync<MvcSampleWebTestModule>(applicationName: "MvcSample.Web" );
 
 public partial class Program
 {
