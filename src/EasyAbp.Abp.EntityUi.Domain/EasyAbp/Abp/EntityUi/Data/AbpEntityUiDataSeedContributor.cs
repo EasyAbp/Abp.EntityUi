@@ -647,7 +647,7 @@ namespace EasyAbp.Abp.EntityUi.Data
 
         protected virtual string GetEntityKeys(TypeInfo entityTypeInfo)
         {
-            return "Id";
+            return "Id"; // todo: how to get Fields from GetKeys()?
         }
     }
 }

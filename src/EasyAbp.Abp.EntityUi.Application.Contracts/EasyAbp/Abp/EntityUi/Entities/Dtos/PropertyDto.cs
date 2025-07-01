@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 
 namespace EasyAbp.Abp.EntityUi.Entities.Dtos
 {
@@ -13,7 +14,7 @@ namespace EasyAbp.Abp.EntityUi.Entities.Dtos
 
         public bool IsEntityCollection { get; set; }
 
-        public string TypeOrEntityName { get; set; }
+        [NotNull] public string TypeOrEntityName { get; set; } = null!;
         
         public bool Nullable { get; set; }
 

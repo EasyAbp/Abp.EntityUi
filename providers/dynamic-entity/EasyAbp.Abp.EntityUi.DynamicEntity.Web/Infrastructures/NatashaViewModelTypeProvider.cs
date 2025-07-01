@@ -27,7 +27,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
             return (await GetTypeModelAsync(entityDto)).EditViewModelType;
         }
 
-        protected virtual Task<NatashaReferenceDomain> RecreateAndGetDomainAsync(EntityDto entityDto)
+        protected virtual Task<NatashaLoadContext> RecreateAndGetDomainAsync(EntityDto entityDto)
         {
             var domainKey = $"{DomainKeyPrefix}_{entityDto.GetFullName()}";
 
@@ -85,9 +85,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
         }
 
         protected virtual Task<Type> CreateCreationViewModelTypeAsync(EntityDto entityDto,
-            NatashaReferenceDomain domain)
+            NatashaLoadContext context)
         {
-            var nClass = NClass.UseDomain(domain);
+            var nClass = NClass.UseDomain(context);
 
             nClass
                 .Namespace("EasyAbp.Abp.EntityUi.Web.Pages.EntityUi")
@@ -106,9 +106,9 @@ namespace EasyAbp.Abp.EntityUi.Web.Infrastructures
             return Task.FromResult(nClass.GetType());
         }
 
-        protected virtual Task<Type> CreateEditViewModelTypeAsync(EntityDto entityDto, NatashaReferenceDomain domain)
+        protected virtual Task<Type> CreateEditViewModelTypeAsync(EntityDto entityDto, NatashaLoadContext context)
         {
-            var nClass = NClass.UseDomain(domain);
+            var nClass = NClass.UseDomain(context);
 
             nClass
                 .Namespace("EasyAbp.Abp.EntityUi.Web.Pages.EntityUi")
