@@ -709,7 +709,7 @@
       "parentName": null,
       "inAdministration": true,
       "name": "EasyAbp.Abp.EntityUi",
-      "displayName": "Menu:EntityUi",
+      "displayName": "Menu:EasyAbp.Abp.EntityUi",
       "url": null,
       "urlMvc": null,
       "urlBlazor": null,

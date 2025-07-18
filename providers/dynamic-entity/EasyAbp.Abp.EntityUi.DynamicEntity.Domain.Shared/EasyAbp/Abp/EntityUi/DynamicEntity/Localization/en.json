@@ -1,6 +1,6 @@
 {
   "culture": "en",
   "texts": {
-    "Menu:DynamicEntity": "Dynamic entities"
+    "Menu:EasyAbp.Abp.DynamicEntity": "Dynamic entities"
   }
 }

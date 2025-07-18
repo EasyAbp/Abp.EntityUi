@@ -1,6 +1,6 @@
 {
   "culture": "zh-Hans",
   "texts": {
-    "Menu:DynamicEntity": "动态实体"
+    "Menu:EasyAbp.Abp.DynamicEntity": "动态实体"
   }
 }

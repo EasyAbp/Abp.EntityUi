@@ -2,11 +2,17 @@
 @using EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
 @model EasyAbp.Abp.EntityUi.Web.Pages.EntityUi.IndexModel
-@inject IPageLayout _pageLayout
+@inject IPageLayout PageLayout
 @{
-    _pageLayout.Content.Title = await Model.GetPageTitleAsync();
-    _pageLayout.Content.BreadCrumb.Add(await Model.GetBreadCrumbTextAsync());
-    _pageLayout.Content.MenuItemName = await Model.GetMenuItemNameAsync();
+    PageLayout.Content.Title = await Model.GetPageTitleAsync();
+
+    var breadcrumbs = await Model.GetBreadCrumbsAsync();
+    foreach (var breadcrumb in breadcrumbs)
+    {
+        PageLayout.Content.BreadCrumb.Add(breadcrumb);
+    }
+
+    PageLayout.Content.MenuItemName = await Model.GetMenuItemNameAsync();
 }
 
 <script type="text/javascript">
@@ -41,31 +47,26 @@
 {
     @if (Model.IsSubEntity)
     {
-        <abp-script src="/Pages/EntityUi/index-sub-entity.js" />
+        <abp-script src="/Pages/EntityUi/index-sub-entity.js"/>
     }
     else
     {
-        <abp-script src="/Pages/EntityUi/index.js" />
+        <abp-script src="/Pages/EntityUi/index.js"/>
+    }
+}
+@section content_toolbar
+{
+    @if (Model.Entity.CreationEnabled && await Model.IsCreationPermissionGrantedOrNullAsync())
+    {
+        <abp-button id="@await Model.GetNewButtonIdAsync()"
+                    text="@await Model.GetNewButtonTextAsync()"
+                    icon="plus"
+                    icon="Small"
+                    button-type="Primary"/>
     }
 }
 
 <abp-card>
-    <abp-card-header>
-        <abp-row>
-            <abp-column size-md="_6">
-                <abp-card-title>@await Model.GetPageTitleAsync()</abp-card-title>
-            </abp-column>
-            <abp-column size-md="_6" class="text-end">
-			    @if (Model.Entity.CreationEnabled && await Model.IsCreationPermissionGrantedOrNullAsync())
-                {
-                <abp-button id="@await Model.GetNewButtonIdAsync()"
-                            text="@await Model.GetNewButtonTextAsync()"
-                            icon="plus"
-                            button-type="Primary" />
-                }
-            </abp-column>
-        </abp-row>
-    </abp-card-header>
     <abp-card-body>
         <abp-table striped-rows="true" id="@await Model.GetTableIdAsync()" class="nowrap"/>
     </abp-card-body>

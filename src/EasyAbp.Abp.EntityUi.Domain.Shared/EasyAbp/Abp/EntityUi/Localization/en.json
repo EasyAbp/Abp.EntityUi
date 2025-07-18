@@ -1,7 +1,7 @@
 {
   "culture": "en",
   "texts": {
-    "Menu:EntityUi": "Entity UI",
+    "Menu:EasyAbp.Abp.EntityUi": "Entity UI",
     "Menu:Module": "Module",
     "Module": "Module",
     "ModuleName": "Name",

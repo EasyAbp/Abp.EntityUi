@@ -22,28 +22,26 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         private readonly IAuthorizationService _authorizationService;
         private readonly IIntegrationAppService _integrationAppService;
         private readonly IEntityUiStringLocalizerProvider _stringLocalizerProvider;
-        
+
         private IEntityUiPageDataProvider PageDataProvider;
         private IStringLocalizer StringLocalizer { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public string ModuleName { get; set; }
-        
-        [BindProperty(SupportsGet = true)]
-        public string EntityName { get; set; }
-        
+        [BindProperty(SupportsGet = true)] public string ModuleName { get; set; }
+
+        [BindProperty(SupportsGet = true)] public string EntityName { get; set; }
+
         public ModuleDto Module { get; set; }
-        
+
         public EntityDto Entity { get; set; }
-        
+
         public EntityDto ParentEntity { get; set; }
-        
+
         public string[] EntityKeys { get; set; }
-        
+
         public string[] ParentEntityKeys { get; set; }
 
         public bool IsSubEntity => !Entity.BelongsTo.IsNullOrEmpty();
-        
+
         public IndexModel(
             IAbpLazyServiceProvider lazyServiceProvider,
             IAuthorizationService authorizationService,
@@ -55,7 +53,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             _integrationAppService = integrationAppService;
             _stringLocalizerProvider = stringLocalizerProvider;
         }
-        
+
         public virtual async Task OnGetAsync()
         {
             var integration = await _integrationAppService.GetModuleAsync(ModuleName);
@@ -68,20 +66,20 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 ParentEntity = integration.Entities.Single(x => x.Name == Entity.BelongsTo);
                 ParentEntityKeys = ParentEntity.Keys.Split(',');
             }
-            
+
             Module = integration.Modules.Single(x => x.Name == ModuleName);
 
             StringLocalizer = await _stringLocalizerProvider.GetAsync(Module);
             PageDataProvider = _lazyServiceProvider.GetEntityUiPageDataProviderOrDefault(Entity.ProviderName);
         }
-        
+
         public virtual async Task<bool> IsCreationPermissionGrantedOrNullAsync()
         {
             if (Entity.CreationPermission.IsNullOrWhiteSpace())
             {
                 return true;
             }
-            
+
             return await _authorizationService.IsGrantedAsync(Entity.CreationPermission);
         }
 
@@ -100,11 +98,21 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return Task.FromResult(StringLocalizer[Entity.Name].Value);
         }
 
-        public virtual Task<string> GetBreadCrumbTextAsync()
+        public virtual Task<List<string>> GetBreadCrumbsAsync()
         {
-            var localizationItemName = IsSubEntity ? $"Menu:{Entity.BelongsTo}" : $"Menu:{Entity.Name}";
-            
-            return Task.FromResult(StringLocalizer[localizationItemName].Value);
+            var breadcrumbs = new List<string>();
+
+            if (IsSubEntity)
+            {
+                breadcrumbs.Add(StringLocalizer[$"Menu:{Entity.BelongsTo}"].Value);
+            }
+
+            if (!ModuleName.IsNullOrWhiteSpace())
+            {
+                breadcrumbs.Add(StringLocalizer[$"Menu:{Entity.ModuleName}"].Value);
+            }
+
+            return Task.FromResult(breadcrumbs);
         }
 
         public virtual Task<string> GetMenuItemNameAsync()
@@ -137,7 +145,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                 ? Task.FromResult($"EntityUi/{ModuleName}/{EntityName}/CreateSubEntityModal")
                 : Task.FromResult($"EntityUi/{ModuleName}/{EntityName}/CreateModal");
         }
-        
+
         public virtual Task<string> GetJsEditModalSubPathAsync()
         {
             return IsSubEntity
@@ -155,7 +163,8 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             return Task.FromResult(StringLocalizer["SuccessfullyDeleted"].Value);
         }
 
-        public virtual Task<string> GetJsDataTableDataRecordKeysCodeAsync(bool withKeys = true, string keyPrefix = "EntityKey_")
+        public virtual Task<string> GetJsDataTableDataRecordKeysCodeAsync(bool withKeys = true,
+            string keyPrefix = "EntityKey_")
         {
             var entityKeys = EntityKeys.Select(key => key.ToCamelCase())
                 .Select(key => withKeys ? $"{keyPrefix}{key}: data.record.{key}" : $"data.record.{key}");
@@ -165,7 +174,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
                     withKeys
                         ? $"{keyWithPrefix}: '{HttpContext.Request.Query[keyWithPrefix]}'"
                         : $"'{HttpContext.Request.Query[keyWithPrefix]}'");
-            
+
             return Task.FromResult(entityKeys.Concat(parentEntityKeys).JoinAsString(", "));
         }
 
@@ -241,7 +250,7 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
         public virtual Task<string> GetJsBuildSubEntitiesRowActionItemsAsync()
         {
             var subEntities = Entity.Properties.Where(x => x.IsEntityCollection).ToList();
-            
+
             if (subEntities.IsNullOrEmpty())
             {
                 return Task.FromResult("var subEntitiesRowActionItems = []");
@@ -249,12 +258,13 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
 
             const string prefix = EntityUiModalModelBase.QueryPrefixParentEntityKey;
 
-            var keys = EntityKeys.Select(x => x.ToCamelCase()).Select(key => $"'{prefix}{key}=' + data.record.{key}").JoinAsString(" + '&' + ");
+            var keys = EntityKeys.Select(x => x.ToCamelCase()).Select(key => $"'{prefix}{key}=' + data.record.{key}")
+                .JoinAsString(" + '&' + ");
 
             var obj = subEntities.Select(x =>
                     $"{{ text: l('{Entity.Name}{x.Name}'), action: function (data) {{ document.location.href = document.location.origin + '/EntityUi/{ModuleName}/{x.GetTypeOrEntityNameWithoutNamespace()}?' + {keys}; }} }}")
                 .JoinAsString(", ");
-            
+
             return Task.FromResult($"var subEntitiesRowActionItems = [ {obj} ]");
         }
 
@@ -263,9 +273,10 @@ namespace EasyAbp.Abp.EntityUi.Web.Pages.EntityUi
             var properties = Entity.Properties;
 
             properties.Reverse();
-            
+
             return Task.FromResult(properties.Where(x => x.ShowIn.List)
-                .Select(async x => $"\"{await PageDataProvider.GetJsEntityListPropertyObjectCodeAsync(x)}\": `{await GetPropertyTitleTextAsync(x)}`")
+                .Select(async x =>
+                    $"\"{await PageDataProvider.GetJsEntityListPropertyObjectCodeAsync(x)}\": `{await GetPropertyTitleTextAsync(x)}`")
                 .Select(x => x.Result).JoinAsString(", "));
         }
 

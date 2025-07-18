@@ -1,7 +1,7 @@
 {
   "culture": "zh-Hans",
   "texts": {
-    "Menu:EntityUi": "实体 UI",
+    "Menu:EasyAbp.Abp.EntityUi": "实体 UI",
     "Menu:Module": "模块",
     "Module": "模块",
     "ModuleName": "名称",

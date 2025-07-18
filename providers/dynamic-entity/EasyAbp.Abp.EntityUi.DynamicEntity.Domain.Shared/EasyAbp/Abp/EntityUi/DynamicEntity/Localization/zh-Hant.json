@@ -1,6 +1,6 @@
 {
   "culture": "zh-Hant",
   "texts": {
-    "Menu:DynamicEntity": "動態實體"
+    "Menu:EasyAbp.Abp.DynamicEntity": "動態實體"
   }
 }
