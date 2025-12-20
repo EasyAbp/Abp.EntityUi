@@ -1,9 +1,9 @@
 <Project>
   <PropertyGroup>
-    <AbpVersion>9.3.3</AbpVersion>
+    <AbpVersion>10.0.1</AbpVersion>
     <NatashaVersion>9.0.0.*</NatashaVersion>
-    <EasyAbpAbpDynamicPermissionModuleVersion>1.13.0</EasyAbpAbpDynamicPermissionModuleVersion>
-    <EasyAbpAbpDynamicEntityModuleVersion>0.20.0</EasyAbpAbpDynamicEntityModuleVersion>
-    <EasyAbpAbpDynamicMenuModuleVersion>1.9.0</EasyAbpAbpDynamicMenuModuleVersion>
+    <EasyAbpAbpDynamicPermissionModuleVersion>1.14.0</EasyAbpAbpDynamicPermissionModuleVersion>
+    <EasyAbpAbpDynamicEntityModuleVersion>0.21.0</EasyAbpAbpDynamicEntityModuleVersion>
+    <EasyAbpAbpDynamicMenuModuleVersion>1.10.0</EasyAbpAbpDynamicMenuModuleVersion>
   </PropertyGroup>
 </Project>

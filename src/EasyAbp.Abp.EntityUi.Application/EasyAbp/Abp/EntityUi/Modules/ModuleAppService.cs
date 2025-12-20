@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using EasyAbp.Abp.EntityUi.Localization;
 using EasyAbp.Abp.EntityUi.Modules.Dtos;
 using EasyAbp.Abp.EntityUi.Permissions;
 using Volo.Abp.Application.Dtos;
@@ -21,6 +22,9 @@ namespace EasyAbp.Abp.EntityUi.Modules
         public ModuleAppService(IModuleRepository repository) : base(repository)
         {
             _repository = repository;
+
+            LocalizationResource = typeof(EntityUiResource);
+            ObjectMapperContext = typeof(AbpEntityUiApplicationModule);
         }
         
         protected override Task DeleteByIdAsync(ModuleKey id)

@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.Abp.EntityUi.Entities.Dtos;
+using EasyAbp.Abp.EntityUi.Localization;
 using EasyAbp.Abp.EntityUi.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -22,6 +23,9 @@ namespace EasyAbp.Abp.EntityUi.Entities
         public EntityAppService(IEntityRepository repository) : base(repository)
         {
             _repository = repository;
+
+            LocalizationResource = typeof(EntityUiResource);
+            ObjectMapperContext = typeof(AbpEntityUiApplicationModule);
         }
         
         protected override Task DeleteByIdAsync(EntityKey id)
