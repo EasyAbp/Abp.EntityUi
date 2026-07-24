@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using MvcSample.Permissions;
 using MvcSample.Books.Dtos;
 using Volo.Abp.Application.Dtos;
@@ -20,6 +22,34 @@ namespace MvcSample.Books
         public BookAppService(IBookRepository repository) : base(repository)
         {
             _repository = repository;
+        }
+
+        protected override Task<Book> MapToEntityAsync(CreateUpdateBookDto createInput)
+        {
+            var id = GuidGenerator.Create();
+
+            var book = new Book(
+                id,
+                CurrentTenant.Id,
+                createInput.Name,
+                createInput.Isbn,
+                createInput.Length,
+                new BookDetail(id, createInput.Detail.Outline),
+                createInput.Tags.Select(t => new BookTag(id, t.Tag)).ToList());
+
+            return Task.FromResult(book);
+        }
+
+        protected override Task MapToEntityAsync(CreateUpdateBookDto updateInput, Book entity)
+        {
+            entity.Update(
+                updateInput.Name,
+                updateInput.Isbn,
+                updateInput.Length,
+                new BookDetail(entity.Id, updateInput.Detail.Outline),
+                updateInput.Tags.Select(t => new BookTag(entity.Id, t.Tag)).ToList());
+
+            return Task.CompletedTask;
         }
     }
 }

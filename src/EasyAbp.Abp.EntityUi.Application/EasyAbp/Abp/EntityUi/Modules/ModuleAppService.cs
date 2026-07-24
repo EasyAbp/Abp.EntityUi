@@ -48,5 +48,18 @@ namespace EasyAbp.Abp.EntityUi.Modules
             // TODO: AbpHelper generated
             return query.OrderBy(e => e.Name);
         }
+
+        protected override Task<Module> MapToEntityAsync(CreateUpdateModuleDto createInput)
+        {
+            return Task.FromResult(new Module(
+                createInput.Name, createInput.LResourceTypeName, createInput.LResourceTypeAssemblyName));
+        }
+
+        protected override Task MapToEntityAsync(CreateUpdateModuleDto updateInput, Module entity)
+        {
+            entity.Update(
+                updateInput.Name, updateInput.LResourceTypeName, updateInput.LResourceTypeAssemblyName);
+            return Task.CompletedTask;
+        }
     }
 }

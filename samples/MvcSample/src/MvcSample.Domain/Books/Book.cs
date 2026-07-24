@@ -39,6 +39,16 @@ namespace MvcSample.Books
         ) : base(id)
         {
             TenantId = tenantId;
+            Update(name, isbn, length, detail, tags);
+        }
+
+        public void Update(
+            string name,
+            string isbn,
+            int length,
+            BookDetail detail,
+            List<BookTag> tags)
+        {
             Name = name;
             Isbn = isbn;
             Length = length;

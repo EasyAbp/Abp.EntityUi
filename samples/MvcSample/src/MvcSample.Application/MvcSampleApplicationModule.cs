@@ -2,10 +2,11 @@
 using EasyAbp.Abp.DynamicMenu;
 using EasyAbp.Abp.DynamicPermission;
 using EasyAbp.Abp.EntityUi;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Account;
-using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
@@ -25,16 +26,14 @@ namespace MvcSample
         typeof(AbpEntityUiApplicationModule),
         typeof(AbpDynamicPermissionApplicationModule),
         typeof(AbpDynamicEntityApplicationModule),
-        typeof(AbpDynamicMenuApplicationModule)
+        typeof(AbpDynamicMenuApplicationModule),
+        typeof(AbpMapperlyModule)
     )]
     public class MvcSampleApplicationModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<MvcSampleApplicationModule>();
-            });
+            context.Services.AddMapperlyObjectMapper<MvcSampleApplicationModule>();
         }
     }
 }

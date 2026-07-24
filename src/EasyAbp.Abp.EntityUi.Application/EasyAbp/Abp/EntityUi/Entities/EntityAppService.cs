@@ -50,5 +50,39 @@ namespace EasyAbp.Abp.EntityUi.Entities
             // TODO: AbpHelper generated
             return query.OrderBy(e => e.ModuleName);
         }
+
+        protected override Task<Entity> MapToEntityAsync(CreateUpdateEntityDto createInput)
+        {
+            return Task.FromResult(new Entity(CreateEntityDataModel(createInput)));
+        }
+
+        protected override Task MapToEntityAsync(CreateUpdateEntityDto updateInput, Entity entity)
+        {
+            entity.Update(CreateEntityDataModel(updateInput));
+            return Task.CompletedTask;
+        }
+
+        private static EntityDataModel CreateEntityDataModel(CreateUpdateEntityDto input)
+        {
+            return new EntityDataModel(
+                input.ModuleName, input.Name, input.ProviderName, input.Namespace, input.BelongsTo, input.Keys,
+                input.CreationEnabled, input.CreationPermission, input.EditEnabled, input.EditPermission,
+                input.DeletionEnabled, input.DeletionPermission, input.DetailEnabled, input.DetailPermission,
+                input.ContractsAssemblyName, input.ListItemDtoTypeName, input.DetailDtoTypeName,
+                input.CreationDtoTypeName, input.EditDtoTypeName, input.GetListInputDtoTypeName,
+                input.KeyClassTypeName, input.AppServiceInterfaceName, input.AppServiceGetListMethodName,
+                input.AppServiceGetMethodName, input.AppServiceCreateMethodName, input.AppServiceUpdateMethodName,
+                input.AppServiceDeleteMethodName,
+                input.Properties.Select(MapToProperty).ToList());
+        }
+
+        private static Property MapToProperty(CreateUpdatePropertyDto input)
+        {
+            return new Property(
+                input.EntityModuleName, input.EntityName, input.Name, input.IsEntityCollection,
+                input.TypeOrEntityName, input.Nullable,
+                new PropertyShowInValueObject(
+                    input.ShowIn.List, input.ShowIn.Detail, input.ShowIn.Creation, input.ShowIn.Edit));
+        }
     }
 }

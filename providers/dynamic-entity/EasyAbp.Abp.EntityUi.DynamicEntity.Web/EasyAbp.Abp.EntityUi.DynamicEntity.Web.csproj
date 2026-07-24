@@ -14,7 +14,7 @@
         <PackageReference Include="DotNetCore.Natasha.CSharp.Compiler" Version="$(NatashaVersion)" />
         <PackageReference Include="DotNetCore.Natasha.CSharp.Compiler.Domain" Version="$(NatashaVersion)" />
         <PackageReference Include="DotNetCore.Natasha.CSharp.Template.Core" Version="$(NatashaVersion)" />
-        <PackageReference Include="Volo.Abp.AutoMapper" Version="$(AbpVersion)" />
+        <PackageReference Include="Volo.Abp.Mapperly" Version="$(AbpVersion)" />
         <PackageReference Include="Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared" Version="$(AbpVersion)" />
     </ItemGroup>
 
