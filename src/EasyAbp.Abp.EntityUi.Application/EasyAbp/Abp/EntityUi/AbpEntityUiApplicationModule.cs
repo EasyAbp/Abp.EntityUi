@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.Application;
 
@@ -9,17 +9,13 @@ namespace EasyAbp.Abp.EntityUi
         typeof(AbpEntityUiDomainModule),
         typeof(AbpEntityUiApplicationContractsModule),
         typeof(AbpDddApplicationModule),
-        typeof(AbpAutoMapperModule)
+        typeof(AbpMapperlyModule)
     )]
     public class AbpEntityUiApplicationModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            context.Services.AddAutoMapperObjectMapper<AbpEntityUiApplicationModule>();
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<AbpEntityUiApplicationModule>(validate: true);
-            });
+            context.Services.AddMapperlyObjectMapper<AbpEntityUiApplicationModule>();
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using EasyAbp.Abp.EntityUi.Localization;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
@@ -14,7 +14,7 @@ namespace EasyAbp.Abp.EntityUi.Web
     [DependsOn(
         typeof(AbpEntityUiApplicationContractsModule),
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
-        typeof(AbpAutoMapperModule)
+        typeof(AbpMapperlyModule)
         )]
     public class AbpEntityUiWebModule : AbpModule
     {
@@ -42,11 +42,7 @@ namespace EasyAbp.Abp.EntityUi.Web
                 options.FileSets.AddEmbedded<AbpEntityUiWebModule>();
             });
 
-            context.Services.AddAutoMapperObjectMapper<AbpEntityUiWebModule>();
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<AbpEntityUiWebModule>(validate: true);
-            });
+            context.Services.AddMapperlyObjectMapper<AbpEntityUiWebModule>();
 
             Configure<RazorPagesOptions>(options =>
             {

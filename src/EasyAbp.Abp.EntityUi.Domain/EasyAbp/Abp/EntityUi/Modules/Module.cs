@@ -27,6 +27,14 @@ namespace EasyAbp.Abp.EntityUi.Modules
             [CanBeNull] string lResourceTypeName,
             [CanBeNull] string lResourceTypeAssemblyName)
         {
+            Update(name, lResourceTypeName, lResourceTypeAssemblyName);
+        }
+
+        public void Update(
+            [NotNull] string name,
+            [CanBeNull] string lResourceTypeName,
+            [CanBeNull] string lResourceTypeAssemblyName)
+        {
             Name = name;
             LResourceTypeName = lResourceTypeName;
             LResourceTypeAssemblyName = lResourceTypeAssemblyName;

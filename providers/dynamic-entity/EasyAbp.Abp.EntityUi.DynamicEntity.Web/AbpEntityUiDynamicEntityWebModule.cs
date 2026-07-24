@@ -4,7 +4,7 @@ using EasyAbp.Abp.EntityUi.Localization;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 
 namespace EasyAbp.Abp.EntityUi.Web
@@ -13,7 +13,7 @@ namespace EasyAbp.Abp.EntityUi.Web
         typeof(AbpEntityUiWebModule),
         typeof(AbpEntityUiDynamicEntityDomainSharedModule),
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
-        typeof(AbpAutoMapperModule)
+        typeof(AbpMapperlyModule)
     )]
     public class AbpEntityUiDynamicEntityWebModule : AbpModule
     {
@@ -34,11 +34,7 @@ namespace EasyAbp.Abp.EntityUi.Web
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            context.Services.AddAutoMapperObjectMapper<AbpEntityUiDynamicEntityWebModule>();
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<AbpEntityUiDynamicEntityWebModule>(validate: true);
-            });
+            context.Services.AddMapperlyObjectMapper<AbpEntityUiDynamicEntityWebModule>();
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
